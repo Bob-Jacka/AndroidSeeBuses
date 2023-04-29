@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Settings">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="30px"
+        android:paddingVertical="200px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioGroup
+            android:id="@+id/numbers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#C454DCBB"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/number12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_weight="1"
+                android:buttonTint="#EEFF41"
+                android:text="12"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/number36"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_weight="1"
+                android:buttonTint="#FFFF00"
+                android:text="36"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/number27"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_weight="1"
+                android:buttonTint="#EEFF41"
+                android:text="27"
+                android:textSize="16sp" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/transports"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#64FFDA">
+
+            <RadioButton
+                android:id="@+id/tram_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:text="tram"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/troll_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:text="troll"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/bus_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:text="bus"
+                android:textSize="20sp" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <Switch
+        android:id="@+id/switchIsWeekend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="29dp"
+        android:backgroundTint="@color/busButtonColor"
+        android:checked="false"
+        android:text="@string/switchText"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:trackTint="#00FF11"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/footer_Linear_l"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#D087FCE0"
+        android:baselineAligned="true"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numbers">
+
+        <Button
+            android:id="@+id/Reset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/busButtonColor"
+            android:onClick="reset"
+            android:text="Сбросить" />
+
+        <Button
+            android:id="@+id/goMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/busButtonColor"
+            android:onClick="goMain"
+            android:text="На главную" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/busButtonColor"
+            android:onClick="applyChanges"
+            android:text="@string/footerButtonText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

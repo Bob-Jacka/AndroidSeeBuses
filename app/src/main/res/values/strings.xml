@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">SeeBuses</string>
+    <string name="TitleText">Buses and Trolls</string>
+
+    <string name="bus36">Автобус 36</string>
+    <!--    <string name="url36Bus">Автобус 36</string>-->
+
+    <string name="bus12">Автобус 12</string>
+    <!--    <string name="url12Bus">Автобус 12</string>-->
+
+    <string name="bus27">Автобус 27</string>
+    <!--    <string name="url27Bus">Автобус 27</string>-->
+
+    <string name="troll14">Троллейбус 14</string>
+    <!--    <string name="url14Troll">Троллейбус 14</string>-->
+
+    <string name="troll4">Троллейбус 4</string>
+    <!--    <string name="url4Troll">Троллейбус 4</string>-->
+
+    <string name="switchText">Выходной?</string>
+
+    <string name="footerButtonText">Применить</string>
+
+    <string name="settingsName">Настройки</string>
+</resources>
