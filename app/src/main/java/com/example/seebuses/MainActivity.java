@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private String transportURI = "https://igis-transport.ru/";
 
     private Switch isWeekend;
-    private Button bus36;
-    private Button troll14;
+    private ImageButton bus36;
+    private ImageButton troll14;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void applyChanges(View view) {
         if(isWeekend.isChecked()) {
-            bus36.setVisibility(View.INVISIBLE);
-            troll14.setVisibility(View.INVISIBLE);
+            bus36.setVisibility(View.GONE);
+            troll14.setVisibility(View.GONE);
             Toast.makeText(this, "Apply changes", Toast.LENGTH_LONG).show();
 
-        } else if ((bus36.getVisibility() == View.INVISIBLE && troll14.getVisibility() == View.INVISIBLE) && !isWeekend.isChecked()) {
+        } else if ((bus36.getVisibility() == View.GONE && troll14.getVisibility() == View.GONE) && !isWeekend.isChecked()) {
             bus36.setVisibility(View.VISIBLE);
             troll14.setVisibility(View.VISIBLE);
 
