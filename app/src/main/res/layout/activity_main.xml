@@ -2,11 +2,23 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainConstraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/busButtonColor"
+        android:onClick="goSettings"
+        android:layout_marginBottom="50dp"
+        android:text="@string/settingsName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
     <TextView
         android:id="@+id/Title"
         android:layout_width="wrap_content"
@@ -22,54 +34,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="500dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-        <Switch
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/switchText"
-            android:textColor="@color/busButtonColor"
-            android:textColorHint="#50FF00"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <Switch-->
+<!--            android:id="@+id/checkBox"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/switchText"-->
+<!--            android:textColor="@color/busButtonColor"-->
+<!--            android:textColorHint="#50FF00"-->
+<!--            android:textSize="24sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/busButtonColor"
-            android:onClick="applyChanges"
-            android:text="@string/footerButtonText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <Button-->
+<!--            android:id="@+id/button"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:backgroundTint="@color/busButtonColor"-->
+<!--            android:onClick="applyChanges"-->
+<!--            android:text="@string/footerButtonText"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <Button
-            android:id="@+id/settings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/busButtonColor"
-            android:onClick="goSettings"
-            android:text="@string/settingsName"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -85,7 +76,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <ImageButton
-            android:id="@+id/bus36"
+            android:id="@+id/busIB36"
             android:layout_width="255dp"
             android:layout_height="80sp"
             android:backgroundTintMode="add"
@@ -97,7 +88,7 @@
             android:text="@string/bus36" />
 
         <ImageButton
-            android:id="@+id/bus12"
+            android:id="@+id/busIB27"
             android:layout_width="255dp"
             android:layout_height="80sp"
             android:backgroundTintMode="add"
@@ -108,7 +99,7 @@
             android:text="@string/bus12" />
 
         <ImageButton
-            android:id="@+id/bus27"
+            android:id="@+id/busIB12"
             android:layout_width="255dp"
             android:layout_height="80sp"
             android:backgroundTintMode="add"
@@ -119,23 +110,23 @@
             android:text="@string/bus27" />
 
         <ImageButton
-            android:id="@+id/troll14"
+            android:id="@+id/trollIB14"
             android:layout_width="255dp"
             android:layout_height="80sp"
             android:backgroundTintMode="add"
             android:maxWidth="50dp"
-            android:onClick="seeTransport12"
+            android:onClick="seeTransport14"
             android:scaleType="fitStart"
             android:src="@drawable/troll"
             android:text="@string/troll14" />
 
         <ImageButton
-            android:id="@+id/troll4"
+            android:id="@+id/trollIB4"
             android:layout_width="255dp"
             android:layout_height="80sp"
             android:backgroundTintMode="add"
             android:maxWidth="50dp"
-            android:onClick="seeTransport12"
+            android:onClick="seeTransport4"
             android:scaleType="fitStart"
             android:src="@drawable/troll"
             android:text="@string/troll4" />
@@ -149,41 +140,40 @@
         android:layout_marginTop="50dp"
         android:layout_marginBottom="209dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/linearLayout"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/bus36"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
-            tools:text="@string/bus36" />
+            android:text="@string/bus36" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/bus27"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:text="@string/bus27" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/bus12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="65dp"
             android:text="@string/bus12" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/troll14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"
             android:text="@string/troll14" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/troll4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"

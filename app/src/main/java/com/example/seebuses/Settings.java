@@ -2,33 +2,51 @@ package com.example.seebuses;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 
 public class Settings extends AppCompatActivity {
-    private Button bus36;
-    private Button troll14;
     private Switch isWeekend;
     private String city;
     private String transport;
+////////////////////////////////
+    private View bus36View;
+    private View troll14View;
+    private ImageButton busIB36;
+    private ImageButton trollIB14;
+    private TextView bus36Text;
+    private TextView troll14Text;
+//    ///////////////////
+    private static final String isTransportGone = "forSaveInstance";
+////////////
     private String transportNumber;
     private String transportURL = "https://igis-transport.ru/";
 
 
+    @SuppressLint("InflateParams")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        bus36View = getLayoutInflater().inflate(R.layout.activity_main, null);
+        troll14View = getLayoutInflater().inflate(R.layout.activity_main, null);
 
-//        troll14 = findViewById(R.id.troll14);
+        busIB36 = bus36View.findViewById(R.id.busIB36);
+        bus36Text = bus36View.findViewById(R.id.bus36);
+
+        troll14Text = troll14View.findViewById(R.id.troll14);
+        trollIB14 = troll14View.findViewById(R.id.trollIB14);
+
         isWeekend = findViewById(R.id.switchIsWeekend);
     }
 
@@ -39,9 +57,9 @@ public class Settings extends AppCompatActivity {
 
     public void reset(View view) {
        //group1
-        RadioButton rd12 = findViewById(R.id.number12);
-        RadioButton rd36 = findViewById(R.id.number36);
-        RadioButton rd27 = findViewById(R.id.number27);
+        RadioButton rd12 = findViewById(R.id.Buses);
+        RadioButton rd36 = findViewById(R.id.trams);
+        RadioButton rd27 = findViewById(R.id.trolls);
         if(rd12.isChecked()) {
             rd12.setChecked(false);
         }
@@ -64,33 +82,34 @@ public class Settings extends AppCompatActivity {
         if(rdbus.isChecked()) {
             rdbus.setChecked(false);
         }
-
     }
 
-    public void changeCity(String newCity) {
+    private void changeCity(String newCity) {
         this.city = newCity;
     }
 
-    public void changeTransport(String newTransport) {
+    private void changeTransport(String newTransport) {
         this.transport = newTransport;
     }
 
-    public void changeTransportNumber(String newTransportNumber) {
+    private void changeTransportNumber(String newTransportNumber) {
         this.transportNumber = newTransportNumber;
     }
 
-    public void applyChanges(View view) {
+    public boolean applyChanges(View view) {
         if(isWeekend.isChecked()) {
-            bus36.setVisibility(View.INVISIBLE);
-            troll14.setVisibility(View.INVISIBLE);
-            Toast.makeText(this, "Apply changes", Toast.LENGTH_SHORT).show();
 
-        } else if ((bus36.getVisibility() == View.INVISIBLE && troll14.getVisibility() == View.INVISIBLE) && !isWeekend.isChecked()) {
-            bus36.setVisibility(View.VISIBLE);
-            troll14.setVisibility(View.VISIBLE);
+            Toast.makeText(this, "Apply changes", Toast.LENGTH_LONG).show();
+            MainActivity.globalVisibleState = true;
+
+        } else if ((busIB36.getVisibility() == View.GONE && trollIB14.getVisibility() == View.GONE) && !isWeekend.isChecked()) {
+
+            MainActivity.globalVisibleState = false;
 
         } else {
-            Toast.makeText(this, "Is not working", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Changed", Toast.LENGTH_LONG).show();
         }
+        return MainActivity.globalVisibleState;
     }
+
 }

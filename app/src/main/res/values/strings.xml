@@ -3,23 +3,39 @@
     <string name="TitleText">Buses and Trolls</string>
 
     <string name="bus36">Автобус 36</string>
-    <!--    <string name="url36Bus">Автобус 36</string>-->
 
     <string name="bus12">Автобус 12</string>
-    <!--    <string name="url12Bus">Автобус 12</string>-->
 
     <string name="bus27">Автобус 27</string>
-    <!--    <string name="url27Bus">Автобус 27</string>-->
 
     <string name="troll14">Троллейбус 14</string>
-    <!--    <string name="url14Troll">Троллейбус 14</string>-->
 
     <string name="troll4">Троллейбус 4</string>
-    <!--    <string name="url4Troll">Троллейбус 4</string>-->
+    <!---->
+    <string name="busIB36">bus36</string>
+    <string name="busIB27">bus27</string>
+    <string name="busIB12">bus12</string>
+    <string name="trollIB14">troll14</string>
+    <string name="trollIB4">troll4</string>
+
+    <string name="buses">Автобусы</string>
+    <string name="trolls">Троллейбусы</string>
+    <string name="trams">Трамваи</string>
+
+    <string name="numb14">14</string>
+    <string name="numb36">36</string>
+    <string name="numb4">4</string>
+    <string name="numb12">12</string>
+    <string name="numb27">27</string>
+
 
     <string name="switchText">Выходной?</string>
 
     <string name="footerButtonText">Применить</string>
 
     <string name="settingsName">Настройки</string>
+
+    <string name="goBack">На главную</string>
+
+
 </resources>
