@@ -2,14 +2,19 @@ plugins {
     id 'com.android.application'
 }
 
+ext {
+    defaultTargetSdkVersion = 29
+    defaultMinSdkVersion = 29
+}
+
 android {
     namespace 'com.example.seebuses'
     compileSdk 33
 
     defaultConfig {
         applicationId "com.example.seebuses"
-        minSdk 28
-        targetSdk 33
+        minSdk defaultMinSdkVersion
+        targetSdk defaultTargetSdkVersion
         versionCode 1
         versionName "1.0"
 

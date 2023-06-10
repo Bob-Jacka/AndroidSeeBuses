@@ -93,7 +93,7 @@
             android:layout_height="80sp"
             android:backgroundTintMode="add"
             android:maxWidth="50dp"
-            android:onClick="seeTransport12"
+            android:onClick="seeTransport27"
             android:scaleType="fitStart"
             android:src="@drawable/bus"
             android:text="@string/bus12" />
@@ -104,7 +104,7 @@
             android:layout_height="80sp"
             android:backgroundTintMode="add"
             android:maxWidth="50dp"
-            android:onClick="seeTransport27"
+            android:onClick="seeTransport12"
             android:scaleType="fitStart"
             android:src="@drawable/bus"
             android:text="@string/bus27" />
