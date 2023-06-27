@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Switch;
@@ -17,8 +16,6 @@ import android.widget.Toast;
 
 public class Settings extends AppCompatActivity {
     private Switch isWeekend;
-    private String city;
-    private String transport;
 ////////////////////////////////
     private View bus36View;
     private View troll14View;
@@ -26,11 +23,10 @@ public class Settings extends AppCompatActivity {
     private ImageButton trollIB14;
     private TextView bus36Text;
     private TextView troll14Text;
-//    ///////////////////
-    private static final String isTransportGone = "forSaveInstance";
+    private boolean isSwitchChecked = false;
+
 ////////////
-    private String transportNumber;
-    private String transportURL = "https://igis-transport.ru/";
+    private final String transportURL = "https://igis-transport.ru/";
 
 
     @SuppressLint("InflateParams")
@@ -42,12 +38,17 @@ public class Settings extends AppCompatActivity {
         troll14View = getLayoutInflater().inflate(R.layout.activity_main, null);
 
         busIB36 = bus36View.findViewById(R.id.busIB36);
-        bus36Text = bus36View.findViewById(R.id.bus36);
+        bus36Text = bus36View.findViewById(R.id.bus36name);
 
-        troll14Text = troll14View.findViewById(R.id.troll14);
+        troll14Text = troll14View.findViewById(R.id.troll14name);
         trollIB14 = troll14View.findViewById(R.id.trollIB14);
 
         isWeekend = findViewById(R.id.switchIsWeekend);
+
+        if(isSwitchChecked) {
+            isWeekend.setChecked(true);
+        } else isWeekend.setChecked(false);
+
     }
 
     public void goMain(View view) {
@@ -83,27 +84,15 @@ public class Settings extends AppCompatActivity {
             rdbus.setChecked(false);
         }
     }
-
-    private void changeCity(String newCity) {
-        this.city = newCity;
-    }
-
-    private void changeTransport(String newTransport) {
-        this.transport = newTransport;
-    }
-
-    private void changeTransportNumber(String newTransportNumber) {
-        this.transportNumber = newTransportNumber;
-    }
-
     public boolean applyChanges(View view) {
         if(isWeekend.isChecked()) {
 
             Toast.makeText(this, "Apply changes", Toast.LENGTH_LONG).show();
             MainActivity.globalVisibleState = true;
+            isSwitchChecked = true;
 
         } else if ((busIB36.getVisibility() == View.GONE && trollIB14.getVisibility() == View.GONE) && !isWeekend.isChecked()) {
-
+            isSwitchChecked = false;
             MainActivity.globalVisibleState = false;
 
         } else {

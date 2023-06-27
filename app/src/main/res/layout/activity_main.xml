@@ -12,13 +12,14 @@
         android:id="@+id/settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
         android:backgroundTint="@color/busButtonColor"
         android:onClick="goSettings"
-        android:layout_marginBottom="50dp"
         android:text="@string/settingsName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/Title"
         android:layout_width="wrap_content"
@@ -34,150 +35,203 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-<!--        <Switch-->
-<!--            android:id="@+id/checkBox"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/switchText"-->
-<!--            android:textColor="@color/busButtonColor"-->
-<!--            android:textColorHint="#50FF00"-->
-<!--            android:textSize="24sp"-->
-<!--            android:textStyle="bold"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--        <Button-->
-<!--            android:id="@+id/button"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:backgroundTint="@color/busButtonColor"-->
-<!--            android:onClick="applyChanges"-->
-<!--            android:text="@string/footerButtonText"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="255dp"
+        android:id="@+id/TransportBlocks"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="250dp"
         android:clickable="true"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <ImageButton
-            android:id="@+id/busIB36"
-            android:layout_width="255dp"
-            android:layout_height="80sp"
-            android:backgroundTintMode="add"
-            android:maxWidth="50dp"
-            android:maxHeight="10.0dp"
-            android:onClick="seeTransport36"
-            android:scaleType="fitStart"
-            android:src="@drawable/bus"
-            android:text="@string/bus36" />
-
-        <ImageButton
-            android:id="@+id/busIB27"
-            android:layout_width="255dp"
-            android:layout_height="80sp"
-            android:backgroundTintMode="add"
-            android:maxWidth="50dp"
-            android:onClick="seeTransport27"
-            android:scaleType="fitStart"
-            android:src="@drawable/bus"
-            android:text="@string/bus12" />
-
-        <ImageButton
-            android:id="@+id/busIB12"
-            android:layout_width="255dp"
-            android:layout_height="80sp"
-            android:backgroundTintMode="add"
-            android:maxWidth="50dp"
-            android:onClick="seeTransport12"
-            android:scaleType="fitStart"
-            android:src="@drawable/bus"
-            android:text="@string/bus27" />
-
-        <ImageButton
-            android:id="@+id/trollIB14"
-            android:layout_width="255dp"
-            android:layout_height="80sp"
-            android:backgroundTintMode="add"
-            android:maxWidth="50dp"
-            android:onClick="seeTransport14"
-            android:scaleType="fitStart"
-            android:src="@drawable/troll"
-            android:text="@string/troll14" />
-
-        <ImageButton
-            android:id="@+id/trollIB4"
-            android:layout_width="255dp"
-            android:layout_height="80sp"
-            android:backgroundTintMode="add"
-            android:maxWidth="50dp"
-            android:onClick="seeTransport4"
-            android:scaleType="fitStart"
-            android:src="@drawable/troll"
-            android:text="@string/troll4" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="158dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="209dp"
-        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/settings"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Title"
+        app:layout_constraintVertical_bias="0.17000002">
 
-        <TextView
-            android:id="@+id/bus36"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
-            android:text="@string/bus36" />
+        <LinearLayout
+            android:id="@+id/Block1"
+            android:tag="Block1"
+            android:layout_width="wrap_content"
+            android:layout_height="82dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/blockBackground"
+            android:clickable="true"
+            android:contextClickable="true"
+            android:divider="@android:drawable/dark_header"
+            android:fadingEdge="none"
+            android:onClick="onBlockClick"
+            android:orientation="horizontal"
+            android:showDividers="middle">
 
-        <TextView
-            android:id="@+id/bus27"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="@string/bus27" />
+            <ImageButton
+                android:id="@+id/busIB36"
+                android:layout_width="255dp"
+                android:layout_height="wrap_content"
+                android:background="#00FFFFFF"
+                android:backgroundTintMode="add"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:onClick="seeTransport36"
+                android:scaleType="centerInside"
+                android:src="@drawable/bus"
+                android:text="@string/bus36" />
 
-        <TextView
-            android:id="@+id/bus12"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="65dp"
-            android:text="@string/bus12" />
+            <TextView
+                android:id="@+id/bus36name"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/bus36"
+                android:textAlignment="center"
+                android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/troll14"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:text="@string/troll14" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/troll4"
+        <LinearLayout
+            android:id="@+id/Block2"
+            android:tag="Block2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:text="@string/troll4" />
+            android:layout_height="82dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/blockBackground"
+            android:clickable="true"
+            android:divider="@android:drawable/dark_header"
+            android:onClick="onBlockClick"
+            android:orientation="horizontal"
+            android:showDividers="middle">
+
+            <ImageButton
+                android:id="@+id/busIB27"
+                android:layout_width="255dp"
+                android:layout_height="80sp"
+                android:background="#00FFFFFF"
+                android:backgroundTintMode="add"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:onClick="seeTransport27"
+                android:scaleType="centerInside"
+                android:src="@drawable/bus"
+                android:text="@string/bus12" />
+
+            <TextView
+                android:id="@+id/bus27name"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/bus27"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Block3"
+            android:tag="Block3"
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/blockBackground"
+            android:clickable="true"
+            android:divider="@android:drawable/dark_header"
+            android:onClick="onBlockClick"
+            android:orientation="horizontal"
+            android:showDividers="middle">
+
+            <ImageButton
+                android:id="@+id/busIB12"
+                android:layout_width="255dp"
+                android:layout_height="82sp"
+                android:background="#00FFFFFF"
+                android:backgroundTintMode="add"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:onClick="seeTransport12"
+                android:scaleType="centerInside"
+                android:src="@drawable/bus"
+                android:text="@string/bus27" />
+
+            <TextView
+                android:id="@+id/bus12name"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/bus12"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Block4"
+            android:tag="Block4"
+            android:layout_width="wrap_content"
+            android:layout_height="82dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/blockBackground"
+            android:clickable="true"
+            android:divider="@android:drawable/dark_header"
+            android:onClick="onBlockClick"
+            android:orientation="horizontal"
+            android:showDividers="middle">
+
+            <ImageButton
+                android:id="@+id/trollIB14"
+                android:layout_width="255dp"
+                android:layout_height="82sp"
+                android:background="#00FFFFFF"
+                android:backgroundTintMode="add"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:onClick="seeTransport14"
+                android:scaleType="centerInside"
+                android:src="@drawable/troll"
+                android:text="@string/troll14" />
+
+            <TextView
+                android:id="@+id/troll14name"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/troll14"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Block5"
+            android:tag="Block5"
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:background="@color/blockBackground"
+            android:clickable="true"
+            android:divider="@android:drawable/dark_header"
+            android:onClick="onBlockClick"
+            android:orientation="horizontal"
+            android:showDividers="middle">
+
+            <ImageButton
+                android:id="@+id/trollIB4"
+                android:layout_width="255dp"
+                android:layout_height="82sp"
+                android:layout_gravity="center"
+                android:background="#00FFFFFF"
+                android:backgroundTintMode="add"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:onClick="seeTransport4"
+                android:scaleType="centerInside"
+                android:src="@drawable/troll"
+                android:text="@string/troll4" />
+
+            <TextView
+                android:id="@+id/troll4name"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/troll4"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
