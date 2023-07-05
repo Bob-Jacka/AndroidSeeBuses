@@ -8,18 +8,6 @@
     android:background="@color/white"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/settings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:backgroundTint="@color/busButtonColor"
-        android:onClick="goSettings"
-        android:text="@string/settingsName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/Title"
         android:layout_width="wrap_content"
@@ -39,18 +27,16 @@
         android:id="@+id/TransportBlocks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:clickable="true"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/settings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Title"
-        app:layout_constraintVertical_bias="0.17000002">
+        app:layout_constraintTop_toBottomOf="@+id/Title">
 
         <LinearLayout
             android:id="@+id/Block1"
-            android:tag="Block1"
             android:layout_width="wrap_content"
             android:layout_height="82dp"
             android:layout_marginBottom="10dp"
@@ -61,7 +47,8 @@
             android:fadingEdge="none"
             android:onClick="onBlockClick"
             android:orientation="horizontal"
-            android:showDividers="middle">
+            android:showDividers="middle"
+            android:tag="Block1">
 
             <ImageButton
                 android:id="@+id/busIB36"
@@ -89,7 +76,6 @@
 
         <LinearLayout
             android:id="@+id/Block2"
-            android:tag="Block2"
             android:layout_width="match_parent"
             android:layout_height="82dp"
             android:layout_marginBottom="10dp"
@@ -98,7 +84,8 @@
             android:divider="@android:drawable/dark_header"
             android:onClick="onBlockClick"
             android:orientation="horizontal"
-            android:showDividers="middle">
+            android:showDividers="middle"
+            android:tag="Block2">
 
             <ImageButton
                 android:id="@+id/busIB27"
@@ -125,7 +112,6 @@
 
         <LinearLayout
             android:id="@+id/Block3"
-            android:tag="Block3"
             android:layout_width="match_parent"
             android:layout_height="82dp"
             android:layout_marginBottom="10dp"
@@ -134,7 +120,8 @@
             android:divider="@android:drawable/dark_header"
             android:onClick="onBlockClick"
             android:orientation="horizontal"
-            android:showDividers="middle">
+            android:showDividers="middle"
+            android:tag="Block3">
 
             <ImageButton
                 android:id="@+id/busIB12"
@@ -161,7 +148,6 @@
 
         <LinearLayout
             android:id="@+id/Block4"
-            android:tag="Block4"
             android:layout_width="wrap_content"
             android:layout_height="82dp"
             android:layout_marginBottom="10dp"
@@ -170,7 +156,8 @@
             android:divider="@android:drawable/dark_header"
             android:onClick="onBlockClick"
             android:orientation="horizontal"
-            android:showDividers="middle">
+            android:showDividers="middle"
+            android:tag="Block4">
 
             <ImageButton
                 android:id="@+id/trollIB14"
@@ -197,7 +184,6 @@
 
         <LinearLayout
             android:id="@+id/Block5"
-            android:tag="Block5"
             android:layout_width="match_parent"
             android:layout_height="82dp"
             android:background="@color/blockBackground"
@@ -205,7 +191,8 @@
             android:divider="@android:drawable/dark_header"
             android:onClick="onBlockClick"
             android:orientation="horizontal"
-            android:showDividers="middle">
+            android:showDividers="middle"
+            android:tag="Block5">
 
             <ImageButton
                 android:id="@+id/trollIB4"

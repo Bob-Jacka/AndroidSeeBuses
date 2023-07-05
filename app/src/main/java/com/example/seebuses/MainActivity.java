@@ -2,33 +2,37 @@ package com.example.seebuses;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.view.GestureDetectorCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 
-    private final String transportURI = "https://igis-transport.ru/";
+    private final int BLOCKS_COUNT = 5;
     static boolean globalVisibleState = false;
     private ImageButton busIB36;
     private ImageButton trollIB14;
     private TextView bus36Text;
     private TextView troll14Text;
     private GestureDetectorCompat gd;
-//    private static Transport[] transports;
+    private LinearLayout transportBlocks;
+//    private static TransportBlock[] transports;
+    static View transportBlockView;
+    private Drawable dr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +43,19 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         bus36Text = findViewById(R.id.bus36name);
         troll14Text = findViewById(R.id.troll14name);
 
-        LinearLayout transportBlocks = new LinearLayout(this);
-        transportBlocks.findViewById(R.id.TransportBlocks);
+        transportBlocks = findViewById(R.id.TransportBlocks);
 
         gd = new GestureDetectorCompat(this, this);
         gd.setIsLongpressEnabled(true);
         gd.setOnDoubleTapListener(new GestureDetector.SimpleOnGestureListener());
         gd.setOnDoubleTapListener(this);
 
-//        registerForContextMenu(transportBlocks);
+        dr = AppCompatResources.getDrawable(this, R.drawable.empty_block);
+        initBlocks();
+
+        for(int i = 0; i < BLOCKS_COUNT; i++) {
+            registerForContextMenu(transportBlocks.getChildAt(i));
+        }
 
         if (globalVisibleState) {
             busIB36.setVisibility(View.GONE);
@@ -117,61 +125,28 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         return false;
     }
 
-
-    private static class TransportBlock {
-        private int transpNumb;
-        private String transpType;
-        private boolean isGoneOnWeekends;
-        private String city;
-        private final String transportName = transpType + " " + transpNumb;
-
-        public TransportBlock(int transpNumb, String transpType, boolean isGoneOnWeekends, String city) {
-            this.transpNumb = transpNumb;
-            this.transpType = transpType;
-            this.city = city;
-            this.isGoneOnWeekends = isGoneOnWeekends;
-        }
-
-        private void changeCity(String newCity) {
-            this.city = newCity;
-        }
-
-        private void changeTransport(String newTransport) {
-            this.transpType = newTransport;
-        }
-
-        private void changeTransportNumber(int newTransportNumber) {
-            this.transpNumb = newTransportNumber;
-        }
-    }
-
-    public final void goSettings(View view) {
-        Intent changePage = new Intent(this, Settings.class);
-        startActivity(changePage);
-    }
-
     public final void seeTransport36(View view) {
-        WebBrowser.TransportURL = "https://igis-transport.ru/izh/citybus/36?";
+        WebBrowser.TransportURL = TransportBlock.transportURI + "izh/citybus/36?";
         goWebBrowser();
     }
 
     public final void seeTransport12(View view) {
-        WebBrowser.TransportURL = "https://igis-transport.ru/izh/citybus/12?";
+        WebBrowser.TransportURL = TransportBlock.transportURI + "izh/citybus/12?";
         goWebBrowser();
     }
 
     public final void seeTransport27(View view) {
-        WebBrowser.TransportURL = "https://igis-transport.ru/izh/citybus/27?";
+        WebBrowser.TransportURL = TransportBlock.transportURI + "izh/citybus/27?";
         goWebBrowser();
     }
 
     public final void seeTransport14(View view) {
-        WebBrowser.TransportURL = "https://igis-transport.ru/izh/trolleybus/14?";
+        WebBrowser.TransportURL = TransportBlock.transportURI + "izh/trolleybus/14?";
         goWebBrowser();
     }
 
     public final void seeTransport4(View view) {
-        WebBrowser.TransportURL = "https://igis-transport.ru/izh/trolleybus/4?";
+        WebBrowser.TransportURL = TransportBlock.transportURI + "izh/trolleybus/4?";
         goWebBrowser();
     }
 
@@ -186,26 +161,59 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     }
 
     public final void onBlockClick(View view) {
-        registerForContextMenu(view);
+        Toast.makeText(this, "клик на блок", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("Изменение транспорта");
-        menu.add(1, v.getId(), 1, "Удалить");
-        SubMenu sbm = menu.addSubMenu(2, v.getId(), 2, "Изменить");
-        menu.add(3, v.getId(), 3, "Закрыть");
+        transportBlockView = v;
+        //TODO сделать проверку на то, пустой блок изначально или нет
+        if ((TextView)(((LinearLayout) v).getChildAt(1)).equals("Нет данных")) {
+            menu.setHeaderTitle("Добавление транспорта");
+            menu.add(1, v.getId(), 1, "Добавить");
+            menu.add(2, v.getId(), 2, "Закрыть");
 
-        sbm.setHeaderTitle("Изменения");
-        sbm.add(4, v.getId(), 4, "Тип транспорта");
-        sbm.add(5, v.getId(), 5, "Номер транспорта");
-        sbm.add(6, v.getId(), 6, "Город транспорта");
+        } else {
+            menu.setHeaderTitle("Изменение транспорта");
+            menu.add(1, v.getId(), 1, "Удалить");
+            menu.add(2, v.getId(), 3, "Изменить транспорт");
+            menu.add(3, v.getId(), 3, "Закрыть");
+        }
+
+
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == 1) item.setVisible(false);
+        switch ((String) item.getTitle()) {
+            case "Удалить":
+                transportBlockView.setVisibility(View.GONE);
+                break;
+            case "Изменить транспорт":
+                Intent changeTransp = new Intent(new Intent(this, change_Transport.class));
+                startActivity(changeTransp);
+                break;
+            case "Закрыть":
+                break;
+//            case "Добавить":
+//                break;
+        }
         return super.onContextItemSelected(item);
+    }
+    private void initBlocks() {
+        LinearLayout outer_block;
+        View innerBlock;
+        for(int increment = 0; increment < BLOCKS_COUNT; increment++) {
+            outer_block = (LinearLayout) transportBlocks.getChildAt(increment);
+            for (int innerIncrement = 0; innerIncrement < 2; innerIncrement++) {
+                innerBlock = outer_block.getChildAt(innerIncrement);
+                if(innerIncrement == 0 ) {
+                    ((ImageButton) innerBlock).setImageDrawable(dr);
+                } if(innerIncrement == 1) {
+                    ((TextView) innerBlock).setText("Нет данных");
+                }
+            }
+        }
     }
 }

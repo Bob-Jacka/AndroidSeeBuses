@@ -5,5 +5,5 @@
     <color name="bg_color">#000000</color>
     <color name="switchColor">#7C4DFF</color>
     <color name="busButtonColor">#0048FF</color>
-    <color name="blockBackground">#B2FFEA00</color>
+    <color name="blockBackground">#F7FFDE85</color>
 </resources>

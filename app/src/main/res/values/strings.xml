@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">See Transport</string>
-    <string name="TitleText">Buses and Trolls</string>
+    <string name="TitleText">Buses, Trolls and Trams</string>
 
     <string name="bus36">Автобус 36</string>
 
@@ -36,6 +36,27 @@
     <string name="settingsName">Настройки</string>
 
     <string name="goBack">На главную</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_change_transport">change_transport</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="CityHint">например Ижевск</string>
+    <string name="TranspNumHint">например 12</string>
+    <string name="insertTranspNum">Введите номер транспорта</string>
+    <string name="choseTranspType">Выберите тип транспорта</string>
+    <string name="insertCityName">Введите город</string>
 
 
 </resources>
