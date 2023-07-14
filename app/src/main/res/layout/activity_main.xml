@@ -58,9 +58,8 @@
                 android:backgroundTintMode="add"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:onClick="seeTransport36"
+                android:onClick="seeTransportUltimate"
                 android:scaleType="centerInside"
-                android:src="@drawable/bus"
                 android:text="@string/bus36" />
 
             <TextView
@@ -68,7 +67,6 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/bus36"
                 android:textAlignment="center"
                 android:textSize="16sp" />
 
@@ -95,9 +93,8 @@
                 android:backgroundTintMode="add"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:onClick="seeTransport27"
+                android:onClick="seeTransportUltimate"
                 android:scaleType="centerInside"
-                android:src="@drawable/bus"
                 android:text="@string/bus12" />
 
             <TextView
@@ -105,7 +102,6 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/bus27"
                 android:textAlignment="center"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -131,9 +127,8 @@
                 android:backgroundTintMode="add"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:onClick="seeTransport12"
+                android:onClick="seeTransportUltimate"
                 android:scaleType="centerInside"
-                android:src="@drawable/bus"
                 android:text="@string/bus27" />
 
             <TextView
@@ -141,7 +136,6 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/bus12"
                 android:textAlignment="center"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -167,9 +161,8 @@
                 android:backgroundTintMode="add"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:onClick="seeTransport14"
+                android:onClick="seeTransportUltimate"
                 android:scaleType="centerInside"
-                android:src="@drawable/troll"
                 android:text="@string/troll14" />
 
             <TextView
@@ -177,7 +170,6 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/troll14"
                 android:textAlignment="center"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -203,9 +195,8 @@
                 android:backgroundTintMode="add"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:onClick="seeTransport4"
+                android:onClick="seeTransportUltimate"
                 android:scaleType="centerInside"
-                android:src="@drawable/troll"
                 android:text="@string/troll4" />
 
             <TextView
@@ -213,7 +204,6 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/troll4"
                 android:textAlignment="center"
                 android:textSize="16sp" />
         </LinearLayout>

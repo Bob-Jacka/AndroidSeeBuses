@@ -6,9 +6,11 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.view.GestureDetectorCompat;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.MenuItem;
@@ -19,25 +21,39 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Objects;
+
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 
-    private final int BLOCKS_COUNT = 5;
+    private static final int BLOCKS_COUNT = 5;
     static boolean globalVisibleState = false;
     private ImageButton busIB36;
     private ImageButton trollIB14;
     private TextView bus36Text;
     private TextView troll14Text;
     private GestureDetectorCompat gd;
-    private LinearLayout transportBlocks;
-//    private static TransportBlock[] transports;
+    static LinearLayout transportBlocks;
+    static TransportBlock[] transports = new TransportBlock[BLOCKS_COUNT];
     static View transportBlockView;
     private Drawable dr;
+    static File saveFile;
+    private String saveFileName;
+    private Context context;
 
+    @SuppressLint("UsableSpace")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = getApplicationContext();
+
         busIB36 = findViewById(R.id.busIB36);
         trollIB14 = findViewById(R.id.trollIB14);
         bus36Text = findViewById(R.id.bus36name);
@@ -45,17 +61,22 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
         transportBlocks = findViewById(R.id.TransportBlocks);
 
+        saveFileName = context.getFilesDir().getAbsolutePath() + "/saveBlocks";
+        saveFile = new File(saveFileName);
+
+        Toast.makeText(MainActivity.this, saveFile.toString(), Toast.LENGTH_LONG).show();
         gd = new GestureDetectorCompat(this, this);
         gd.setIsLongpressEnabled(true);
         gd.setOnDoubleTapListener(new GestureDetector.SimpleOnGestureListener());
         gd.setOnDoubleTapListener(this);
 
-        dr = AppCompatResources.getDrawable(this, R.drawable.empty_block);
-        initBlocks();
-
-        for(int i = 0; i < BLOCKS_COUNT; i++) {
+        for (int i = 0; i < BLOCKS_COUNT; i++) {
             registerForContextMenu(transportBlocks.getChildAt(i));
         }
+        dr = AppCompatResources.getDrawable(this, R.drawable.empty_block);
+
+        loadTransportData();
+        initializeAfterLoadBlocks();
 
         if (globalVisibleState) {
             busIB36.setVisibility(View.GONE);
@@ -70,6 +91,12 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             trollIB14.setVisibility(View.VISIBLE);
             troll14Text.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        loadTransportData();
+        super.onStart();
     }
 
     @Override
@@ -125,34 +152,25 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         return false;
     }
 
-    public final void seeTransport36(View view) {
-        WebBrowser.TransportURL = TransportBlock.transportURI + "izh/citybus/36?";
-        goWebBrowser();
+    public final void seeTransportUltimate(View view) {
+        int pointer = transportBlocks.indexOfChild(view); //указатель на выбранный транспорт
+        TransportBlock tb = transports[pointer + 1];
+        if (tb.getTranspNumb() != 0 && tb.getTranspType() != null) {
+            WebBrowser.TransportURL = TransportBlock.transportURI + "izh/" + tb.getTranspType() + "/" + tb.getTranspNumb() + "?";
+            goWebBrowser();
+        } else Toast.makeText(MainActivity.this, "Пустой блок", Toast.LENGTH_SHORT).show();
     }
 
-    public final void seeTransport12(View view) {
-        WebBrowser.TransportURL = TransportBlock.transportURI + "izh/citybus/12?";
-        goWebBrowser();
-    }
-
-    public final void seeTransport27(View view) {
-        WebBrowser.TransportURL = TransportBlock.transportURI + "izh/citybus/27?";
-        goWebBrowser();
-    }
-
-    public final void seeTransport14(View view) {
-        WebBrowser.TransportURL = TransportBlock.transportURI + "izh/trolleybus/14?";
-        goWebBrowser();
-    }
-
-    public final void seeTransport4(View view) {
-        WebBrowser.TransportURL = TransportBlock.transportURI + "izh/trolleybus/4?";
-        goWebBrowser();
-    }
-
-    protected final void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+    protected final void onRestoreInstanceState(Bundle bundle) {
+        loadTransportData();
+        super.onRestoreInstanceState(bundle);
         Toast.makeText(this, "Загрузка сохранения", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        saveTransportData();
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     private void goWebBrowser() {
@@ -168,8 +186,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         transportBlockView = v;
-        //TODO сделать проверку на то, пустой блок изначально или нет
-        if ((TextView)(((LinearLayout) v).getChildAt(1)).equals("Нет данных")) {
+        if (((TextView) (((LinearLayout) v).getChildAt(1))).getText() == "Нет данных") {
             menu.setHeaderTitle("Добавление транспорта");
             menu.add(1, v.getId(), 1, "Добавить");
             menu.add(2, v.getId(), 2, "Закрыть");
@@ -180,15 +197,13 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             menu.add(2, v.getId(), 3, "Изменить транспорт");
             menu.add(3, v.getId(), 3, "Закрыть");
         }
-
-
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         switch ((String) item.getTitle()) {
             case "Удалить":
-                transportBlockView.setVisibility(View.GONE);
+                deleteTranspData();
                 break;
             case "Изменить транспорт":
                 Intent changeTransp = new Intent(new Intent(this, change_Transport.class));
@@ -196,24 +211,163 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 break;
             case "Закрыть":
                 break;
-//            case "Добавить":
-//                break;
+            case "Добавить":
+                Intent addTransport = new Intent(new Intent(this, change_Transport.class));
+                startActivity(addTransport);
+                break;
         }
         return super.onContextItemSelected(item);
     }
-    private void initBlocks() {
-        LinearLayout outer_block;
-        View innerBlock;
-        for(int increment = 0; increment < BLOCKS_COUNT; increment++) {
-            outer_block = (LinearLayout) transportBlocks.getChildAt(increment);
-            for (int innerIncrement = 0; innerIncrement < 2; innerIncrement++) {
-                innerBlock = outer_block.getChildAt(innerIncrement);
-                if(innerIncrement == 0 ) {
-                    ((ImageButton) innerBlock).setImageDrawable(dr);
-                } if(innerIncrement == 1) {
-                    ((TextView) innerBlock).setText("Нет данных");
+
+    public void deleteTranspData() {
+        int pointer = transportBlocks.indexOfChild(transportBlockView); //указатель на выбранный транспорт
+        transports[pointer] = new TransportBlock();
+        saveTransportData();
+        loadTransportData();
+    }
+
+    public void initFilledBlock(TransportBlock tb, int increment) {
+        LinearLayout inner_block;
+        View innerView;
+        inner_block = (LinearLayout) transportBlocks.getChildAt(increment);
+
+        for (int innerIncrement = 0; innerIncrement < 2; innerIncrement++) {
+            innerView = inner_block.getChildAt(innerIncrement);
+            if (innerIncrement == 0) {
+                switch (tb.getTranspType()) {
+                    case "citybus":
+                        ((ImageButton) innerView).setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.bus));
+                        break;
+                    case "trolleybus":
+                        ((ImageButton) innerView).setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.troll));
+                        break;
+                    case "tram":
+                        ((ImageButton) innerView).setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.tram));
+                        break;
                 }
             }
+            if (innerIncrement == 1) {
+                ((TextView) innerView).setText(tb.getTextViewText());
+            }
+        }
+    }
+
+    public void initEmptyBlocks(int increment) {
+        LinearLayout innerBlock;
+
+        for (int innerIncrement = 0; innerIncrement < 2; innerIncrement++) {
+            innerBlock = (LinearLayout) transportBlocks.getChildAt(increment);
+            if (innerIncrement == 0) {
+                ((ImageButton) innerBlock.getChildAt(innerIncrement)).setImageDrawable(dr);
+            }
+            if (innerIncrement == 1) {
+                ((TextView) innerBlock.getChildAt(innerIncrement)).setText("Нет данных");
+            }
+        }
+    }
+
+
+    private void initializeAfterLoadBlocks() {
+        int increment = 0;
+        for (TransportBlock tb : transports) {
+
+            if (tb.getTranspType() != null) {
+                initFilledBlock(tb, increment);
+            } else {
+                initEmptyBlocks(increment);
+            }
+            increment++;
+        }
+    }
+
+    private void initializeEmptyBlocks() {
+        int increment = 0;
+        while (increment < BLOCKS_COUNT) {
+            transports[increment] = new TransportBlock();
+            increment++;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    static void saveTransportData() {
+        try {
+            if (saveFile.length() != 0) {
+                saveFile.delete();
+                saveTransportData();
+            }
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(MainActivity.saveFile));
+            for (TransportBlock tb : transports) {
+                if (tb.getTranspNumb() == 0) {
+                    writer.write(String.valueOf(0));
+                    writer.newLine();
+
+                } else {
+                    writer.write(String.valueOf(tb.getTranspNumb()));
+                    writer.write(' ');
+
+                    writer.write(tb.getTranspType());
+                    writer.write(' ');
+
+                    writer.write(tb.getCity());
+                    writer.write(' ');
+
+                    writer.write(tb.getTextViewText());
+                    writer.newLine();
+                }
+            }
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+//            Toast.makeText(MainActivity.this, "Ошибка при сохранении блоков транспорта", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void loadTransportData() {
+        initializeEmptyBlocks();
+        try {
+            if (saveFile.length() != 0L) {
+                BufferedReader reader = new BufferedReader(new FileReader(saveFile));
+                int excriment = 0;
+                String transportBlock;
+
+                do {
+                    transportBlock = reader.readLine();
+                    if (!Objects.equals(transportBlock, "0")) {
+                        String[] splitted = transportBlock.split(" ");
+                        transports[excriment] = new TransportBlock(Integer.parseInt(splitted[0]), splitted[1],
+                                splitted[2], splitted[3] + " " + splitted[4]);
+
+                    } else {
+                        transports[excriment] = new TransportBlock();
+                        LinearLayout pointer = (LinearLayout) transportBlocks.getChildAt(excriment); //указатель на выбранный транспорт
+                        ImageButton imb = (ImageButton) pointer.getChildAt(0);
+                        imb.setImageDrawable(dr);
+                        TextView txtV = (TextView) pointer.getChildAt(1);
+                        txtV.setText("Нет данных");
+                    }
+                    excriment++;
+                }
+                while (excriment < BLOCKS_COUNT);
+                reader.close();
+            } else
+                Toast.makeText(MainActivity.this, "Файл сохранения пустой", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Toast.makeText(MainActivity.this, "Ошибка загрузки из файла", Toast.LENGTH_SHORT).show();
         }
     }
 }

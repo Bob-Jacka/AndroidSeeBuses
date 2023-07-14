@@ -2,28 +2,23 @@ package com.example.seebuses;
 
 import android.graphics.drawable.Drawable;
 
-class TransportBlock {
+import java.io.Serializable;
+
+class TransportBlock implements Serializable {
     static final String transportURI = "https://igis-transport.ru/";
-    int transpNumb;
-    String transpType;
+    int id;
+    private int transpNumb;
+    private String transpType;
     boolean isGoneOnWeekends;
-    String city;
-    final String busDrawableName = "bus.png";
-    final String tramDrawableName = "tram.png";
-    final String trollDrawableName = "troll.png";
-    int drawable = R.drawable.empty_block;
+    private String city;
+    String textViewText;
+    Drawable drawable;
 
-    public TransportBlock(int transpNumb, String transpType, boolean isGoneOnWeekends, String city) {
+    public TransportBlock(int transpNumb, String transpType, String city, String viewText) {
         this.transpNumb = transpNumb;
         this.transpType = transpType;
         this.city = city;
-        this.isGoneOnWeekends = isGoneOnWeekends;
-    }
-
-    public TransportBlock(int transpNumb, String transpType, String city) {
-        this.transpNumb = transpNumb;
-        this.transpType = transpType;
-        this.city = city;
+        this.textViewText = viewText;
     }
 
     TransportBlock() {
@@ -41,11 +36,43 @@ class TransportBlock {
         this.transpNumb = newTransportNumber;
     }
 
-    String getTransportName() {
-        return transpType + " " + transpNumb;
+    private String getTransportName() {
+        switch (transpType) {
+            case "citybus":
+                return "Автобус " + transpNumb;
+            case "trolleybus":
+                return "Троллейбус " + transpNumb;
+            case "tram":
+                return "Трамвай " + transpNumb;
+        }
+        return null;
     }
 
-    int getDrawable() {
+    Drawable getDrawable() {
         return drawable;
+    }
+
+    void setDrawable(Drawable drawable) {
+        this.drawable = drawable;
+    }
+
+    String getTextViewText() {
+        return getTransportName();
+    }
+
+    int getTranspNumb() {
+        return transpNumb;
+    }
+
+    String getTranspType() {
+        return transpType;
+    }
+
+    String getCity() {
+        return city;
+    }
+
+    void setTextViewText(String textViewText) {
+        this.textViewText = textViewText;
     }
 }

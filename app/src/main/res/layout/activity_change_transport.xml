@@ -134,15 +134,16 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:layout_marginLeft="82dp"
+                android:layout_marginRight="10dp"
                 android:translationY="-5px">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/chooseCity"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"
                     android:background="@color/blockBackground"
-                    android:capitalize="sentences"
+                    android:capitalize="words"
                     android:cursorVisible="true"
                     android:gravity="center"
                     android:hapticFeedbackEnabled="true"
@@ -154,7 +155,15 @@
                     android:textSize="16sp"
                     tools:ignore="RtlCompat" />
             </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
+
+        <Button
+            android:id="@+id/deleteBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="deleteSave"
+            android:text="Удалить сохранение" />
 
     </LinearLayout>
 
