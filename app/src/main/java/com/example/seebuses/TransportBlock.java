@@ -1,24 +1,20 @@
 package com.example.seebuses;
 
-import android.graphics.drawable.Drawable;
-
-import java.io.Serializable;
-
-class TransportBlock implements Serializable {
-    static final String transportURI = "https://igis-transport.ru/";
-    int id;
+class TransportBlock {
+    private static final String transportURI_IGIS = "https://igis-transport.ru/";
+    private static final String transportURI_BUSTI = "https://ru.busti.me/";
     private int transpNumb;
     private String transpType;
-    boolean isGoneOnWeekends;
     private String city;
+    private String fakeCity;
     String textViewText;
-    Drawable drawable;
 
-    public TransportBlock(int transpNumb, String transpType, String city, String viewText) {
+    public TransportBlock(int transpNumb, String transpType, String city, String viewText, String fakeCity) {
         this.transpNumb = transpNumb;
         this.transpType = transpType;
         this.city = city;
         this.textViewText = viewText;
+        this.fakeCity = fakeCity;
     }
 
     TransportBlock() {
@@ -48,14 +44,6 @@ class TransportBlock implements Serializable {
         return null;
     }
 
-    Drawable getDrawable() {
-        return drawable;
-    }
-
-    void setDrawable(Drawable drawable) {
-        this.drawable = drawable;
-    }
-
     String getTextViewText() {
         return getTransportName();
     }
@@ -74,5 +62,21 @@ class TransportBlock implements Serializable {
 
     void setTextViewText(String textViewText) {
         this.textViewText = textViewText;
+    }
+
+    String getTransportURI_IGIS() {
+        return transportURI_IGIS + fakeCity + "/" + getTranspType() + "/" + getTranspNumb() + "?";
+    }
+
+    String getTransportURI_BUSTI() {
+        return transportURI_BUSTI + fakeCity + "/#" + getTranspType().substring(0, 3) + "-" + getTranspNumb();
+    }
+
+    String getFakeCity() {
+        return fakeCity;
+    }
+
+    void changeFakeCity(String fakeCity) {
+        this.fakeCity = fakeCity;
     }
 }

@@ -1,24 +1,19 @@
 package com.example.seebuses;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -120,7 +115,14 @@ public class change_Transport extends AppCompatActivity {
     public void onAccept(View view) {
         transportBlock.changeTransportType(transpType);
         transportBlock.changeTransportNumber(transpNumb);
-        transportBlock.changeCity(transpCity);
+        if(transpCity.equals("Ижевск")) {
+            transportBlock.changeCity("Ижевск");
+            transportBlock.changeFakeCity("izh");
+        } else if (transpCity.equals("Пермь")) {
+            transportBlock.changeCity("Пермь");
+            transportBlock.changeFakeCity("perm");
+        }
+
         transportBlock.setTextViewText(transpType + " " + transpNumb);
 
         if (transportBlock.getTranspNumb() != 0 && transportBlock.getTranspType() != null && transportBlock.getCity() != null) {

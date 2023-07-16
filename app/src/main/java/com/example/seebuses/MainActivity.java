@@ -1,10 +1,5 @@
 package com.example.seebuses;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.view.GestureDetectorCompat;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.view.GestureDetectorCompat;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -33,16 +33,11 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 
     private static final int BLOCKS_COUNT = 5;
-    static boolean globalVisibleState = false;
-    private ImageButton busIB36;
-    private ImageButton trollIB14;
-    private TextView bus36Text;
-    private TextView troll14Text;
     private GestureDetectorCompat gd;
     static LinearLayout transportBlocks;
     static TransportBlock[] transports = new TransportBlock[BLOCKS_COUNT];
     static View transportBlockView;
-    private Drawable dr;
+    private Drawable emptBlkImage;
     static File saveFile;
     private String saveFileName;
     private Context context;
@@ -54,17 +49,11 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         setContentView(R.layout.activity_main);
         context = getApplicationContext();
 
-        busIB36 = findViewById(R.id.busIB36);
-        trollIB14 = findViewById(R.id.trollIB14);
-        bus36Text = findViewById(R.id.bus36name);
-        troll14Text = findViewById(R.id.troll14name);
-
         transportBlocks = findViewById(R.id.TransportBlocks);
 
         saveFileName = context.getFilesDir().getAbsolutePath() + "/saveBlocks";
         saveFile = new File(saveFileName);
 
-        Toast.makeText(MainActivity.this, saveFile.toString(), Toast.LENGTH_LONG).show();
         gd = new GestureDetectorCompat(this, this);
         gd.setIsLongpressEnabled(true);
         gd.setOnDoubleTapListener(new GestureDetector.SimpleOnGestureListener());
@@ -73,29 +62,16 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         for (int i = 0; i < BLOCKS_COUNT; i++) {
             registerForContextMenu(transportBlocks.getChildAt(i));
         }
-        dr = AppCompatResources.getDrawable(this, R.drawable.empty_block);
+        emptBlkImage = AppCompatResources.getDrawable(this, R.drawable.empty_block);
 
-        loadTransportData();
+        loadTransportArray();
         initializeAfterLoadBlocks();
 
-        if (globalVisibleState) {
-            busIB36.setVisibility(View.GONE);
-            bus36Text.setVisibility(View.GONE);
-
-            trollIB14.setVisibility(View.GONE);
-            troll14Text.setVisibility(View.GONE);
-        } else {
-            busIB36.setVisibility(View.VISIBLE);
-            bus36Text.setVisibility(View.VISIBLE);
-
-            trollIB14.setVisibility(View.VISIBLE);
-            troll14Text.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
     protected void onStart() {
-        loadTransportData();
+        loadTransportArray();
         super.onStart();
     }
 
@@ -153,16 +129,19 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     }
 
     public final void seeTransportUltimate(View view) {
-        int pointer = transportBlocks.indexOfChild(view); //указатель на выбранный транспорт
-        TransportBlock tb = transports[pointer + 1];
-        if (tb.getTranspNumb() != 0 && tb.getTranspType() != null) {
-            WebBrowser.TransportURL = TransportBlock.transportURI + "izh/" + tb.getTranspType() + "/" + tb.getTranspNumb() + "?";
+        int pointer = transportBlocks.indexOfChild((LinearLayout) (view.getParent())); //указатель на выбранный транспорт
+        TransportBlock tb = transports[pointer];
+        if (tb.getCity().equals("Ижевск")) {
+            WebBrowser.TransportURL = tb.getTransportURI_IGIS();
             goWebBrowser();
-        } else Toast.makeText(MainActivity.this, "Пустой блок", Toast.LENGTH_SHORT).show();
+        } else if (tb.getCity().equals("Пермь")) {
+            WebBrowser.TransportURL = tb.getTransportURI_BUSTI();
+            goWebBrowser();
+        }
     }
 
     protected final void onRestoreInstanceState(Bundle bundle) {
-        loadTransportData();
+        loadTransportArray();
         super.onRestoreInstanceState(bundle);
         Toast.makeText(this, "Загрузка сохранения", Toast.LENGTH_SHORT).show();
     }
@@ -186,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         transportBlockView = v;
-        if (((TextView) (((LinearLayout) v).getChildAt(1))).getText() == "Нет данных") {
+        if ((((TextView) (((LinearLayout) (((LinearLayout) v).getChildAt(1)))).getChildAt(1)).getText()) == "Нет данных") {
             menu.setHeaderTitle("Добавление транспорта");
             menu.add(1, v.getId(), 1, "Добавить");
             menu.add(2, v.getId(), 2, "Закрыть");
@@ -223,10 +202,10 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         int pointer = transportBlocks.indexOfChild(transportBlockView); //указатель на выбранный транспорт
         transports[pointer] = new TransportBlock();
         saveTransportData();
-        loadTransportData();
+        loadTransportArray();
     }
 
-    public void initFilledBlock(TransportBlock tb, int increment) {
+    private void initFilledBlock(TransportBlock tb, int increment) {
         LinearLayout inner_block;
         View innerView;
         inner_block = (LinearLayout) transportBlocks.getChildAt(increment);
@@ -247,21 +226,24 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 }
             }
             if (innerIncrement == 1) {
-                ((TextView) innerView).setText(tb.getTextViewText());
+                ((TextView) ((LinearLayout) innerView).getChildAt(0)).setText(tb.getTextViewText());
+                ((TextView) ((LinearLayout) innerView).getChildAt(1)).setText(tb.getCity());
             }
         }
     }
 
-    public void initEmptyBlocks(int increment) {
+    private void initEmptyBlocks(int increment) {
         LinearLayout innerBlock;
 
         for (int innerIncrement = 0; innerIncrement < 2; innerIncrement++) {
             innerBlock = (LinearLayout) transportBlocks.getChildAt(increment);
             if (innerIncrement == 0) {
-                ((ImageButton) innerBlock.getChildAt(innerIncrement)).setImageDrawable(dr);
+                ((ImageButton) innerBlock.getChildAt(innerIncrement)).setImageDrawable(emptBlkImage);
             }
             if (innerIncrement == 1) {
-                ((TextView) innerBlock.getChildAt(innerIncrement)).setText("Нет данных");
+                LinearLayout textblock = ((LinearLayout) innerBlock.getChildAt(innerIncrement));
+                ((TextView) (textblock.getChildAt(0))).setText("Нет данных");
+                ((TextView) (textblock.getChildAt(1))).setText("Нет данных");
             }
         }
     }
@@ -309,7 +291,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 saveFile.delete();
                 saveTransportData();
             }
-
             BufferedWriter writer = new BufferedWriter(new FileWriter(MainActivity.saveFile));
             for (TransportBlock tb : transports) {
                 if (tb.getTranspNumb() == 0) {
@@ -327,17 +308,20 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                     writer.write(' ');
 
                     writer.write(tb.getTextViewText());
+                    writer.write(' ');
+
+                    writer.write(tb.getFakeCity());
                     writer.newLine();
                 }
             }
             writer.flush();
             writer.close();
         } catch (IOException e) {
-//            Toast.makeText(MainActivity.this, "Ошибка при сохранении блоков транспорта", Toast.LENGTH_SHORT).show();
+            //
         }
     }
 
-    public void loadTransportData() {
+    public void loadTransportArray() {
         initializeEmptyBlocks();
         try {
             if (saveFile.length() != 0L) {
@@ -350,15 +334,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                     if (!Objects.equals(transportBlock, "0")) {
                         String[] splitted = transportBlock.split(" ");
                         transports[excriment] = new TransportBlock(Integer.parseInt(splitted[0]), splitted[1],
-                                splitted[2], splitted[3] + " " + splitted[4]);
+                                splitted[2], splitted[3] + " " + splitted[4], splitted[5]);
 
-                    } else {
-                        transports[excriment] = new TransportBlock();
-                        LinearLayout pointer = (LinearLayout) transportBlocks.getChildAt(excriment); //указатель на выбранный транспорт
-                        ImageButton imb = (ImageButton) pointer.getChildAt(0);
-                        imb.setImageDrawable(dr);
-                        TextView txtV = (TextView) pointer.getChildAt(1);
-                        txtV.setText("Нет данных");
                     }
                     excriment++;
                 }

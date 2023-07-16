@@ -62,13 +62,26 @@
                 android:scaleType="centerInside"
                 android:text="@string/bus36" />
 
-            <TextView
-                android:id="@+id/bus36name"
+            <LinearLayout
+                android:id="@+id/TextBlock1"
                 android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="16sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <TextView
+                    android:id="@+id/bus36name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/whatCityChoosen1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -97,13 +110,27 @@
                 android:scaleType="centerInside"
                 android:text="@string/bus12" />
 
-            <TextView
-                android:id="@+id/bus27name"
+            <LinearLayout
+                android:id="@+id/TextBlock2"
                 android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="16sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <TextView
+                    android:id="@+id/bus27name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/whatCityChoosen2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -131,13 +158,26 @@
                 android:scaleType="centerInside"
                 android:text="@string/bus27" />
 
-            <TextView
-                android:id="@+id/bus12name"
+            <LinearLayout
+                android:id="@+id/TextBlock3"
                 android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="16sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <TextView
+                    android:id="@+id/bus12name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/whatCityChoosen3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -165,13 +205,27 @@
                 android:scaleType="centerInside"
                 android:text="@string/troll14" />
 
-            <TextView
-                android:id="@+id/troll14name"
+            <LinearLayout
+                android:id="@+id/TextBlock4"
                 android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="16sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <TextView
+                    android:id="@+id/troll14name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/whatCityChoosen4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -199,13 +253,27 @@
                 android:scaleType="centerInside"
                 android:text="@string/troll4" />
 
-            <TextView
-                android:id="@+id/troll4name"
+            <LinearLayout
+                android:id="@+id/TextBlock5"
                 android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="16sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <TextView
+                    android:id="@+id/troll4name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/whatCityChoosen5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
 
