@@ -6,4 +6,5 @@
     <color name="switchColor">#7C4DFF</color>
     <color name="busButtonColor">#0048FF</color>
     <color name="blockBackground">#F7FFDE85</color>
+    <color name="blockChoseTranspNum">#55BA14</color>
 </resources>

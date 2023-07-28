@@ -29,7 +29,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 
     private static final int BLOCKS_COUNT = 5;
@@ -62,11 +61,9 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         for (int i = 0; i < BLOCKS_COUNT; i++) {
             registerForContextMenu(transportBlocks.getChildAt(i));
         }
-        emptBlkImage = AppCompatResources.getDrawable(this, R.drawable.empty_block);
+        emptBlkImage = AppCompatResources.getDrawable(this, R.drawable.emptblk);
 
         loadTransportArray();
-        initializeAfterLoadBlocks();
-
     }
 
     @Override
@@ -198,8 +195,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         return super.onContextItemSelected(item);
     }
 
-    public void deleteTranspData() {
-        int pointer = transportBlocks.indexOfChild(transportBlockView); //указатель на выбранный транспорт
+    private void deleteTranspData() {
+        int pointer = transportBlocks.indexOfChild(transportBlockView);
         transports[pointer] = new TransportBlock();
         saveTransportData();
         loadTransportArray();
@@ -248,11 +245,9 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         }
     }
 
-
     private void initializeAfterLoadBlocks() {
         int increment = 0;
         for (TransportBlock tb : transports) {
-
             if (tb.getTranspType() != null) {
                 initFilledBlock(tb, increment);
             } else {
@@ -335,7 +330,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                         String[] splitted = transportBlock.split(" ");
                         transports[excriment] = new TransportBlock(Integer.parseInt(splitted[0]), splitted[1],
                                 splitted[2], splitted[3] + " " + splitted[4], splitted[5]);
-
                     }
                     excriment++;
                 }
@@ -346,5 +340,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         } catch (IOException e) {
             Toast.makeText(MainActivity.this, "Ошибка загрузки из файла", Toast.LENGTH_SHORT).show();
         }
+        initializeAfterLoadBlocks();
     }
 }

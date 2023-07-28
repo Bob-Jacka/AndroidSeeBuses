@@ -115,7 +115,7 @@ public class change_Transport extends AppCompatActivity {
     public void onAccept(View view) {
         transportBlock.changeTransportType(transpType);
         transportBlock.changeTransportNumber(transpNumb);
-        if(transpCity.equals("Ижевск")) {
+        if (transpCity.equals("Ижевск")) {
             transportBlock.changeCity("Ижевск");
             transportBlock.changeFakeCity("izh");
         } else if (transpCity.equals("Пермь")) {
@@ -124,16 +124,17 @@ public class change_Transport extends AppCompatActivity {
         }
 
         transportBlock.setTextViewText(transpType + " " + transpNumb);
+        if (acceptTransport() == 1) {
+            if (transportBlock.getTranspNumb() != 0 && transportBlock.getTranspType() != null && transportBlock.getCity() != null) {
+                int viewPointer = MainActivity.transportBlocks.indexOfChild(MainActivity.transportBlockView); //указатель на выбранный транспорт
+                MainActivity.transports[viewPointer] = transportBlock;
+                MainActivity.saveTransportData();
 
-        if (transportBlock.getTranspNumb() != 0 && transportBlock.getTranspType() != null && transportBlock.getCity() != null) {
-            int viewPointer = MainActivity.transportBlocks.indexOfChild(MainActivity.transportBlockView); //указатель на выбранный транспорт
-            MainActivity.transports[viewPointer] = transportBlock;
-            MainActivity.saveTransportData();
-
-            Intent returnMain = new Intent(this, MainActivity.class);
-            startActivity(returnMain);
-        } else
-            Toast.makeText(change_Transport.this, "Заполните все данные", Toast.LENGTH_SHORT).show();
+                Intent returnMain = new Intent(this, MainActivity.class);
+                startActivity(returnMain);
+            } else
+                Toast.makeText(change_Transport.this, "Заполните все данные", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -145,5 +146,17 @@ public class change_Transport extends AppCompatActivity {
         Toast.makeText(change_Transport.this, "Файл удалён", Toast.LENGTH_SHORT).show();
         File save = new File(getApplicationContext().getFilesDir().getAbsolutePath() + "/saveBlocks");
         save.delete();
+    }
+
+    private int acceptTransport() {
+        for (TransportBlock tb : MainActivity.transports) {
+            if (tb.getTranspNumb() == transportBlock.getTranspNumb()
+                    && tb.getTranspType().equals(transportBlock.getTranspType())
+                    && tb.getCity().equals(transportBlock.getCity())) {
+                Toast.makeText(this, "Такой транспорт уже есть", Toast.LENGTH_SHORT).show();
+                return 0;
+            }
+        }
+        return 1;
     }
 }
