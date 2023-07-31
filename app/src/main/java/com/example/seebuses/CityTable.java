@@ -1,14 +1,16 @@
 package com.example.seebuses;
 
+import static com.example.seebuses.MainActivity.SUPPORTED_CITIES;
+
 import java.util.HashMap;
 
 class CityTable {
 
-    private static HashMap<String, String> cityTable = new HashMap<>(10);
+    private static final HashMap<String, String> cityTable = new HashMap<>(SUPPORTED_CITIES);
 
-    HashMap<String, String> initTable() {
+    static HashMap<String, String> initTable() {
         cityTable.put("Ижевск", "izh");
-        cityTable.put("Перьм", "izh");
+        cityTable.put("Пермь", "perm");
         return cityTable;
     }
 }

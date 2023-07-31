@@ -12,7 +12,7 @@
         android:id="@+id/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:autoSizeMaxTextSize="30sp"
         android:background="#E2CF25"
         android:fontFamily="sans-serif-medium"
@@ -23,9 +23,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/instruction"
+        android:layout_width="match_parent"
+        android:layout_height="252dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TransportBlocks"
+        app:srcCompat="@drawable/ic_launcher_background" />
+
     <LinearLayout
         android:id="@+id/TransportBlocks"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:clickable="true"
@@ -37,7 +47,7 @@
 
         <LinearLayout
             android:id="@+id/Block1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="82dp"
             android:layout_marginBottom="10dp"
             android:background="@color/blockBackground"
@@ -45,26 +55,26 @@
             android:contextClickable="true"
             android:divider="@android:drawable/dark_header"
             android:fadingEdge="none"
-            android:onClick="onBlockClick"
             android:orientation="horizontal"
             android:showDividers="middle"
             android:tag="Block1">
 
             <ImageButton
-                android:id="@+id/busIB36"
+                android:id="@+id/ImgBtn1"
                 android:layout_width="255dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:background="#00FFFFFF"
                 android:backgroundTintMode="add"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:onClick="seeTransportUltimate"
                 android:scaleType="centerInside"
-                android:text="@string/bus36" />
+                android:text="" />
 
             <LinearLayout
                 android:id="@+id/TextBlock1"
-                android:layout_width="120dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:showDividers="middle">
@@ -73,7 +83,8 @@
                     android:id="@+id/transportName1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"
+                    android:layout_gravity="top"
+                    android:layout_marginVertical="13dp"
                     android:gravity="center|center_horizontal|center_vertical"
                     android:textSize="16sp" />
 
@@ -95,26 +106,26 @@
             android:background="@color/blockBackground"
             android:clickable="true"
             android:divider="@android:drawable/dark_header"
-            android:onClick="onBlockClick"
             android:orientation="horizontal"
             android:showDividers="middle"
             android:tag="Block2">
 
             <ImageButton
-                android:id="@+id/busIB27"
+                android:id="@+id/ImgBtn2"
                 android:layout_width="255dp"
-                android:layout_height="80sp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:background="#00FFFFFF"
                 android:backgroundTintMode="add"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:onClick="seeTransportUltimate"
                 android:scaleType="centerInside"
-                android:text="@string/bus12" />
+                android:text="" />
 
             <LinearLayout
                 android:id="@+id/TextBlock2"
-                android:layout_width="120dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:showDividers="middle">
@@ -123,8 +134,9 @@
                     android:id="@+id/transportName2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"
-                    android:gravity="center|center_horizontal|center_vertical"
+                    android:layout_gravity="top"
+                    android:layout_marginVertical="13dp"
+                    android:gravity="center|center_horizontal|top|center_vertical"
                     android:textSize="16sp" />
 
                 <TextView
@@ -145,26 +157,26 @@
             android:background="@color/blockBackground"
             android:clickable="true"
             android:divider="@android:drawable/dark_header"
-            android:onClick="onBlockClick"
             android:orientation="horizontal"
             android:showDividers="middle"
             android:tag="Block3">
 
             <ImageButton
-                android:id="@+id/busIB12"
+                android:id="@+id/ImgBtn3"
                 android:layout_width="255dp"
-                android:layout_height="82sp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:background="#00FFFFFF"
                 android:backgroundTintMode="add"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:onClick="seeTransportUltimate"
                 android:scaleType="centerInside"
-                android:text="@string/bus27" />
+                android:text="" />
 
             <LinearLayout
                 android:id="@+id/TextBlock3"
-                android:layout_width="120dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:showDividers="middle">
@@ -173,8 +185,9 @@
                     android:id="@+id/transportName3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"
-                    android:gravity="center|center_horizontal|center_vertical"
+                    android:layout_gravity="top"
+                    android:layout_marginVertical="13dp"
+                    android:gravity="center|center_horizontal|top|center_vertical"
                     android:textSize="16sp" />
 
                 <TextView
@@ -188,32 +201,32 @@
 
         <LinearLayout
             android:id="@+id/Block4"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="82dp"
             android:layout_marginBottom="10dp"
             android:background="@color/blockBackground"
             android:clickable="true"
             android:divider="@android:drawable/dark_header"
-            android:onClick="onBlockClick"
             android:orientation="horizontal"
             android:showDividers="middle"
             android:tag="Block4">
 
             <ImageButton
-                android:id="@+id/trollIB14"
+                android:id="@+id/ImgBtn4"
                 android:layout_width="255dp"
-                android:layout_height="82sp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:background="#00FFFFFF"
                 android:backgroundTintMode="add"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:onClick="seeTransportUltimate"
                 android:scaleType="centerInside"
-                android:text="@string/troll14" />
+                android:text="" />
 
             <LinearLayout
                 android:id="@+id/TextBlock4"
-                android:layout_width="120dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:showDividers="middle">
@@ -222,7 +235,8 @@
                     android:id="@+id/transportName4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"
+                    android:layout_gravity="top"
+                    android:layout_marginVertical="13dp"
                     android:gravity="center|center_horizontal|center_vertical"
                     android:textSize="16sp" />
 
@@ -243,15 +257,14 @@
             android:background="@color/blockBackground"
             android:clickable="true"
             android:divider="@android:drawable/dark_header"
-            android:onClick="onBlockClick"
             android:orientation="horizontal"
             android:showDividers="middle"
             android:tag="Block5">
 
             <ImageButton
-                android:id="@+id/trollIB4"
+                android:id="@+id/ImgBtn5"
                 android:layout_width="255dp"
-                android:layout_height="82sp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="#00FFFFFF"
                 android:backgroundTintMode="add"
@@ -259,11 +272,11 @@
                 android:focusableInTouchMode="false"
                 android:onClick="seeTransportUltimate"
                 android:scaleType="centerInside"
-                android:text="@string/troll4" />
+                android:text="" />
 
             <LinearLayout
                 android:id="@+id/TextBlock5"
-                android:layout_width="120dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:showDividers="middle">
@@ -272,7 +285,8 @@
                     android:id="@+id/transportName5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"
+                    android:layout_gravity="top"
+                    android:layout_marginVertical="13dp"
                     android:gravity="center|center_horizontal|center_vertical"
                     android:textSize="16sp" />
 

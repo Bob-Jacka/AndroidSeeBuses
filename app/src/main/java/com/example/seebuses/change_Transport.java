@@ -18,16 +18,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.File;
+import java.util.HashMap;
 
 public class change_Transport extends AppCompatActivity {
     private TextInputEditText chooseTransportNum;
     private TextInputEditText chooseCity;
     private Button choseBtn;
-    private View chosenTransportBlock;
     private static final TransportBlock transportBlock = new TransportBlock();
-    private int transpNumb;
+    private String transpNumb;
     private String transpCity;
     private String transpType;
+    private final HashMap<String, String> ct = CityTable.initTable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class change_Transport extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                transpNumb = Integer.parseInt(editable.toString());
+                transpNumb = String.valueOf(editable);
             }
         });
     }
@@ -76,7 +77,6 @@ public class change_Transport extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        chosenTransportBlock = v;
         menu.setHeaderTitle("Типы транпорта");
         menu.add(1, v.getId(), 1, "Автобус");
         menu.add(2, v.getId(), 2, "Троллейбус");
@@ -114,32 +114,16 @@ public class change_Transport extends AppCompatActivity {
 
     public void onAccept(View view) {
         transportBlock.changeTransportType(transpType);
-        transportBlock.changeTransportNumber(transpNumb);
-        if (transpCity.equals("Ижевск")) {
-            transportBlock.changeCity("Ижевск");
-            transportBlock.changeFakeCity("izh");
-        } else if (transpCity.equals("Пермь")) {
-            transportBlock.changeCity("Пермь");
-            transportBlock.changeFakeCity("perm");
+        transportBlock.changeTransportNumber(Integer.parseInt(transpNumb));
+        if (acceptCity() == 1) {
+            transportBlock.setTextViewText(transpType + " " + transpNumb);
+            if (acceptTransport() == 1) {
+                if (acceptAllData() == 1) {
+                    Intent returnMain = new Intent(this, MainActivity.class);
+                    startActivity(returnMain);
+                }
+            }
         }
-
-        transportBlock.setTextViewText(transpType + " " + transpNumb);
-        if (acceptTransport() == 1) {
-            if (transportBlock.getTranspNumb() != 0 && transportBlock.getTranspType() != null && transportBlock.getCity() != null) {
-                int viewPointer = MainActivity.transportBlocks.indexOfChild(MainActivity.transportBlockView); //указатель на выбранный транспорт
-                MainActivity.transports[viewPointer] = transportBlock;
-                MainActivity.saveTransportData();
-
-                Intent returnMain = new Intent(this, MainActivity.class);
-                startActivity(returnMain);
-            } else
-                Toast.makeText(change_Transport.this, "Заполните все данные", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     public void deleteSave(View view) {
@@ -148,15 +132,39 @@ public class change_Transport extends AppCompatActivity {
         save.delete();
     }
 
+    private int acceptCity() {
+        if (ct.containsKey(transpCity)) {
+            transportBlock.changeCity(transpCity);
+            transportBlock.changeFakeCity(ct.get(transpCity));
+            return 1;
+        }
+        Toast.makeText(this, "Данный город не поддерживается", Toast.LENGTH_SHORT).show();
+        return 0;
+    }
+
     private int acceptTransport() {
         for (TransportBlock tb : MainActivity.transports) {
-            if (tb.getTranspNumb() == transportBlock.getTranspNumb()
-                    && tb.getTranspType().equals(transportBlock.getTranspType())
-                    && tb.getCity().equals(transportBlock.getCity())) {
-                Toast.makeText(this, "Такой транспорт уже есть", Toast.LENGTH_SHORT).show();
-                return 0;
+            if (tb != null) {
+                if (tb.getTranspNumb() == transportBlock.getTranspNumb()
+                        && tb.getTranspType().equals(transportBlock.getTranspType())
+                        && tb.getCity().equals(transportBlock.getCity())) {
+                    Toast.makeText(this, "Такой транспорт уже есть", Toast.LENGTH_SHORT).show();
+                    return 0;
+                }
             }
         }
         return 1;
+    }
+
+    private int acceptAllData() {
+        if (transportBlock.getTranspNumb() != 0 && transportBlock.getTranspType() != null && transportBlock.getCity() != null) {
+            int viewPointer = MainActivity.transportBlocks.indexOfChild(MainActivity.transportBlockView); //указатель на выбранный транспорт
+            MainActivity.transports[viewPointer] = transportBlock;
+            MainActivity.saveTransportData();
+            return 1;
+        } else {
+            Toast.makeText(change_Transport.this, "Заполните все данные", Toast.LENGTH_SHORT).show();
+            return 0;
+        }
     }
 }
