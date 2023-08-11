@@ -156,7 +156,7 @@
                     android:gravity="center"
                     android:hapticFeedbackEnabled="true"
                     android:hint="@string/CityHint"
-                    android:inputType="text|textAutoCorrect"
+                    android:inputType="text|textAutoComplete|textAutoCorrect|textCapWords"
                     android:singleLine="true"
                     android:textAlignment="textStart"
                     android:textColor="#000000"

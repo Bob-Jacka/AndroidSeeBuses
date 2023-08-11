@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="45dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,9 +28,10 @@
         android:id="@+id/buttonBack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#664FA3"
+        android:backgroundTint="@color/busButtonColor"
         android:onClick="goBack"
         android:text="@string/goBack"
+        app:cornerRadius="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="143dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

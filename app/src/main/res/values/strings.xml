@@ -1,21 +1,21 @@
 <resources>
     <string name="app_name">See Transport</string>
 
-    <string name="TitleText">Buses, Trolls and Trams</string>
-
     <string name="footerButtonText">Применить</string>
 
     <string name="settingsName">Настройки</string>
 
     <string name="goBack">На главную</string>
 
-    <string name="CityHint">например Ижевск</string>
+    <string name="CityHint">Например Ижевск</string>
 
-    <string name="TranspNumHint">например 12</string>
+    <string name="TranspNumHint">Например 12</string>
 
     <string name="insertTranspNum">Введите номер транспорта</string>
 
     <string name="choseTranspType">Выберите тип транспорта</string>
+
+    <string name="chooseHowManyBlocks">Выберите количество блоков</string>
 
     <string name="insertCityName">Введите город</string>
 
@@ -25,12 +25,22 @@
 
     <string name="Delete_save">Удалить сохранение</string>
 
+    <string name="instruction">Нажмите и удерживайте, чтобы добавить транспорт.</string>
+
+    <string name="Choose">Выбрать</string>
+
+    <string name="Change_languagw">Выберите язык</string>
+
     <string name="first_fragment_label">First Fragment</string>
 
     <string name="second_fragment_label">Second Fragment</string>
 
-    <string name="next">Next</string>
+    <string name="next" translatable="false">Next</string>
 
-    <string name="previous">Previous</string>
+    <string name="previous" translatable="false">Previous</string>
+
+    <string name="TitleText">Ваш транспорт</string>
+
+    <string name="GitHubLink">Предложения и найденные баги, просьба отправлять в раздел issue на сайте https://github.com/Bob-Jacka/AndroidSeeBuses</string>
 
 </resources>

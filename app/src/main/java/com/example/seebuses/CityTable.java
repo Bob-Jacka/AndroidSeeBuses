@@ -1,6 +1,6 @@
 package com.example.seebuses;
 
-import static com.example.seebuses.MainActivity.SUPPORTED_CITIES;
+import static com.example.seebuses.Consts.SUPPORTED_CITIES;
 
 import java.util.HashMap;
 
