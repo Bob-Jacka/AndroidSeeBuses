@@ -29,7 +29,8 @@
 
     <string name="Choose">Выбрать</string>
 
-    <string name="Change_languagw">Выберите язык</string>
+    <string name="Change_language">Выберите язык</string>
+    <string name="Change_text_size">Выберите размер шрифта</string>
 
     <string name="first_fragment_label">First Fragment</string>
 

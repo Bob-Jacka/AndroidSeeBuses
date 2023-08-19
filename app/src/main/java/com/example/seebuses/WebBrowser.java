@@ -1,5 +1,7 @@
 package com.example.seebuses;
 
+import static com.example.seebuses.Consts.CURRENT_TEXT_SIZE;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,18 +23,26 @@ public class WebBrowser extends AppCompatActivity {
     private WebView webView;
     private WebSettings settings;
     private final Context context = WebBrowser.this;
+    private Button buttonBack;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_browser);
+        buttonBack = findViewById(R.id.buttonBack);
+        buttonBack.setTextSize(CURRENT_TEXT_SIZE);
         goWeb(TransportURL);
     }
 
     public void goBack(View view) {
         Intent goBack = new Intent(this, MainActivity.class);
         startActivity(goBack);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @SuppressLint("SetJavaScriptEnabled")

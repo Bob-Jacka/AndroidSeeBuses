@@ -42,7 +42,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/ButtonsSetting"
+        app:layout_constraintBottom_toTopOf="@+id/ButtonsSetting"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SettingsTitle">
@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="10dp"
-                android:text="@string/Change_languagw"
+                android:text="@string/Change_language"
                 android:textSize="16sp" />
 
             <Button
@@ -72,6 +72,58 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/busButtonColor"
                 android:text="@string/Choose"
+                app:cornerRadius="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/ChangeLanguageText"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ChooseTextSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@color/blockChose"
+            android:divider="@android:drawable/dark_header"
+            android:orientation="horizontal"
+            android:showDividers="middle">
+
+            <TextView
+                android:id="@+id/ChooseTextSizeText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingHorizontal="10dp"
+                android:text="@string/Change_text_size"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/chooseTextSizeBtnUP"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/busButtonColor"
+                android:onClick="fontUp"
+                android:text="+"
+                app:cornerRadius="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/ChangeLanguageText"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/ChooseTextSizeBtnDown"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/busButtonColor"
+                android:gravity="center"
+                android:onClick="fontDown"
+                android:text="-"
                 app:cornerRadius="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -113,7 +165,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="TextView"
+                    android:text="0"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -129,6 +181,16 @@
                 android:progressTint="#9500FF"
                 android:scrollbarSize="10dp"
                 android:scrollbarStyle="outsideOverlay" />
+
+            <Button
+                android:id="@+id/deleteBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/busButtonColor"
+                android:onClick="deleteSave"
+                android:text="@string/Delete_save"
+                app:cornerRadius="0dp" />
 
         </LinearLayout>
 
@@ -151,6 +213,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/busButtonColor"
+            android:onClick="applySettings"
             android:text="@string/Apply"
             app:cornerRadius="0dp" />
 

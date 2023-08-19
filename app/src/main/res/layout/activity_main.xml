@@ -56,6 +56,7 @@
         android:id="@+id/Instructions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -100,6 +101,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
+
+
         <LinearLayout
             android:id="@+id/Block1"
             android:layout_width="match_parent"
@@ -111,8 +114,7 @@
             android:divider="@android:drawable/dark_header"
             android:fadingEdge="none"
             android:orientation="horizontal"
-            android:showDividers="middle"
-            android:tag="Block1">
+            android:showDividers="middle">
 
             <ImageButton
                 android:id="@+id/ImgBtn1"
@@ -162,8 +164,7 @@
             android:clickable="true"
             android:divider="@android:drawable/dark_header"
             android:orientation="horizontal"
-            android:showDividers="middle"
-            android:tag="Block2">
+            android:showDividers="middle">
 
             <ImageButton
                 android:id="@+id/ImgBtn2"
@@ -213,8 +214,7 @@
             android:clickable="true"
             android:divider="@android:drawable/dark_header"
             android:orientation="horizontal"
-            android:showDividers="middle"
-            android:tag="Block3">
+            android:showDividers="middle">
 
             <ImageButton
                 android:id="@+id/ImgBtn3"
@@ -263,8 +263,7 @@
             android:clickable="true"
             android:divider="@android:drawable/dark_header"
             android:orientation="horizontal"
-            android:showDividers="middle"
-            android:tag="Block4">
+            android:showDividers="middle">
 
             <ImageButton
                 android:id="@+id/ImgBtn4"
@@ -313,8 +312,7 @@
             android:clickable="true"
             android:divider="@android:drawable/dark_header"
             android:orientation="horizontal"
-            android:showDividers="middle"
-            android:tag="Block5">
+            android:showDividers="middle">
 
             <ImageButton
                 android:id="@+id/ImgBtn5"
@@ -355,6 +353,157 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/Block6_Additional"
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/blockBackground"
+            android:clickable="true"
+            android:divider="@android:drawable/dark_header"
+            android:orientation="horizontal"
+            android:showDividers="middle"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/ImgBtn6_Additional"
+                android:layout_width="255dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#00FFFFFF"
+                android:backgroundTintMode="add"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:onClick="seeTransportUltimate"
+                android:scaleType="centerInside"
+                android:text="" />
+
+            <LinearLayout
+                android:id="@+id/TextBlock6_Additional"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <TextView
+                    android:id="@+id/transportName6_Additional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginVertical="13dp"
+                    android:gravity="center|center_horizontal|top|center_vertical"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/whatCityChoosen6_Additional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|center_horizontal|center_vertical"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Block7_Additional"
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/blockBackground"
+            android:clickable="true"
+            android:divider="@android:drawable/dark_header"
+            android:orientation="horizontal"
+            android:showDividers="middle"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/ImgBtn7_Additional"
+                android:layout_width="255dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#00FFFFFF"
+                android:backgroundTintMode="add"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:onClick="seeTransportUltimate"
+                android:scaleType="centerInside"
+                android:text="" />
+
+            <LinearLayout
+                android:id="@+id/TextBlock7_Additional"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <TextView
+                    android:id="@+id/transportName7_Additional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginVertical="13dp"
+                    android:gravity="center|center_horizontal|center_vertical"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/whatCityChoosen7_Additional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|center_horizontal|center_vertical"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Block8_Additional"
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/blockBackground"
+            android:clickable="true"
+            android:divider="@android:drawable/dark_header"
+            android:orientation="horizontal"
+            android:showDividers="middle"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/ImgBtn8_Additional"
+                android:layout_width="255dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#00FFFFFF"
+                android:backgroundTintMode="add"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:onClick="seeTransportUltimate"
+                android:scaleType="centerInside"
+                android:text="" />
+
+            <LinearLayout
+                android:id="@+id/TextBlock8_Additional"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <TextView
+                    android:id="@+id/transportName8_Additional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginVertical="13dp"
+                    android:gravity="center|center_horizontal|center_vertical"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/whatCityChoosen8_Additional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|center_horizontal|center_vertical"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

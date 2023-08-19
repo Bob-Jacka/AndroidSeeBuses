@@ -1,5 +1,7 @@
 package com.example.seebuses;
 
+import static com.example.seebuses.Consts.CURRENT_TEXT_SIZE;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,10 +20,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.io.File;
 import java.util.HashMap;
 
-public class change_Transport extends AppCompatActivity {
+public class Change_Transport extends AppCompatActivity {
     private TextInputEditText chooseTransportNum;
     private TextInputEditText chooseCity;
     private Button choseBtn;
@@ -29,16 +31,18 @@ public class change_Transport extends AppCompatActivity {
     private String transpCity;
     private String transpType;
     private final HashMap<String, String> ct = CityTable.initTable();
+    private TextView insertTranspTypeText;
+    private TextView chooseTranspType;
+    private TextView insertTranspCity;
+    private Button ApplyBtn;
+    private Button CancelBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_transport);
-
-        choseBtn = findViewById(R.id.choseBtn);
-        chooseTransportNum = findViewById(R.id.chooseTransportNum);
-        chooseCity = findViewById(R.id.chooseCity);
-
+        startSetUp();
+        setTextSize();
         registerForContextMenu(choseBtn);
         chooseCity.addTextChangedListener(new TextWatcher() { // блок с заполнением города
             @Override
@@ -126,12 +130,6 @@ public class change_Transport extends AppCompatActivity {
         }
     }
 
-    public void deleteSave(View view) {
-        Toast.makeText(change_Transport.this, "Файл удалён", Toast.LENGTH_SHORT).show();
-        File save = new File(getApplicationContext().getFilesDir().getAbsolutePath() + "/saveBlocks");
-        save.delete();
-    }
-
     private int acceptCity() {
         if (ct.containsKey(transpCity)) {
             transportBlock.changeCity(transpCity);
@@ -163,8 +161,30 @@ public class change_Transport extends AppCompatActivity {
             MainActivity.saveTransportData();
             return 1;
         } else {
-            Toast.makeText(change_Transport.this, "Заполните все данные", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Change_Transport.this, "Заполните все данные", Toast.LENGTH_SHORT).show();
             return 0;
         }
+    }
+
+    private void startSetUp() {
+        choseBtn = findViewById(R.id.choseBtn);
+        chooseTransportNum = findViewById(R.id.chooseTransportNum);
+        chooseCity = findViewById(R.id.chooseCity);
+        insertTranspTypeText = findViewById(R.id.insertTranspTypeText);
+        chooseTranspType = findViewById(R.id.chooseTranspType);
+        insertTranspCity = findViewById(R.id.insertTranspCity);
+        ApplyBtn = findViewById(R.id.ApplyBtn);
+        CancelBtn = findViewById(R.id.CancelBtn);
+    }
+
+    private void setTextSize() {
+        choseBtn.setTextSize(CURRENT_TEXT_SIZE);
+        chooseTransportNum.setTextSize(CURRENT_TEXT_SIZE);
+        chooseCity.setTextSize(CURRENT_TEXT_SIZE);
+        insertTranspTypeText.setTextSize(CURRENT_TEXT_SIZE);
+        chooseTranspType.setTextSize(CURRENT_TEXT_SIZE);
+        insertTranspCity.setTextSize(CURRENT_TEXT_SIZE);
+        ApplyBtn.setTextSize(CURRENT_TEXT_SIZE);
+        CancelBtn.setTextSize(CURRENT_TEXT_SIZE);
     }
 }

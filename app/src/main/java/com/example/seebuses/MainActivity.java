@@ -3,7 +3,10 @@ package com.example.seebuses;
 import static com.example.seebuses.Consts.CURRENT_BLOCKS_COUNT;
 import static com.example.seebuses.Consts.CURRENT_LANGUAGE;
 import static com.example.seebuses.Consts.CURRENT_TEXT_SIZE;
+import static com.example.seebuses.Consts.DEFAULT_BLOCKS_COUNT;
 import static com.example.seebuses.Consts.ELEMENTS_IN_BLOCK;
+import static com.example.seebuses.Consts.LAST_BLOCKS_COUNT;
+import static com.example.seebuses.Consts.SAVE_FILE_NAME;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -34,18 +37,19 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 
     private GestureDetectorCompat gd;
     static LinearLayout transportBlocks;
-    static TransportBlock[] transports = new TransportBlock[CURRENT_BLOCKS_COUNT];
+    static TransportBlock[] transports = new TransportBlock[DEFAULT_BLOCKS_COUNT];
     static View transportBlockView;
     private Drawable emptBlkImage;
-    private static File saveFile;
+    static File saveFile;
     private final HashMap<String, String> ct = CityTable.initTable();
     private ConstraintLayout instructions;
+    private TextView instructuonsText;
+    private TextView title;
 
     @SuppressLint("UsableSpace")
     @Override
@@ -53,12 +57,19 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Context context = getApplicationContext();
+        transportBlocks = findViewById(R.id.TransportBlocks);
+        instructions = findViewById(R.id.Instructions);
+        title = findViewById(R.id.Title);
+        instructuonsText = findViewById(R.id.InstructionText);
 
-        String saveFileName = context.getFilesDir().getAbsolutePath() + Consts.SAVE_DIRECTORY_NAME;
+        String saveFileName = context.getFilesDir().getAbsolutePath() + SAVE_FILE_NAME;
         saveFile = new File(saveFileName);
 
         loadTransportArray();
         startSetup();
+
+        instructuonsText.setTextSize(CURRENT_TEXT_SIZE + 2);
+        title.setTextSize(CURRENT_TEXT_SIZE + 4);
     }
 
     @Override
@@ -119,12 +130,19 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         int pointer = transportBlocks.indexOfChild((LinearLayout) (view.getParent())); //указатель на выбранный транспорт
         TransportBlock tb = transports[pointer];
         if (tb != null && ct.containsKey(tb.getCity())) {
-            WebBrowser.TransportURL = tb.getTransportURI_IGIS();
+            switch (tb.getCity()) {
+                case "Ижевск":
+                    WebBrowser.TransportURL = tb.getTransportURI_IGIS();
+                    break;
+                case "Пермь":
+                    WebBrowser.TransportURL = tb.getTransportURI_BUSTI();
+                    break;
+            }
             goWebBrowser();
         }
     }
 
-    protected final void onRestoreInstanceState(Bundle bundle) {
+    protected final void onRestoreInstanceState(@NonNull Bundle bundle) {
         loadTransportArray();
         super.onRestoreInstanceState(bundle);
     }
@@ -182,13 +200,13 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 deleteTransport();
                 break;
             case "Изменить транспорт":
-                Intent changeTransp = new Intent(new Intent(this, change_Transport.class));
+                Intent changeTransp = new Intent(new Intent(this, Change_Transport.class));
                 startActivity(changeTransp);
                 break;
             case "Закрыть":
                 break;
             case "Добавить":
-                Intent addTransport = new Intent(new Intent(this, change_Transport.class));
+                Intent addTransport = new Intent(new Intent(this, Change_Transport.class));
                 startActivity(addTransport);
                 break;
         }
@@ -205,6 +223,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private void initFilledBlock(TransportBlock tb, int increment) {
         LinearLayout inner_block;
         View innerView;
+        TextView type;
+        TextView city;
         inner_block = (LinearLayout) transportBlocks.getChildAt(increment);
         for (int innerIncrement = 0; innerIncrement < ELEMENTS_IN_BLOCK; innerIncrement++) {
             innerView = inner_block.getChildAt(innerIncrement);
@@ -222,42 +242,53 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 }
             }
             if (innerIncrement == 1) {
-                ((TextView) ((LinearLayout) innerView).getChildAt(0)).setText(tb.getTextViewText());
-                ((TextView) ((LinearLayout) innerView).getChildAt(1)).setText(tb.getCity());
+                type = ((TextView) ((LinearLayout) innerView).getChildAt(0));
+                city = ((TextView) ((LinearLayout) innerView).getChildAt(1));
+
+                type.setText(tb.getTextViewText());
+                type.setTextSize(CURRENT_TEXT_SIZE);
+                city.setText(tb.getCity());
+                city.setTextSize(CURRENT_TEXT_SIZE);
             }
         }
     }
 
     private void initEmptyBlocks(int increment) {
         LinearLayout innerBlock;
-
+        LinearLayout textblock;
+        TextView type;
+        TextView city;
+        innerBlock = (LinearLayout) transportBlocks.getChildAt(increment);
         for (int innerIncrement = 0; innerIncrement < ELEMENTS_IN_BLOCK; innerIncrement++) {
-            innerBlock = (LinearLayout) transportBlocks.getChildAt(increment);
             if (innerIncrement == 0) {
                 ((ImageButton) innerBlock.getChildAt(innerIncrement)).setImageDrawable(emptBlkImage);
             }
             if (innerIncrement == 1) {
-                LinearLayout textblock = ((LinearLayout) innerBlock.getChildAt(innerIncrement));
-                ((TextView) (textblock.getChildAt(0))).setText("Нет данных");
-                ((TextView) (textblock.getChildAt(1))).setText("Нет данных");
+                textblock = ((LinearLayout) innerBlock.getChildAt(innerIncrement));
+                type = ((TextView) (textblock.getChildAt(0)));
+                city = ((TextView) (textblock.getChildAt(1)));
+                type.setText("Нет данных");
+                type.setTextSize(CURRENT_TEXT_SIZE);
+                city.setText("Нет данных");
+                city.setTextSize(CURRENT_TEXT_SIZE);
             }
         }
     }
 
     private void initializeAfterLoadBlocks() {
-        int increment = 0;
-        for (TransportBlock tb : transports) {
+        for (int i = 0; i < CURRENT_BLOCKS_COUNT; i++) {
+            TransportBlock tb = transports[i];
             if (tb != null) {
-                initFilledBlock(tb, increment);
+                initFilledBlock(tb, i);
             } else {
-                initEmptyBlocks(increment);
+                initEmptyBlocks(i);
             }
-            increment++;
         }
     }
 
     @Override
     protected void onDestroy() {
+        saveTransportData();
         super.onDestroy();
     }
 
@@ -268,6 +299,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     @Override
     protected void onStop() {
+        saveTransportData();
         super.onStop();
     }
 
@@ -278,11 +310,13 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 saveTransportData();
             }
             BufferedWriter writer = new BufferedWriter(new FileWriter(MainActivity.saveFile));
-            writer.write(Consts.CURRENT_LANGUAGE);
+            writer.write(CURRENT_LANGUAGE);
             writer.write(' ');
-            writer.write(String.valueOf(Consts.CURRENT_TEXT_SIZE));
+            writer.write(String.valueOf(CURRENT_TEXT_SIZE));
             writer.write(' ');
-            writer.write(String.valueOf(Consts.CURRENT_BLOCKS_COUNT));
+            writer.write(String.valueOf(CURRENT_BLOCKS_COUNT));
+            writer.write(' ');
+            writer.write(String.valueOf(LAST_BLOCKS_COUNT));
             writer.newLine();
 
             for (TransportBlock tb : transports) {
@@ -316,40 +350,82 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     private void loadTransportArray() {
         try {
-            if (saveFile.length() != 0L) {
+            if (saveFile.length() != 0L && saveFile.exists()) {
                 BufferedReader reader = new BufferedReader(new FileReader(saveFile));
 
                 String[] params = reader.readLine().split(" ");
                 CURRENT_LANGUAGE = params[0];
                 CURRENT_TEXT_SIZE = Integer.parseInt(params[1]);
                 CURRENT_BLOCKS_COUNT = Integer.parseInt(params[2]);
-                int increment = 0;
-                String transportBlock;
-                do {
-                    transportBlock = reader.readLine();
-                    if (!Objects.equals(transportBlock, "0")) {
-                        String[] splitted = transportBlock.split(" ");
-                        transports[increment] = new TransportBlock(Integer.parseInt(splitted[0]), splitted[1],
-                                splitted[2], splitted[3] + " " + splitted[4], splitted[5]);
-                    } else {
-                        transports[increment] = null;
-                    }
-                    increment++;
-                }
-                while (increment < CURRENT_BLOCKS_COUNT);
-                reader.close();
+                LAST_BLOCKS_COUNT = Integer.parseInt(params[3]);
+
+                transports = new TransportBlock[CURRENT_BLOCKS_COUNT + 1];
+                changeBlocksCount();
+                read_SaveFile(reader);
+            } else {
+                transports = new TransportBlock[CURRENT_BLOCKS_COUNT];
             }
         } catch (IOException e) {
             Toast.makeText(MainActivity.this, "Ошибка загрузки из файла", Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void read_SaveFile(BufferedReader reader) {
+        int increment = 0;
+        String transportBlock;
+        try {
+            do {
+                transportBlock = reader.readLine();
+                if (transportBlock != null && !transportBlock.equals("0")) {
+                    String[] splitted = transportBlock.split(" ");
+                    transports[increment] = new TransportBlock(Integer.parseInt(splitted[0]), splitted[1],
+                            splitted[2], splitted[3] + " " + splitted[4], splitted[5]);
+                } else {
+                    transports[increment] = null;
+                }
+                increment++;
+            }
+            while (increment < CURRENT_BLOCKS_COUNT);
+            reader.close();
+        } catch (IOException e) {
+            Toast.makeText(MainActivity.this, "Ошибка загрузки из файла", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void changeBlocksCount() {
+        if (CURRENT_BLOCKS_COUNT > LAST_BLOCKS_COUNT) {
+            addBlocks(Math.abs(DEFAULT_BLOCKS_COUNT - CURRENT_BLOCKS_COUNT));
+        } else if (CURRENT_BLOCKS_COUNT < LAST_BLOCKS_COUNT) {
+            removeBlocks(Math.abs(LAST_BLOCKS_COUNT - CURRENT_BLOCKS_COUNT));
+        }
+        saveTransportData();
+    }
+
+    private void addBlocks(int howManyBlocksToAdd) {
+        for (int i = 0; i < howManyBlocksToAdd; i++) {
+            transports[CURRENT_BLOCKS_COUNT - howManyBlocksToAdd + i] = null;
+            transportBlocks.getChildAt(CURRENT_BLOCKS_COUNT - howManyBlocksToAdd + i).setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void removeBlocks(int howManyBlocksToRemove) {
+        if (CURRENT_BLOCKS_COUNT < LAST_BLOCKS_COUNT) {
+            addBlocks(Math.abs(DEFAULT_BLOCKS_COUNT - CURRENT_BLOCKS_COUNT));
+        }
+        for (int i = 0; i < howManyBlocksToRemove; i++) {
+            transports[CURRENT_BLOCKS_COUNT - i] = null;
+            transportBlocks.getChildAt(CURRENT_BLOCKS_COUNT - i).setVisibility(View.GONE);
+        }
+    }
+
     private void startSetup() {
-        transportBlocks = findViewById(R.id.TransportBlocks);
-        instructions = findViewById(R.id.Instructions);
         gd = new GestureDetectorCompat(this, this);
-        if (CURRENT_BLOCKS_COUNT != 5) {
+        if (CURRENT_BLOCKS_COUNT > DEFAULT_BLOCKS_COUNT) {
             instructions.setVisibility(View.GONE);
+        } else if (CURRENT_BLOCKS_COUNT == DEFAULT_BLOCKS_COUNT) {
+            instructions.setVisibility(View.VISIBLE);
+        } else if (CURRENT_BLOCKS_COUNT < DEFAULT_BLOCKS_COUNT) {
+            instructions.setVisibility(View.VISIBLE);
         }
         for (int i = 0; i < CURRENT_BLOCKS_COUNT; i++) {
             registerForContextMenu(transportBlocks.getChildAt(i));
