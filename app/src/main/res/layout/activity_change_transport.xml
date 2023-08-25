@@ -8,38 +8,6 @@
     android:background="@color/white"
     tools:context=".Change_Transport">
 
-    <LinearLayout
-        android:id="@+id/ApplyCancelBtns"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="20dp"
-        android:gravity="bottom"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <Button
-            android:id="@+id/ApplyBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/busButtonColor"
-            android:clickable="true"
-            android:onClick="onAccept"
-            android:text="@string/Apply"
-            app:cornerRadius="0dp" />
-
-        <Button
-            android:id="@+id/CancelBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/busButtonColor"
-            android:clickable="true"
-            android:onClick="goMain"
-            android:text="@string/Cancel"
-            app:cornerRadius="0dp" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ChoseBlock"
@@ -112,12 +80,13 @@
 
             <Button
                 android:id="@+id/choseBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="48dp"
-                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/busButtonColor"
-                android:text="Выбрать"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/Choose"
                 app:cornerRadius="0dp" />
         </LinearLayout>
 
@@ -138,34 +107,55 @@
                 android:text="@string/insertCityName"
                 android:textSize="16sp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginLeft="82dp"
-                android:layout_marginRight="10dp"
-                android:translationY="-2.5dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/chooseCity"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:autoText="false"
-                    android:background="@color/blockBackground"
-                    android:capitalize="words"
-                    android:cursorVisible="true"
-                    android:gravity="center"
-                    android:hapticFeedbackEnabled="true"
-                    android:hint="@string/CityHint"
-                    android:inputType="text|textAutoComplete|textAutoCorrect|textCapWords"
-                    android:singleLine="true"
-                    android:textAlignment="textStart"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    tools:ignore="RtlCompat" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/choseCityBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="75dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/busButtonColor"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/Choose"
+                app:cornerRadius="0dp" />
 
         </LinearLayout>
 
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ApplyCancelBtns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <Button
+            android:id="@+id/ApplyBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/busButtonColor"
+            android:clickable="true"
+            android:onClick="onAccept"
+            android:text="@string/Apply"
+            app:cornerRadius="0dp" />
+
+        <Button
+            android:id="@+id/CancelBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/busButtonColor"
+            android:clickable="true"
+            android:onClick="goMain"
+            android:text="@string/Cancel"
+            app:cornerRadius="0dp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

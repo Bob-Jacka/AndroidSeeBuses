@@ -1,23 +1,30 @@
 package com.example.seebuses;
 
-class TransportBlock {
+class BlockElement {
     private static final String transportURI_IGIS = "https://igis-transport.ru/";
     private static final String transportURI_BUSTI = "https://ru.busti.me/";
+    private static final String transportURI_MetroWay = "https://metro-way.ru/";
     private int transpNumb;
     private String transpType;
     private String city;
     private String fakeCity;
-    String textViewText;
 
-    public TransportBlock(int transpNumb, String transpType, String city, String viewText, String fakeCity) {
+    //transport
+    BlockElement(int transpNumb, String transpType, String city, String fakeCity) {
         this.transpNumb = transpNumb;
         this.transpType = transpType;
         this.city = city;
-        this.textViewText = viewText;
         this.fakeCity = fakeCity;
     }
 
-    TransportBlock() {
+    //Metro
+    BlockElement(String city, String transpType, String schemaFakeCity) {
+        this.city = city;
+        this.transpType = transpType;
+        this.fakeCity = schemaFakeCity;
+    }
+
+    BlockElement() {
     }
 
     void changeCity(String newCity) {
@@ -32,7 +39,16 @@ class TransportBlock {
         this.transpNumb = newTransportNumber;
     }
 
-    private String getTransportName() {
+    String getTextViewText() {
+        if (MainActivity.language.equals("Russian")) {
+            return getTextVievText_ru();
+        } else {
+            return getTextVievText_en();
+        }
+
+    }
+
+    private String getTextVievText_ru() {
         switch (transpType) {
             case "citybus":
                 return "Автобус " + transpNumb;
@@ -40,12 +56,24 @@ class TransportBlock {
                 return "Троллейбус " + transpNumb;
             case "tram":
                 return "Трамвай " + transpNumb;
+            case "metro":
+                return "Метро";
         }
         return null;
     }
 
-    String getTextViewText() {
-        return getTransportName();
+    private String getTextVievText_en() {
+        switch (transpType) {
+            case "citybus":
+                return "Bus " + transpNumb;
+            case "trolleybus":
+                return "Trolleybus " + transpNumb;
+            case "tram":
+                return "Tram " + transpNumb;
+            case "metro":
+                return "Metro";
+        }
+        return null;
     }
 
     int getTranspNumb() {
@@ -56,12 +84,9 @@ class TransportBlock {
         return transpType;
     }
 
+
     String getCity() {
         return city;
-    }
-
-    void setTextViewText(String textViewText) {
-        this.textViewText = textViewText;
     }
 
     String getTransportURI_IGIS() {
@@ -78,5 +103,9 @@ class TransportBlock {
 
     void changeFakeCity(String fakeCity) {
         this.fakeCity = fakeCity;
+    }
+
+    String getSchemaURI() {
+        return transportURI_MetroWay + fakeCity + "/";
     }
 }

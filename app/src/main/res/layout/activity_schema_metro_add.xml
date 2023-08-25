@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Schema_Metro_Add">
+
+    <TextView
+        android:id="@+id/SchemaTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blockBackground"
+        android:gravity="center"
+        android:text="@string/schema_add_title"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/Schemas"
+        app:layout_constraintEnd_toStartOf="@+id/Schemas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/Schemas"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/Buttons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SchemaTitle">
+
+        <LinearLayout
+            android:id="@+id/SchemaBlock1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:background="@color/blockBackground"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/SchemaBlock1Text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/choseSchemaCity" />
+
+            <Button
+                android:id="@+id/SchemaBlockChoose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/busButtonColor"
+                android:text="@string/Choose" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Schemas">
+
+        <Button
+            android:id="@+id/chooseSchema"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/busButtonColor"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="onAccept"
+            android:text="@string/Apply"
+            app:cornerRadius="0dp" />
+
+        <Button
+            android:id="@+id/goBackBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/busButtonColor"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="goMain"
+            android:text="@string/goBack"
+            app:cornerRadius="0dp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

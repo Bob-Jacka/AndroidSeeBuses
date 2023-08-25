@@ -20,22 +20,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Change_Transport extends AppCompatActivity {
     private TextInputEditText chooseTransportNum;
-    private TextInputEditText chooseCity;
     private Button choseBtn;
-    private static final TransportBlock transportBlock = new TransportBlock();
+    private static final BlockElement transportBlock = new BlockElement();
     private String transpNumb;
     private String transpCity;
     private String transpType;
-    private final HashMap<String, String> ct = CityTable.initTable();
+    private String fakeCity;
+    private final ArrayList<String[]> ct_ru = CityTable.initTable_ru();
+    private final ArrayList<String[]> ct_en = CityTable.initTable_en();
     private TextView insertTranspTypeText;
     private TextView chooseTranspType;
-    private TextView insertTranspCity;
+    private TextView chooseTranspCity;
     private Button ApplyBtn;
     private Button CancelBtn;
+    private Button choseCityBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,22 +46,7 @@ public class Change_Transport extends AppCompatActivity {
         startSetUp();
         setTextSize();
         registerForContextMenu(choseBtn);
-        chooseCity.addTextChangedListener(new TextWatcher() { // блок с заполнением города
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //при введении символа
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //во время введения символа
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                transpCity = String.valueOf(editable);
-            }
-        });
+        registerForContextMenu(choseCityBtn);
         chooseTransportNum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -81,14 +68,50 @@ public class Change_Transport extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("Типы транпорта");
-        menu.add(1, v.getId(), 1, "Автобус");
-        menu.add(2, v.getId(), 2, "Троллейбус");
-        menu.add(3, v.getId(), 3, "Трамвай");
+        if (MainActivity.language.equals("Russian")) {
+            addMenu_ruLocale(menu, v);
+        } else {
+            addMenu_enLocale(menu, v);
+        }
+    }
+
+    private void addMenu_ruLocale(@NonNull ContextMenu menu, @NonNull View v) {
+        if (v.getId() != R.id.choseCityBtn) {
+            menu.setHeaderTitle("Типы транпорта");
+            menu.add("Автобус");
+            menu.add("Троллейбус");
+            menu.add("Трамвай");
+
+        } else if (v.getId() == R.id.choseCityBtn) {
+            menu.setHeaderTitle("Города");
+            menu.add("Ижевск");
+            menu.add("Пермь");
+        }
+    }
+
+    private void addMenu_enLocale(@NonNull ContextMenu menu, @NonNull View v) {
+        if (v.getId() != R.id.choseCityBtn) {
+            menu.setHeaderTitle("Transport types");
+            menu.add("Bus");
+            menu.add("Trolleybus");
+            menu.add("Tram");
+
+        } else if (v.getId() == R.id.choseCityBtn) {
+            menu.setHeaderTitle("Cities");
+            menu.add("Izhevsk");
+            menu.add("Perm");
+        }
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if (MainActivity.language.equals("Russian")) {
+            itemSelected_ruLocale(item);
+        } else itemSelected_enLocale(item);
+        return super.onContextItemSelected(item);
+    }
+
+    private void itemSelected_ruLocale(MenuItem item) {
         switch ((String) item.getTitle()) {
             case "Автобус":
                 transpType = "citybus";
@@ -107,8 +130,41 @@ public class Change_Transport extends AppCompatActivity {
                 choseBtn.setText("Трамвай");
                 choseBtn.setBackgroundColor(Color.GREEN);
                 break;
+
+            default:
+                transpCity = (String) item.getTitle();
+                choseCityBtn.setText(transpCity);
+                choseCityBtn.setBackgroundColor(Color.GREEN);
+                break;
         }
-        return super.onContextItemSelected(item);
+    }
+
+    private void itemSelected_enLocale(MenuItem item) {
+        switch ((String) item.getTitle()) {
+            case "Bus":
+                transpType = "citybus";
+                choseBtn.setText("Bus");
+                choseBtn.setBackgroundColor(Color.GREEN);
+                break;
+
+            case "Trolleybus":
+                transpType = "trolleybus";
+                choseBtn.setText("Trolleybus");
+                choseBtn.setBackgroundColor(Color.GREEN);
+                break;
+
+            case "Tram":
+                transpType = "tram";
+                choseBtn.setText("Tram");
+                choseBtn.setBackgroundColor(Color.GREEN);
+                break;
+
+            default:
+                transpCity = (String) item.getTitle();
+                choseCityBtn.setText(transpCity);
+                choseCityBtn.setBackgroundColor(Color.GREEN);
+                break;
+        }
     }
 
     public void goMain(View view) {
@@ -119,34 +175,28 @@ public class Change_Transport extends AppCompatActivity {
     public void onAccept(View view) {
         transportBlock.changeTransportType(transpType);
         transportBlock.changeTransportNumber(Integer.parseInt(transpNumb));
-        if (acceptCity() == 1) {
-            transportBlock.setTextViewText(transpType + " " + transpNumb);
-            if (acceptTransport() == 1) {
-                if (acceptAllData() == 1) {
-                    Intent returnMain = new Intent(this, MainActivity.class);
-                    startActivity(returnMain);
-                }
+        transportBlock.changeCity(transpCity);
+        getCity();
+        transportBlock.changeFakeCity(fakeCity);
+        if (acceptTransport() == 1) {
+            if (acceptAllData() == 1) {
+                Intent returnMain = new Intent(this, MainActivity.class);
+                startActivity(returnMain);
             }
         }
     }
 
-    private int acceptCity() {
-        if (ct.containsKey(transpCity)) {
-            transportBlock.changeCity(transpCity);
-            transportBlock.changeFakeCity(ct.get(transpCity));
-            return 1;
-        }
-        Toast.makeText(this, "Данный город не поддерживается", Toast.LENGTH_SHORT).show();
-        return 0;
-    }
-
     private int acceptTransport() {
-        for (TransportBlock tb : MainActivity.transports) {
+        for (BlockElement tb : MainActivity.transports) {
             if (tb != null) {
                 if (tb.getTranspNumb() == transportBlock.getTranspNumb()
                         && tb.getTranspType().equals(transportBlock.getTranspType())
                         && tb.getCity().equals(transportBlock.getCity())) {
-                    Toast.makeText(this, "Такой транспорт уже есть", Toast.LENGTH_SHORT).show();
+                    if (MainActivity.language.equals("Russian")) {
+                        Toast.makeText(this, "Такой транспорт уже есть", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Such transport already exists", Toast.LENGTH_SHORT).show();
+                    }
                     return 0;
                 }
             }
@@ -154,36 +204,67 @@ public class Change_Transport extends AppCompatActivity {
         return 1;
     }
 
+    private void getCity() {
+        if (MainActivity.language.equals("Russian")) {
+            getCity_ru();
+        } else {
+            getCity_en();
+        }
+    }
+
+    private void getCity_ru() {
+        for (int i = 0; i < ct_ru.size(); i++) {
+            String[] scanString = ct_ru.get(i);
+            if (scanString[0].equals(transpCity)) {
+                fakeCity = scanString[1];
+            }
+        }
+    }
+
+    private void getCity_en() {
+        for (int i = 0; i < ct_en.size(); i++) {
+            String[] scanString = ct_en.get(i);
+            if (scanString[0].equals(transpCity)) {
+                fakeCity = scanString[1];
+            }
+        }
+    }
+
     private int acceptAllData() {
         if (transportBlock.getTranspNumb() != 0 && transportBlock.getTranspType() != null && transportBlock.getCity() != null) {
-            int viewPointer = MainActivity.transportBlocks.indexOfChild(MainActivity.transportBlockView); //указатель на выбранный транспорт
+            int viewPointer = MainActivity.transportBlocks.indexOfChild(MainActivity.BlockView_pointer);
             MainActivity.transports[viewPointer] = transportBlock;
-            MainActivity.saveTransportData();
+            MainActivity.saveTransportBlocksData();
             return 1;
         } else {
-            Toast.makeText(Change_Transport.this, "Заполните все данные", Toast.LENGTH_SHORT).show();
+            if (MainActivity.language.equals("Russian")) {
+                Toast.makeText(Change_Transport.this, "Заполните все данные", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(Change_Transport.this, "Fill in all the data", Toast.LENGTH_SHORT).show();
+            }
             return 0;
         }
     }
 
     private void startSetUp() {
-        choseBtn = findViewById(R.id.choseBtn);
         chooseTransportNum = findViewById(R.id.chooseTransportNum);
-        chooseCity = findViewById(R.id.chooseCity);
         insertTranspTypeText = findViewById(R.id.insertTranspTypeText);
         chooseTranspType = findViewById(R.id.chooseTranspType);
-        insertTranspCity = findViewById(R.id.insertTranspCity);
+        chooseTranspCity = findViewById(R.id.insertTranspCity);
+
+        choseBtn = findViewById(R.id.choseBtn);
         ApplyBtn = findViewById(R.id.ApplyBtn);
         CancelBtn = findViewById(R.id.CancelBtn);
+        choseCityBtn = findViewById(R.id.choseCityBtn);
     }
 
     private void setTextSize() {
-        choseBtn.setTextSize(CURRENT_TEXT_SIZE);
         chooseTransportNum.setTextSize(CURRENT_TEXT_SIZE);
-        chooseCity.setTextSize(CURRENT_TEXT_SIZE);
         insertTranspTypeText.setTextSize(CURRENT_TEXT_SIZE);
         chooseTranspType.setTextSize(CURRENT_TEXT_SIZE);
-        insertTranspCity.setTextSize(CURRENT_TEXT_SIZE);
+        chooseTranspCity.setTextSize(CURRENT_TEXT_SIZE);
+
+        choseBtn.setTextSize(CURRENT_TEXT_SIZE);
         ApplyBtn.setTextSize(CURRENT_TEXT_SIZE);
         CancelBtn.setTextSize(CURRENT_TEXT_SIZE);
     }

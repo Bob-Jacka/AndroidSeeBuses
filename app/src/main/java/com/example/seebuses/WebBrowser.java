@@ -3,7 +3,6 @@ package com.example.seebuses;
 import static com.example.seebuses.Consts.CURRENT_TEXT_SIZE;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
@@ -14,15 +13,13 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class WebBrowser extends AppCompatActivity {
-    static String TransportURL;
+    static String URL;
     private WebView webView;
     private WebSettings settings;
-    private final Context context = WebBrowser.this;
     private Button buttonBack;
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -32,7 +29,7 @@ public class WebBrowser extends AppCompatActivity {
         setContentView(R.layout.activity_web_browser);
         buttonBack = findViewById(R.id.buttonBack);
         buttonBack.setTextSize(CURRENT_TEXT_SIZE);
-        goWeb(TransportURL);
+        goWeb(URL);
     }
 
     public void goBack(View view) {
@@ -58,19 +55,18 @@ public class WebBrowser extends AppCompatActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                Toast.makeText(context, "Загрузка", Toast.LENGTH_SHORT).show();
             }
 
             @SuppressLint("WebViewClientOnReceivedSslError")
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                view.reload();
                 handler.proceed();
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                Toast.makeText(context, "Загрузка завершена", Toast.LENGTH_SHORT).show();
             }
         });
         webView.loadUrl(TransportURL);

@@ -22,17 +22,21 @@
         android:theme="@style/Theme.SeeBuses"
         tools:ignore="UnusedAttribute">
         <activity
-            android:name=".Settings"
+            android:name=".Schema_Metro_Add"
             android:exported="false"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Settings"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".WebBrowser"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Change_Transport"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -44,5 +48,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
