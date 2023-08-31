@@ -3,7 +3,7 @@ package com.example.seebuses;
 class BlockElement {
     private static final String transportURI_IGIS = "https://igis-transport.ru/";
     private static final String transportURI_BUSTI = "https://ru.busti.me/";
-    private static final String transportURI_MetroWay = "https://metro-way.ru/";
+    private static final String transportURI_YandexMetro = "https://yandex.ru/metro/";
     private int transpNumb;
     private String transpType;
     private String city;
@@ -97,15 +97,15 @@ class BlockElement {
         return transportURI_BUSTI + fakeCity + "/#" + getTranspType().substring(0, 3) + "-" + getTranspNumb();
     }
 
+    String getSchemaURI_YandexMetro() {
+        return transportURI_YandexMetro + fakeCity + "/";
+    }
+
     String getFakeCity() {
         return fakeCity;
     }
 
     void changeFakeCity(String fakeCity) {
         this.fakeCity = fakeCity;
-    }
-
-    String getSchemaURI() {
-        return transportURI_MetroWay + fakeCity + "/";
     }
 }

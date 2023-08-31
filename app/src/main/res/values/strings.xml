@@ -25,7 +25,7 @@
 
     <string name="Delete_save">Delete save file</string>
 
-    <string name="instruction">Tap and hold to add a transport.</string>
+    <string name="instruction">Tap and hold.</string>
 
     <string name="Choose">Choose</string>
 
@@ -33,7 +33,7 @@
 
     <string name="Change_language">Select a language</string>
 
-    <string name="Change_text_size">Choose the font size</string>
+    <string name="Change_text_size">"Font size - "</string>
 
     <string name="first_fragment_label" translatable="false">First Fragment</string>
 

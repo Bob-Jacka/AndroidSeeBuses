@@ -29,6 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SchemaTitle">
 
+
         <LinearLayout
             android:id="@+id/SchemaBlock1"
             android:layout_width="match_parent"
@@ -50,7 +51,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/busButtonColor"
-                android:text="@string/Choose" />
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/Choose"
+                app:cornerRadius="0dp" />
+
+
         </LinearLayout>
 
     </LinearLayout>

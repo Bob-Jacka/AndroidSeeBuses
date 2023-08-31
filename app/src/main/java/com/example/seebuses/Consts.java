@@ -12,6 +12,7 @@ abstract class Consts {
     static int LAST_BLOCKS_COUNT;
     static final int ELEMENTS_IN_BLOCK = 2;
     static final int SUPPORTED_CITIES = 2;
+    static final int SUPPORTED_METRO_CITIES = 10;
     static final String SAVE_FILE_NAME = "/saveBlocks";
 
     /////////////////////Settings_Activity

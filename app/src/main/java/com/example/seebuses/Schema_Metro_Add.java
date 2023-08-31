@@ -1,5 +1,6 @@
 package com.example.seebuses;
 
+import static com.example.seebuses.Consts.CURRENT_LANGUAGE;
 import static com.example.seebuses.Consts.CURRENT_TEXT_SIZE;
 
 import android.content.Intent;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 public class Schema_Metro_Add extends AppCompatActivity {
     private Button goBackBtn;
     private Button choose;
@@ -21,6 +24,8 @@ public class Schema_Metro_Add extends AppCompatActivity {
     private String schemaFakeCity;
     private BlockElement schema;
     private final String schemaType = "metro";
+    private final ArrayList<String[]> mc = CURRENT_LANGUAGE.equals("Russian") ?
+            MetroCitiesTable.initTable_ru() : MetroCitiesTable.initTable_en();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,50 +46,49 @@ public class Schema_Metro_Add extends AppCompatActivity {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        if (CURRENT_LANGUAGE.equals("Russian")) {
+            createContextMenu_ruLocale(menu);
+        } else createContextMenu_enLocale(menu);
         super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    private void createContextMenu_ruLocale(ContextMenu menu) {
         menu.setHeaderTitle("Город с метро - ");
-        menu.add(1, v.getId(), 1, "Москва");
-        menu.add(2, v.getId(), 2, "Санкт-Петербурга");
-        menu.add(3, v.getId(), 3, "Самара");
-        menu.add(4, v.getId(), 4, "Екатеринбург");
-        menu.add(5, v.getId(), 5, "Новосибирск");
-        menu.add(6, v.getId(), 6, "Нижний-Новгород");
-        menu.add(7, v.getId(), 7, "Казань");
-        menu.add(8, v.getId(), 8, "Закрыть");
+        menu.add("Москва");
+        menu.add("Санкт-Петербурга");
+        menu.add("Самара");
+        menu.add("Екатеринбург");
+        menu.add("Новосибирск");
+        menu.add("Нижний-Новгород");
+        menu.add("Казань");
+        menu.add("Измир");
+        menu.add("Стамбул");
+        menu.add("Тбилиси");
+    }
+
+    private void createContextMenu_enLocale(ContextMenu menu) {
+        menu.setHeaderTitle("City with metro - ");
+        menu.add("Moscow");
+        menu.add("Saint-petersburg");
+        menu.add("Samara");
+        menu.add("Ekaterinburg");
+        menu.add("Novosibirsk");
+        menu.add("Nizhniy-novgorod");
+        menu.add("Kazan");
+        menu.add("Izmir");
+        menu.add("Istanbul");
+        menu.add("Tbilisi");
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        switch (String.valueOf(item.getTitle())) {
-            case "Москва":
-                acceptData("Москва");
-                schemaFakeCity = "moscow";
-                break;
-            case "Санкт-Петербурга":
-                acceptData("Санкт-Петербурга");
-                schemaFakeCity = "spb";
-                break;
-            case "Самара":
-                acceptData("Самара");
-                schemaFakeCity = "samara";
-                break;
-            case "Екатеринбург":
-                acceptData("Екатеринбург");
-                schemaFakeCity = "ekaterinburg";
-                break;
-            case "Новосибирск":
-                acceptData("Новосибирск");
-                schemaFakeCity = "novosibirsk";
-                break;
-            case "Нижний-Новгород":
-                acceptData("Нижний-Новгород");
-                schemaFakeCity = "nizhniy-novgorod";
-                break;
-            case "Казань":
-                acceptData("Казань");
-                schemaFakeCity = "kazan";
-                break;
+        String cityName = (String) item.getTitle();
+        for (String[] strArr : mc) {
+            if (strArr[0].equals(cityName)) {
+                schemaFakeCity = strArr[1];
+            }
         }
+        enterData(cityName);
         return super.onContextItemSelected(item);
     }
 
@@ -112,7 +116,7 @@ public class Schema_Metro_Add extends AppCompatActivity {
         return 1;
     }
 
-    private void acceptData(String cityToAccept) {
+    private void enterData(String cityToAccept) {
         schemaCity = cityToAccept;
         choose.setText(cityToAccept);
         choose.setBackgroundColor(Color.GREEN);

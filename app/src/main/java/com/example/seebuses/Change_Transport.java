@@ -1,5 +1,6 @@
 package com.example.seebuses;
 
+import static com.example.seebuses.Consts.CURRENT_LANGUAGE;
 import static com.example.seebuses.Consts.CURRENT_TEXT_SIZE;
 
 import android.content.Intent;
@@ -25,13 +26,13 @@ import java.util.ArrayList;
 public class Change_Transport extends AppCompatActivity {
     private TextInputEditText chooseTransportNum;
     private Button choseBtn;
-    private static final BlockElement transportBlock = new BlockElement();
+    private final BlockElement transportBlock = new BlockElement();
     private String transpNumb;
     private String transpCity;
     private String transpType;
     private String fakeCity;
-    private final ArrayList<String[]> ct_ru = CityTable.initTable_ru();
-    private final ArrayList<String[]> ct_en = CityTable.initTable_en();
+    private final ArrayList<String[]> ct = CURRENT_LANGUAGE.equals("Russian") ?
+            CityTable.initTable_ru() : CityTable.initTable_en();
     private TextView insertTranspTypeText;
     private TextView chooseTranspType;
     private TextView chooseTranspCity;
@@ -205,25 +206,8 @@ public class Change_Transport extends AppCompatActivity {
     }
 
     private void getCity() {
-        if (MainActivity.language.equals("Russian")) {
-            getCity_ru();
-        } else {
-            getCity_en();
-        }
-    }
-
-    private void getCity_ru() {
-        for (int i = 0; i < ct_ru.size(); i++) {
-            String[] scanString = ct_ru.get(i);
-            if (scanString[0].equals(transpCity)) {
-                fakeCity = scanString[1];
-            }
-        }
-    }
-
-    private void getCity_en() {
-        for (int i = 0; i < ct_en.size(); i++) {
-            String[] scanString = ct_en.get(i);
+        for (int i = 0; i < ct.size(); i++) {
+            String[] scanString = ct.get(i);
             if (scanString[0].equals(transpCity)) {
                 fakeCity = scanString[1];
             }

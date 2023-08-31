@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                         WebBrowser.URL = tb.getTransportURI_BUSTI();
                         break;
                 }
-            } else WebBrowser.URL = tb.getSchemaURI();
+            } else WebBrowser.URL = tb.getSchemaURI_YandexMetro();
             goWebBrowser();
         }
     }
@@ -120,8 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isInternetAvailable() {
         try {
-            String command = "ping -c 1 google.com";
-            return Runtime.getRuntime().exec(command).waitFor() == 0;
+            return Runtime.getRuntime().exec("ping -c 1 google.com").waitFor() == 0;
         } catch (Exception e) {
             return false;
         }
@@ -322,14 +321,7 @@ public class MainActivity extends AppCompatActivity {
                 saveTransportBlocksData();
             }
             BufferedWriter writer = new BufferedWriter(new FileWriter(MainActivity.saveFile));
-            writer.write(CURRENT_LANGUAGE);
-            writer.write(' ');
-            writer.write(String.valueOf(CURRENT_TEXT_SIZE));
-            writer.write(' ');
-            writer.write(String.valueOf(CURRENT_BLOCKS_COUNT));
-            writer.write(' ');
-            writer.write(String.valueOf(LAST_BLOCKS_COUNT));
-            writer.newLine();
+            saveControlVars(writer);
 
             for (BlockElement tb : transports) {
                 if (tb == null) {
@@ -348,6 +340,21 @@ public class MainActivity extends AppCompatActivity {
             writer.close();
         } catch (IOException e) {
             Toast.makeText(transportBlocks.getContext(), "Ошибка сохранения в файл", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private static void saveControlVars(BufferedWriter writer) {
+        try {
+            writer.write(CURRENT_LANGUAGE);
+            writer.write(' ');
+            writer.write(String.valueOf(CURRENT_TEXT_SIZE));
+            writer.write(' ');
+            writer.write(String.valueOf(CURRENT_BLOCKS_COUNT));
+            writer.write(' ');
+            writer.write(String.valueOf(LAST_BLOCKS_COUNT));
+            writer.newLine();
+        } catch (IOException e) {
+            Toast.makeText(transportBlocks.getContext(), "Ошибка сохранения контрольных переменных в файл", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -381,6 +388,33 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(transportBlocks.getContext(), "Ошибка сохранения схемы метро в файл", Toast.LENGTH_SHORT).show();
         }
     }
+
+//    static void saveOneTransport(int tb_index) {
+//        BlockElement tb = transports[tb_index];
+//        try {
+//            BufferedWriter writer = new BufferedWriter(new FileWriter(MainActivity.saveFile));
+//
+//            for (int counter = 0; counter < tb_index; counter++) {
+//                writer.write("\n");
+//            }
+//
+//            if (tb == null) {
+//                writer.write("0");
+//
+//            } else {
+//
+//                if (!tb.getTranspType().equals("metro")) {
+//                    saveTransport(writer, tb);
+//
+//                } else {
+//                    saveMetroSchema(writer, tb);
+//                }
+//            }
+//
+//        } catch (IOException e) {
+//            Toast.makeText(transportBlocks.getContext(), "Ошибка сохранения блока транспорта в файл", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     private void loadTransportArray() {
         try {

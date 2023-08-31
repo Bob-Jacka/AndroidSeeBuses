@@ -13,11 +13,11 @@
     <string name="Apply">Apply</string>
     <string name="Cancel">Cancel</string>
     <string name="Delete_save">Delete save file</string>
-    <string name="instruction">Tap and hold to add a transport.</string>
+    <string name="instruction">Tap and hold.</string>
     <string name="Choose">Choose</string>
     <string name="schema_add_title">Adding a Metro Map</string>
     <string name="Change_language">Select a language</string>
-    <string name="Change_text_size">Choose the font size</string>
+    <string name="Change_text_size">"Font size - "</string>
     <string name="TitleText">Your transport</string>
     <string name="GitHubLink">Suggestions and bugs found, please send to the issues section on the website https://github.com/Bob-Jacka/AndroidSeeBuses</string>
 </resources>
