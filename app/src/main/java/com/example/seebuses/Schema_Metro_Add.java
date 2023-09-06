@@ -10,6 +10,7 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,8 @@ public class Schema_Metro_Add extends AppCompatActivity {
     private String schemaCity;
     private String schemaFakeCity;
     private BlockElement schema;
+    private TextView SchemaTitle;
+    private TextView SchemaBlockText;
     private final String schemaType = "metro";
     private final ArrayList<String[]> mc = CURRENT_LANGUAGE.equals("Russian") ?
             MetroCitiesTable.initTable_ru() : MetroCitiesTable.initTable_en();
@@ -31,11 +34,8 @@ public class Schema_Metro_Add extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schema_metro_add);
-        choose = findViewById(R.id.SchemaBlockChoose);
-        goBackBtn = findViewById(R.id.goBackBtn);
-
-        choose.setTextSize(CURRENT_TEXT_SIZE);
-        goBackBtn.setTextSize(CURRENT_TEXT_SIZE);
+        startSetUp();
+        setTextSize();
         registerForContextMenu(choose);
     }
 
@@ -120,5 +120,19 @@ public class Schema_Metro_Add extends AppCompatActivity {
         schemaCity = cityToAccept;
         choose.setText(cityToAccept);
         choose.setBackgroundColor(Color.GREEN);
+    }
+
+    private void startSetUp() {
+        choose = findViewById(R.id.SchemaBlockChoose);
+        goBackBtn = findViewById(R.id.goBackBtn);
+        SchemaTitle = findViewById(R.id.SchemaTitle);
+        SchemaBlockText = findViewById(R.id.SchemaBlockText);
+    }
+
+    private void setTextSize() {
+        SchemaTitle.setTextSize(CURRENT_TEXT_SIZE + 6);
+        SchemaBlockText.setTextSize(CURRENT_TEXT_SIZE);
+        choose.setTextSize(CURRENT_TEXT_SIZE);
+        goBackBtn.setTextSize(CURRENT_TEXT_SIZE);
     }
 }

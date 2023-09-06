@@ -17,7 +17,7 @@
     <string name="Choose">Выбрать</string>
     <string name="schema_add_title">Добавление Схемы метро</string>
     <string name="Change_language">Выберите язык</string>
-    <string name="Change_text_size">"Размер шрифта - "</string>
+    <string name="Change_text_size">"Размер шрифта "</string>
     <string name="TitleText">Ваш транспорт</string>
     <string name="GitHubLink">Предложения и найденные баги, просьба отправлять в раздел issue на сайте https://github.com/Bob-Jacka/AndroidSeeBuses</string>
 </resources>

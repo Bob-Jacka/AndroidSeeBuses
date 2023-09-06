@@ -53,24 +53,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Context context = getApplicationContext();
-        transportBlocks = findViewById(R.id.TransportBlocks);
-        instructions = findViewById(R.id.Instructions);
-        title = findViewById(R.id.Title);
-        instructuonsText = findViewById(R.id.InstructionText);
-
+        startInit();
         String saveFileName = context.getFilesDir().getAbsolutePath() + SAVE_FILE_NAME;
         saveFile = new File(saveFileName);
 
         loadTransportArray();
         startSetup();
-
-        instructuonsText.setTextSize(CURRENT_TEXT_SIZE + 2);
-        title.setTextSize(CURRENT_TEXT_SIZE + 4);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     public final void seeTransportUltimate(View view) {
@@ -304,11 +292,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
     protected void onStop() {
         saveTransportBlocksData();
         super.onStop();
@@ -388,33 +371,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(transportBlocks.getContext(), "Ошибка сохранения схемы метро в файл", Toast.LENGTH_SHORT).show();
         }
     }
-
-//    static void saveOneTransport(int tb_index) {
-//        BlockElement tb = transports[tb_index];
-//        try {
-//            BufferedWriter writer = new BufferedWriter(new FileWriter(MainActivity.saveFile));
-//
-//            for (int counter = 0; counter < tb_index; counter++) {
-//                writer.write("\n");
-//            }
-//
-//            if (tb == null) {
-//                writer.write("0");
-//
-//            } else {
-//
-//                if (!tb.getTranspType().equals("metro")) {
-//                    saveTransport(writer, tb);
-//
-//                } else {
-//                    saveMetroSchema(writer, tb);
-//                }
-//            }
-//
-//        } catch (IOException e) {
-//            Toast.makeText(transportBlocks.getContext(), "Ошибка сохранения блока транспорта в файл", Toast.LENGTH_SHORT).show();
-//        }
-//    }
 
     private void loadTransportArray() {
         try {
@@ -507,5 +463,15 @@ public class MainActivity extends AppCompatActivity {
         emptBlkImage = AppCompatResources.getDrawable(this, R.drawable.emptblk);
         language = Locale.getDefault().getDisplayLanguage();
         initializeAfterLoadBlocks();
+    }
+
+    private void startInit() {
+        transportBlocks = findViewById(R.id.TransportBlocks);
+        instructions = findViewById(R.id.Instructions);
+        title = findViewById(R.id.Title);
+        instructuonsText = findViewById(R.id.InstructionText);
+
+        instructuonsText.setTextSize(CURRENT_TEXT_SIZE + 2);
+        title.setTextSize(CURRENT_TEXT_SIZE + 6);
     }
 }

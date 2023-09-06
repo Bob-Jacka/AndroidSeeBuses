@@ -9,6 +9,7 @@ import static com.example.seebuses.MainActivity.transports;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,8 +23,11 @@ public class Settings extends AppCompatActivity {
     private TextView ChooseTextSizeText;
     private TextView ChangeHowManyBlocks;
     private TextView CurrentBlocksCount;
+    private Button deleteBtn;
+    private Button GoMain;
+    private Button AcceptSettings;
     private int fontSize = CURRENT_TEXT_SIZE;
-    private int onAccept = 0;
+    private int acceptFlag = 0;
 
 
     @Override
@@ -52,14 +56,20 @@ public class Settings extends AppCompatActivity {
 
     public void applySettings(View view) {
         acceptBlocksCount();
-        if (fontSize > 10 && fontSize < 40) {
-            CURRENT_TEXT_SIZE = fontSize;
-            onAccept++;
-        }
-        if (onAccept != 0) {
+        acceptFontSize();
+        if (acceptFlag != 0) {
             recreate();
             Toast.makeText(this, "Изменения применены", Toast.LENGTH_SHORT).show();
             saveTransportBlocksData();
+        }
+    }
+
+    private void acceptFontSize() {
+        if (fontSize != CURRENT_TEXT_SIZE && (fontSize > 40 || fontSize < 10)) {
+            CURRENT_TEXT_SIZE = fontSize;
+            acceptFlag++;
+        } else if (fontSize > 40 || fontSize < 10) {
+            Toast.makeText(this, "Шрифт больше 40 и меньше 10 не поддерживается", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -70,7 +80,7 @@ public class Settings extends AppCompatActivity {
                 Consts.LAST_BLOCKS_COUNT = CURRENT_BLOCKS_COUNT;
                 CURRENT_BLOCKS_COUNT = progressBlocksCount;
                 CurrentBlocksCount.setText(String.valueOf(Consts.CURRENT_BLOCKS_COUNT));
-                onAccept++;
+                acceptFlag++;
             } else {
                 Toast.makeText(this, "Количество блоков равное 3 или ниже не поддерживается", Toast.LENGTH_SHORT).show();
             }
@@ -84,14 +94,22 @@ public class Settings extends AppCompatActivity {
         ChooseTextSizeText = findViewById(R.id.ChooseTextSizeText);
         ChangeHowManyBlocks = findViewById(R.id.ChangeHowManyBlocks);
         CurrentBlocksCount = findViewById(R.id.CurrentBlocksCount);
+
+        AcceptSettings = findViewById(R.id.AcceptSettings);
+        GoMain = findViewById(R.id.GoMain);
+        deleteBtn = findViewById(R.id.deleteBtn);
     }
 
     private void changeTextSize() {
-        title.setTextSize(CURRENT_TEXT_SIZE + 4);
+        title.setTextSize(CURRENT_TEXT_SIZE + 6);
         gitHubLink.setTextSize(CURRENT_TEXT_SIZE);
         ChooseTextSizeText.setTextSize(CURRENT_TEXT_SIZE);
         ChangeHowManyBlocks.setTextSize(CURRENT_TEXT_SIZE);
         CurrentBlocksCount.setTextSize(CURRENT_TEXT_SIZE);
+
+        AcceptSettings.setTextSize(CURRENT_TEXT_SIZE);
+        GoMain.setTextSize(CURRENT_TEXT_SIZE);
+        deleteBtn.setTextSize(CURRENT_TEXT_SIZE);
     }
 
     public void increase_font(View view) {

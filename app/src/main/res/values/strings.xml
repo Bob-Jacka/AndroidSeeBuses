@@ -33,7 +33,7 @@
 
     <string name="Change_language">Select a language</string>
 
-    <string name="Change_text_size">"Font size - "</string>
+    <string name="Change_text_size">Font size</string>
 
     <string name="first_fragment_label" translatable="false">First Fragment</string>
 

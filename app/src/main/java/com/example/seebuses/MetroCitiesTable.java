@@ -4,7 +4,7 @@ import static com.example.seebuses.Consts.SUPPORTED_METRO_CITIES;
 
 import java.util.ArrayList;
 
-public class MetroCitiesTable {
+abstract class MetroCitiesTable {
     private static final ArrayList<String[]> cityTable = new ArrayList<>(SUPPORTED_METRO_CITIES);
 
     static ArrayList<String[]> initTable_ru() {
