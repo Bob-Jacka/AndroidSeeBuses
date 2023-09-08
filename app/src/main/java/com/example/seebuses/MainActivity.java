@@ -33,7 +33,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private ConstraintLayout instructions;
     private TextView instructuonsText;
     private TextView title;
-    static String language;
 
     @SuppressLint("UsableSpace")
     @Override
@@ -53,11 +51,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Context context = getApplicationContext();
-        startInit();
         String saveFileName = context.getFilesDir().getAbsolutePath() + SAVE_FILE_NAME;
         saveFile = new File(saveFileName);
 
         loadTransportArray();
+        startInit();
         startSetup();
     }
 
@@ -118,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         BlockView_pointer = v;
-        if (language.equals("Russian")) {
+        if (CURRENT_LANGUAGE.equals("Russian")) {
             addMenu_ruLocale(menu, v);
         } else addMenu_enLocale(menu, v);
     }
@@ -155,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if (MainActivity.language.equals("Russian")) {
+        if (CURRENT_LANGUAGE.equals("Russian")) {
             chooseItem_ruLocale(item);
         } else {
             chooseItem_enLocale(item);
@@ -252,7 +250,6 @@ public class MainActivity extends AppCompatActivity {
         TextView type;
         TextView city;
         innerBlock = (LinearLayout) transportBlocks.getChildAt(increment);
-        boolean isRu = MainActivity.language.equals("Russian");
         for (int innerIncrement = 0; innerIncrement < ELEMENTS_IN_BLOCK; innerIncrement++) {
             if (innerIncrement == 0) {
                 ((ImageButton) innerBlock.getChildAt(innerIncrement)).setImageDrawable(emptBlkImage);
@@ -261,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                 textblock = ((LinearLayout) innerBlock.getChildAt(innerIncrement));
                 type = ((TextView) (textblock.getChildAt(0)));
                 city = ((TextView) (textblock.getChildAt(1)));
-                if (isRu) {
+                if (CURRENT_LANGUAGE.equals("Russian")) {
                     type.setText("Нет данных");
                     city.setText("Нет данных");
                 } else {
@@ -328,8 +325,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static void saveControlVars(BufferedWriter writer) {
         try {
-            writer.write(CURRENT_LANGUAGE);
-            writer.write(' ');
             writer.write(String.valueOf(CURRENT_TEXT_SIZE));
             writer.write(' ');
             writer.write(String.valueOf(CURRENT_BLOCKS_COUNT));
@@ -391,10 +386,9 @@ public class MainActivity extends AppCompatActivity {
     private void read_ControlVars(BufferedReader reader) {
         try {
             String[] params = reader.readLine().split(" ");
-            CURRENT_LANGUAGE = params[0];
-            CURRENT_TEXT_SIZE = Integer.parseInt(params[1]);
-            CURRENT_BLOCKS_COUNT = Integer.parseInt(params[2]);
-            LAST_BLOCKS_COUNT = Integer.parseInt(params[3]);
+            CURRENT_TEXT_SIZE = Integer.parseInt(params[0]);
+            CURRENT_BLOCKS_COUNT = Integer.parseInt(params[1]);
+            LAST_BLOCKS_COUNT = Integer.parseInt(params[2]);
         } catch (IOException e) {
             Toast.makeText(MainActivity.this, "Ошибка чтения управляющих переменных из файла", Toast.LENGTH_SHORT).show();
         }
@@ -461,7 +455,6 @@ public class MainActivity extends AppCompatActivity {
             registerForContextMenu(transportBlocks.getChildAt(i));
         }
         emptBlkImage = AppCompatResources.getDrawable(this, R.drawable.emptblk);
-        language = Locale.getDefault().getDisplayLanguage();
         initializeAfterLoadBlocks();
     }
 

@@ -42,19 +42,18 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginBottom="5dp">
+                android:layout_gravity="center|center_horizontal|center_vertical"
+                app:boxBackgroundColor="@color/blockBackground"
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/chooseTransportNum"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="10dp"
-                    android:background="@color/blockBackground"
                     android:cursorVisible="true"
                     android:hint="@string/TranspNumHint"
                     android:inputType="numberDecimal"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textSize="16sp"
                     android:textStyle="normal"
                     tools:ignore="RtlCompat" />
@@ -111,7 +110,7 @@
                 android:id="@+id/choseCityBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="75dp"
+                android:layout_marginLeft="73dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/busButtonColor"
                 android:insetTop="0dp"

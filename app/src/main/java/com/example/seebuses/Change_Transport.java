@@ -69,7 +69,7 @@ public class Change_Transport extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (MainActivity.language.equals("Russian")) {
+        if (CURRENT_LANGUAGE.equals("Russian")) {
             addMenu_ruLocale(menu, v);
         } else {
             addMenu_enLocale(menu, v);
@@ -106,7 +106,7 @@ public class Change_Transport extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if (MainActivity.language.equals("Russian")) {
+        if (CURRENT_LANGUAGE.equals("Russian")) {
             itemSelected_ruLocale(item);
         } else itemSelected_enLocale(item);
         return super.onContextItemSelected(item);
@@ -174,26 +174,42 @@ public class Change_Transport extends AppCompatActivity {
     }
 
     public void onAccept(View view) {
-        transportBlock.changeTransportType(transpType);
-        transportBlock.changeTransportNumber(Integer.parseInt(transpNumb));
-        transportBlock.changeCity(transpCity);
         getCity();
-        transportBlock.changeFakeCity(fakeCity);
-        if (acceptTransport() == 1) {
-            if (acceptAllData() == 1) {
+        if (acceptNonNull() == 1) {
+            if (acceptTransport() == 1) {
+                int viewPointer = MainActivity.transportBlocks.indexOfChild(MainActivity.BlockView_pointer);
+                MainActivity.transports[viewPointer] = transportBlock;
+                MainActivity.saveTransportBlocksData();
                 Intent returnMain = new Intent(this, MainActivity.class);
                 startActivity(returnMain);
             }
         }
     }
 
+    private int acceptNonNull() {
+        if (transpNumb != null && transpType != null && transpCity != null) {
+            transportBlock.changeTransportType(transpType);
+            transportBlock.changeTransportNumber(Integer.parseInt(transpNumb));
+            transportBlock.changeCity(transpCity);
+            transportBlock.changeFakeCity(fakeCity);
+            return 1;
+        } else {
+            if (CURRENT_LANGUAGE.equals("Russian")) {
+                Toast.makeText(Change_Transport.this, "Заполните все данные", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(Change_Transport.this, "Fill in all the data", Toast.LENGTH_SHORT).show();
+            }
+            return 0;
+        }
+    }
+
     private int acceptTransport() {
         for (BlockElement tb : MainActivity.transports) {
             if (tb != null) {
-                if (tb.getTranspNumb() == transportBlock.getTranspNumb()
-                        && tb.getTranspType().equals(transportBlock.getTranspType())
-                        && tb.getCity().equals(transportBlock.getCity())) {
-                    if (MainActivity.language.equals("Russian")) {
+                if ((tb.getTranspNumb() == Integer.parseInt(transpNumb)
+                        && tb.getTranspType().equals(transpType)
+                        && tb.getCity().equals(transpCity))) {
+                    if (CURRENT_LANGUAGE.equals("Russian")) {
                         Toast.makeText(this, "Такой транспорт уже есть", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(this, "Such transport already exists", Toast.LENGTH_SHORT).show();
@@ -214,21 +230,6 @@ public class Change_Transport extends AppCompatActivity {
         }
     }
 
-    private int acceptAllData() {
-        if (transportBlock.getTranspNumb() != 0 && transportBlock.getTranspType() != null && transportBlock.getCity() != null) {
-            int viewPointer = MainActivity.transportBlocks.indexOfChild(MainActivity.BlockView_pointer);
-            MainActivity.transports[viewPointer] = transportBlock;
-            MainActivity.saveTransportBlocksData();
-            return 1;
-        } else {
-            if (MainActivity.language.equals("Russian")) {
-                Toast.makeText(Change_Transport.this, "Заполните все данные", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(Change_Transport.this, "Fill in all the data", Toast.LENGTH_SHORT).show();
-            }
-            return 0;
-        }
-    }
 
     private void startSetUp() {
         chooseTransportNum = findViewById(R.id.chooseTransportNum);

@@ -27,6 +27,7 @@ public class Schema_Metro_Add extends AppCompatActivity {
     private TextView SchemaTitle;
     private TextView SchemaBlockText;
     private final String schemaType = "metro";
+    private int acceptFlag;
     private final ArrayList<String[]> mc = CURRENT_LANGUAGE.equals("Russian") ?
             MetroCitiesTable.initTable_ru() : MetroCitiesTable.initTable_en();
 
@@ -86,6 +87,7 @@ public class Schema_Metro_Add extends AppCompatActivity {
         for (String[] strArr : mc) {
             if (strArr[0].equals(cityName)) {
                 schemaFakeCity = strArr[1];
+                acceptFlag++;
             }
         }
         enterData(cityName);
@@ -95,7 +97,7 @@ public class Schema_Metro_Add extends AppCompatActivity {
 
     public void onAccept(View view) {
         schema = new BlockElement(schemaCity, schemaType, schemaFakeCity);
-        if (acceptSchema() == 1) {
+        if (acceptSchema() == 1 && acceptFlag != 0) {
             int viewPointer = MainActivity.transportBlocks.indexOfChild(MainActivity.BlockView_pointer);
             MainActivity.transports[viewPointer] = schema;
             MainActivity.saveTransportBlocksData();

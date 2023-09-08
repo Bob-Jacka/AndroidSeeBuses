@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">See Transport</string>
+    <string name="app_name" translatable="false">See Transport</string>
 
     <string name="settingsName">Settings</string>
 
@@ -11,9 +11,9 @@
 
     <string name="insertTranspNum">Enter transport number</string>
 
-    <string name="choseTranspType">Enter transport type</string>
+    <string name="choseTranspType">Select transport type</string>
 
-    <string name="choseSchemaCity">Enter city</string>
+    <string name="choseSchemaCity">Select city</string>
 
     <string name="chooseHowManyBlocks">Select the number of blocks</string>
 

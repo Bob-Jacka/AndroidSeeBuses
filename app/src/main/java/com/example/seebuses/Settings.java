@@ -1,6 +1,7 @@
 package com.example.seebuses;
 
 import static com.example.seebuses.Consts.CURRENT_BLOCKS_COUNT;
+import static com.example.seebuses.Consts.CURRENT_LANGUAGE;
 import static com.example.seebuses.Consts.CURRENT_TEXT_SIZE;
 import static com.example.seebuses.MainActivity.saveFile;
 import static com.example.seebuses.MainActivity.saveTransportBlocksData;
@@ -28,7 +29,7 @@ public class Settings extends AppCompatActivity {
     private Button AcceptSettings;
     private int fontSize = CURRENT_TEXT_SIZE;
     private int acceptFlag = 0;
-
+    private String fontText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,10 @@ public class Settings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         startSetUp();
+
+        if(CURRENT_LANGUAGE.equals("Russian")) {
+            fontText = "Размер шрифта: ";
+        } else fontText = "Font size: ";
 
         howManyBlocks.setProgress(Consts.CURRENT_BLOCKS_COUNT);
         CurrentBlocksCount.setText(String.valueOf(Consts.CURRENT_BLOCKS_COUNT));
@@ -65,7 +70,7 @@ public class Settings extends AppCompatActivity {
     }
 
     private void acceptFontSize() {
-        if (fontSize != CURRENT_TEXT_SIZE && (fontSize > 40 || fontSize < 10)) {
+        if (fontSize != CURRENT_TEXT_SIZE) {
             CURRENT_TEXT_SIZE = fontSize;
             acceptFlag++;
         } else if (fontSize > 40 || fontSize < 10) {
@@ -114,11 +119,11 @@ public class Settings extends AppCompatActivity {
 
     public void increase_font(View view) {
         fontSize += 2;
-        Toast.makeText(this, "Размер шрифта: " + fontSize, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, fontText + fontSize, Toast.LENGTH_SHORT).show();
     }
 
     public void decrease_font(View view) {
         fontSize -= 2;
-        Toast.makeText(this, "Размер шрифта: " + fontSize, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, fontText + fontSize, Toast.LENGTH_SHORT).show();
     }
 }

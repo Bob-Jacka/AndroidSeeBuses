@@ -1,5 +1,7 @@
 package com.example.seebuses;
 
+import static com.example.seebuses.Consts.CURRENT_LANGUAGE;
+
 class BlockElement {
     private static final String transportURI_IGIS = "https://igis-transport.ru/";
     private static final String transportURI_BUSTI = "https://ru.busti.me/";
@@ -40,7 +42,7 @@ class BlockElement {
     }
 
     String getTextViewText() {
-        if (MainActivity.language.equals("Russian")) {
+        if (CURRENT_LANGUAGE.equals("Russian")) {
             return getTextVievText_ru();
         } else {
             return getTextVievText_en();

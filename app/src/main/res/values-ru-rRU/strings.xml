@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">See Transport</string>
     <string name="settingsName">Настройки</string>
     <string name="goBack">На главную</string>
     <string name="CityHint">Например Ижевск</string>
