@@ -1,6 +1,6 @@
 package com.example.seebuses;
 
-import static com.example.seebuses.Consts.CURRENT_TEXT_SIZE;
+import static com.example.seebuses.ControlVars.CURRENT_TEXT_SIZE;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,6 +22,7 @@ public class WebBrowser extends AppCompatActivity {
     private WebView webView;
     private WebSettings settings;
     private Button buttonBack;
+    private ProgressBar progressBar;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -28,6 +30,7 @@ public class WebBrowser extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_browser);
         buttonBack = findViewById(R.id.buttonBack);
+        progressBar = findViewById(R.id.progressBar);
         buttonBack.setTextSize(CURRENT_TEXT_SIZE);
         goWeb(URL);
     }
@@ -49,11 +52,14 @@ public class WebBrowser extends AppCompatActivity {
         settings.setJavaScriptEnabled(true);
         settings.setGeolocationEnabled(true);
         settings.setDomStorageEnabled(true);
+        settings.setDefaultFontSize(CURRENT_TEXT_SIZE);
         webView.setNetworkAvailable(true);
         webView.setWebViewClient(new WebViewClient() {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                progressBar.animate().alpha(0.0f);
+                progressBar.animate().setDuration(750);
                 super.onPageStarted(view, url, favicon);
             }
 
@@ -67,6 +73,7 @@ public class WebBrowser extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                progressBar.animate().start();
             }
         });
         webView.loadUrl(TransportURL);

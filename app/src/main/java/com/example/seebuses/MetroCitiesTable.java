@@ -1,6 +1,6 @@
 package com.example.seebuses;
 
-import static com.example.seebuses.Consts.SUPPORTED_METRO_CITIES;
+import static com.example.seebuses.ControlVars.SUPPORTED_METRO_CITIES;
 
 import java.util.ArrayList;
 

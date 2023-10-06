@@ -1,7 +1,7 @@
 package com.example.seebuses;
 
-import static com.example.seebuses.Consts.CURRENT_LANGUAGE;
-import static com.example.seebuses.Consts.CURRENT_TEXT_SIZE;
+import static com.example.seebuses.ControlVars.CURRENT_TEXT_SIZE;
+import static com.example.seebuses.ControlVars.IS_RUSSIAN;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -25,17 +25,16 @@ import java.util.ArrayList;
 
 public class Change_Transport extends AppCompatActivity {
     private TextInputEditText chooseTransportNum;
-    private Button choseBtn;
     private final BlockElement transportBlock = new BlockElement();
     private String transpNumb;
     private String transpCity;
     private String transpType;
     private String fakeCity;
-    private final ArrayList<String[]> ct = CURRENT_LANGUAGE.equals("Russian") ?
-            CityTable.initTable_ru() : CityTable.initTable_en();
+    private final ArrayList<String[]> ct = IS_RUSSIAN ? CityTable.initTable_ru() : CityTable.initTable_en();
     private TextView insertTranspTypeText;
     private TextView chooseTranspType;
     private TextView chooseTranspCity;
+    private Button choseBtn;
     private Button ApplyBtn;
     private Button CancelBtn;
     private Button choseCityBtn;
@@ -69,94 +68,50 @@ public class Change_Transport extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (CURRENT_LANGUAGE.equals("Russian")) {
-            addMenu_ruLocale(menu, v);
+        addMenu(menu, v);
+    }
+
+    private void addMenu(@NonNull ContextMenu menu, @NonNull View v) {
+        if (v.getId() != R.id.choseCityBtn) {
+            menu.setHeaderTitle(R.string.TransportTypes);
+            menu.add(R.string.Bus);
+            menu.add(R.string.Trolleybus);
+            menu.add(R.string.Tram);
+
         } else {
-            addMenu_enLocale(menu, v);
-        }
-    }
-
-    private void addMenu_ruLocale(@NonNull ContextMenu menu, @NonNull View v) {
-        if (v.getId() != R.id.choseCityBtn) {
-            menu.setHeaderTitle("Типы транпорта");
-            menu.add("Автобус");
-            menu.add("Троллейбус");
-            menu.add("Трамвай");
-
-        } else if (v.getId() == R.id.choseCityBtn) {
-            menu.setHeaderTitle("Города");
-            menu.add("Ижевск");
-            menu.add("Пермь");
-        }
-    }
-
-    private void addMenu_enLocale(@NonNull ContextMenu menu, @NonNull View v) {
-        if (v.getId() != R.id.choseCityBtn) {
-            menu.setHeaderTitle("Transport types");
-            menu.add("Bus");
-            menu.add("Trolleybus");
-            menu.add("Tram");
-
-        } else if (v.getId() == R.id.choseCityBtn) {
-            menu.setHeaderTitle("Cities");
-            menu.add("Izhevsk");
-            menu.add("Perm");
+            menu.setHeaderTitle(R.string.Cities);
+            for (String[] block : ct) {
+                menu.add(block[0]);
+            }
         }
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if (CURRENT_LANGUAGE.equals("Russian")) {
-            itemSelected_ruLocale(item);
-        } else itemSelected_enLocale(item);
+        itemSelected(item);
         return super.onContextItemSelected(item);
     }
 
-    private void itemSelected_ruLocale(MenuItem item) {
-        switch ((String) item.getTitle()) {
-            case "Автобус":
-                transpType = "citybus";
-                choseBtn.setText("Автобус");
-                choseBtn.setBackgroundColor(Color.GREEN);
-                break;
-
-            case "Троллейбус":
-                transpType = "trolleybus";
-                choseBtn.setText("Троллейбус");
-                choseBtn.setBackgroundColor(Color.GREEN);
-                break;
-
-            case "Трамвай":
-                transpType = "tram";
-                choseBtn.setText("Трамвай");
-                choseBtn.setBackgroundColor(Color.GREEN);
-                break;
-
-            default:
-                transpCity = (String) item.getTitle();
-                choseCityBtn.setText(transpCity);
-                choseCityBtn.setBackgroundColor(Color.GREEN);
-                break;
-        }
-    }
-
-    private void itemSelected_enLocale(MenuItem item) {
+    private void itemSelected(MenuItem item) {
         switch ((String) item.getTitle()) {
             case "Bus":
+            case "Автобус":
                 transpType = "citybus";
-                choseBtn.setText("Bus");
+                choseBtn.setText(R.string.Bus);
                 choseBtn.setBackgroundColor(Color.GREEN);
                 break;
 
             case "Trolleybus":
+            case "Троллейбус":
                 transpType = "trolleybus";
-                choseBtn.setText("Trolleybus");
+                choseBtn.setText(R.string.Trolleybus);
                 choseBtn.setBackgroundColor(Color.GREEN);
                 break;
 
             case "Tram":
+            case "Трамвай":
                 transpType = "tram";
-                choseBtn.setText("Tram");
+                choseBtn.setText(R.string.Tram);
                 choseBtn.setBackgroundColor(Color.GREEN);
                 break;
 
@@ -180,6 +135,7 @@ public class Change_Transport extends AppCompatActivity {
                 int viewPointer = MainActivity.transportBlocks.indexOfChild(MainActivity.BlockView_pointer);
                 MainActivity.transports[viewPointer] = transportBlock;
                 MainActivity.saveTransportBlocksData();
+                ct.clear();
                 Intent returnMain = new Intent(this, MainActivity.class);
                 startActivity(returnMain);
             }
@@ -194,11 +150,7 @@ public class Change_Transport extends AppCompatActivity {
             transportBlock.changeFakeCity(fakeCity);
             return 1;
         } else {
-            if (CURRENT_LANGUAGE.equals("Russian")) {
-                Toast.makeText(Change_Transport.this, "Заполните все данные", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(Change_Transport.this, "Fill in all the data", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(Change_Transport.this, R.string.FillAllData, Toast.LENGTH_SHORT).show();
             return 0;
         }
     }
@@ -206,14 +158,8 @@ public class Change_Transport extends AppCompatActivity {
     private int acceptTransport() {
         for (BlockElement tb : MainActivity.transports) {
             if (tb != null) {
-                if ((tb.getTranspNumb() == Integer.parseInt(transpNumb)
-                        && tb.getTranspType().equals(transpType)
-                        && tb.getCity().equals(transpCity))) {
-                    if (CURRENT_LANGUAGE.equals("Russian")) {
-                        Toast.makeText(this, "Такой транспорт уже есть", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "Such transport already exists", Toast.LENGTH_SHORT).show();
-                    }
+                if ((tb.getTranspNumb() == Integer.parseInt(transpNumb) && tb.getTranspType().equals(transpType) && tb.getCity().equals(transpCity))) {
+                    Toast.makeText(this, R.string.SuchTransp, Toast.LENGTH_SHORT).show();
                     return 0;
                 }
             }
@@ -229,7 +175,6 @@ public class Change_Transport extends AppCompatActivity {
             }
         }
     }
-
 
     private void startSetUp() {
         chooseTransportNum = findViewById(R.id.chooseTransportNum);
@@ -250,6 +195,7 @@ public class Change_Transport extends AppCompatActivity {
         chooseTranspCity.setTextSize(CURRENT_TEXT_SIZE);
 
         choseBtn.setTextSize(CURRENT_TEXT_SIZE);
+        choseCityBtn.setTextSize(CURRENT_TEXT_SIZE);
         ApplyBtn.setTextSize(CURRENT_TEXT_SIZE);
         CancelBtn.setTextSize(CURRENT_TEXT_SIZE);
     }

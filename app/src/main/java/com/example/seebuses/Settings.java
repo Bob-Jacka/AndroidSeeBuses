@@ -1,8 +1,9 @@
 package com.example.seebuses;
 
-import static com.example.seebuses.Consts.CURRENT_BLOCKS_COUNT;
-import static com.example.seebuses.Consts.CURRENT_LANGUAGE;
-import static com.example.seebuses.Consts.CURRENT_TEXT_SIZE;
+import static com.example.seebuses.ControlVars.CURRENT_BLOCKS_COUNT;
+import static com.example.seebuses.ControlVars.CURRENT_TEXT_SIZE;
+import static com.example.seebuses.ControlVars.MIN_BLOCKS;
+import static com.example.seebuses.ControlVars.IS_RUSSIAN;
 import static com.example.seebuses.MainActivity.saveFile;
 import static com.example.seebuses.MainActivity.saveTransportBlocksData;
 import static com.example.seebuses.MainActivity.transports;
@@ -35,16 +36,14 @@ public class Settings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
         startSetUp();
 
-        if(CURRENT_LANGUAGE.equals("Russian")) {
+        if (IS_RUSSIAN) {
             fontText = "Размер шрифта: ";
         } else fontText = "Font size: ";
 
-        howManyBlocks.setProgress(Consts.CURRENT_BLOCKS_COUNT);
-        CurrentBlocksCount.setText(String.valueOf(Consts.CURRENT_BLOCKS_COUNT));
-
+        howManyBlocks.setProgress(CURRENT_BLOCKS_COUNT);
+        CurrentBlocksCount.setText(String.valueOf(CURRENT_BLOCKS_COUNT));
         changeTextSize();
     }
 
@@ -54,7 +53,7 @@ public class Settings extends AppCompatActivity {
     }
 
     public void deleteSave(View view) {
-        Toast.makeText(Settings.this, "Файл удалён", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Settings.this, R.string.FileDelete, Toast.LENGTH_SHORT).show();
         saveFile.delete();
         transports = new BlockElement[CURRENT_BLOCKS_COUNT];
     }
@@ -62,33 +61,31 @@ public class Settings extends AppCompatActivity {
     public void applySettings(View view) {
         acceptBlocksCount();
         acceptFontSize();
-        if (acceptFlag != 0) {
+        if (acceptFlag > 0) {
             recreate();
-            Toast.makeText(this, "Изменения применены", Toast.LENGTH_SHORT).show();
             saveTransportBlocksData();
+            Toast.makeText(this, R.string.ChngApplied, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void acceptFontSize() {
-        if (fontSize != CURRENT_TEXT_SIZE) {
+        if (fontSize != CURRENT_TEXT_SIZE && (fontSize < 25 && fontSize > 10)) {
             CURRENT_TEXT_SIZE = fontSize;
             acceptFlag++;
-        } else if (fontSize > 40 || fontSize < 10) {
-            Toast.makeText(this, "Шрифт больше 40 и меньше 10 не поддерживается", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, R.string.FontNotSupp, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void acceptBlocksCount() {
         int progressBlocksCount = howManyBlocks.getProgress();
-        if (progressBlocksCount != Consts.CURRENT_BLOCKS_COUNT) {
-            if (progressBlocksCount > 3) {
-                Consts.LAST_BLOCKS_COUNT = CURRENT_BLOCKS_COUNT;
-                CURRENT_BLOCKS_COUNT = progressBlocksCount;
-                CurrentBlocksCount.setText(String.valueOf(Consts.CURRENT_BLOCKS_COUNT));
-                acceptFlag++;
-            } else {
-                Toast.makeText(this, "Количество блоков равное 3 или ниже не поддерживается", Toast.LENGTH_SHORT).show();
-            }
+        if (progressBlocksCount != CURRENT_BLOCKS_COUNT) {
+            ControlVars.LAST_BLOCKS_COUNT = CURRENT_BLOCKS_COUNT;
+            CURRENT_BLOCKS_COUNT = progressBlocksCount;
+            CurrentBlocksCount.setText(String.valueOf(ControlVars.CURRENT_BLOCKS_COUNT));
+            acceptFlag++;
+        } else if (progressBlocksCount <= MIN_BLOCKS) {
+            Toast.makeText(this, R.string.BlocksNotSupp, Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -1,6 +1,6 @@
 package com.example.seebuses;
 
-import static com.example.seebuses.Consts.CURRENT_LANGUAGE;
+import static com.example.seebuses.ControlVars.IS_RUSSIAN;
 
 class BlockElement {
     private static final String transportURI_IGIS = "https://igis-transport.ru/";
@@ -33,21 +33,20 @@ class BlockElement {
         this.city = newCity;
     }
 
-    void changeTransportType(String newTransport) {
-        this.transpType = newTransport;
+    void changeTransportType(String newType) {
+        this.transpType = newType;
     }
 
-    void changeTransportNumber(int newTransportNumber) {
-        this.transpNumb = newTransportNumber;
+    void changeTransportNumber(int newNumber) {
+        this.transpNumb = newNumber;
     }
 
     String getTextViewText() {
-        if (CURRENT_LANGUAGE.equals("Russian")) {
+        if (IS_RUSSIAN) {
             return getTextVievText_ru();
         } else {
             return getTextVievText_en();
         }
-
     }
 
     private String getTextVievText_ru() {
@@ -86,17 +85,16 @@ class BlockElement {
         return transpType;
     }
 
-
     String getCity() {
         return city;
     }
 
     String getTransportURI_IGIS() {
-        return transportURI_IGIS + fakeCity + "/" + getTranspType() + "/" + getTranspNumb() + "?";
+        return transportURI_IGIS + fakeCity + "/" + transpType + "/" + transpNumb + "?";
     }
 
     String getTransportURI_BUSTI() {
-        return transportURI_BUSTI + fakeCity + "/#" + getTranspType().substring(0, 3) + "-" + getTranspNumb();
+        return transportURI_BUSTI + fakeCity + "/#" + (transpType.equals("citybus") ? "bus" : transpType.equals("trolleybus") ? "trolleybus" : transpType.equals("tram") ? "tramway" : null) + "-" + transpNumb;
     }
 
     String getSchemaURI_YandexMetro() {

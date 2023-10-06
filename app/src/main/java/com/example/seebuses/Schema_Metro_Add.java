@@ -1,7 +1,7 @@
 package com.example.seebuses;
 
-import static com.example.seebuses.Consts.CURRENT_LANGUAGE;
-import static com.example.seebuses.Consts.CURRENT_TEXT_SIZE;
+import static com.example.seebuses.ControlVars.CURRENT_TEXT_SIZE;
+import static com.example.seebuses.ControlVars.IS_RUSSIAN;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,14 +21,14 @@ import java.util.ArrayList;
 public class Schema_Metro_Add extends AppCompatActivity {
     private Button goBackBtn;
     private Button choose;
+    private Button chooseSchema;
     private String schemaCity;
     private String schemaFakeCity;
     private BlockElement schema;
     private TextView SchemaTitle;
     private TextView SchemaBlockText;
-    private final String schemaType = "metro";
     private int acceptFlag;
-    private final ArrayList<String[]> mc = CURRENT_LANGUAGE.equals("Russian") ?
+    private final ArrayList<String[]> mc = IS_RUSSIAN ?
             MetroCitiesTable.initTable_ru() : MetroCitiesTable.initTable_en();
 
     @Override
@@ -47,38 +47,15 @@ public class Schema_Metro_Add extends AppCompatActivity {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        if (CURRENT_LANGUAGE.equals("Russian")) {
-            createContextMenu_ruLocale(menu);
-        } else createContextMenu_enLocale(menu);
+        createContextMenu(menu);
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 
-    private void createContextMenu_ruLocale(ContextMenu menu) {
-        menu.setHeaderTitle("Город с метро - ");
-        menu.add("Москва");
-        menu.add("Санкт-Петербурга");
-        menu.add("Самара");
-        menu.add("Екатеринбург");
-        menu.add("Новосибирск");
-        menu.add("Нижний-Новгород");
-        menu.add("Казань");
-        menu.add("Измир");
-        menu.add("Стамбул");
-        menu.add("Тбилиси");
-    }
-
-    private void createContextMenu_enLocale(ContextMenu menu) {
-        menu.setHeaderTitle("City with metro - ");
-        menu.add("Moscow");
-        menu.add("Saint-petersburg");
-        menu.add("Samara");
-        menu.add("Ekaterinburg");
-        menu.add("Novosibirsk");
-        menu.add("Nizhniy-novgorod");
-        menu.add("Kazan");
-        menu.add("Izmir");
-        menu.add("Istanbul");
-        menu.add("Tbilisi");
+    private void createContextMenu(ContextMenu menu) {
+        menu.setHeaderTitle(R.string.CityWithMetro);
+        for (String[] mcin : mc) {
+            menu.add(mcin[0]);
+        }
     }
 
     @Override
@@ -94,13 +71,13 @@ public class Schema_Metro_Add extends AppCompatActivity {
         return super.onContextItemSelected(item);
     }
 
-
     public void onAccept(View view) {
-        schema = new BlockElement(schemaCity, schemaType, schemaFakeCity);
+        schema = new BlockElement(schemaCity, "metro", schemaFakeCity);
         if (acceptSchema() == 1 && acceptFlag != 0) {
             int viewPointer = MainActivity.transportBlocks.indexOfChild(MainActivity.BlockView_pointer);
             MainActivity.transports[viewPointer] = schema;
             MainActivity.saveTransportBlocksData();
+            mc.clear();
             Intent returnMain = new Intent(this, MainActivity.class);
             startActivity(returnMain);
         }
@@ -110,7 +87,7 @@ public class Schema_Metro_Add extends AppCompatActivity {
         for (BlockElement sch : MainActivity.transports) {
             if (sch != null) {
                 if (sch.getCity().equals(schema.getCity())) {
-                    Toast.makeText(this, "Такая схема уже есть", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.SuchSchema, Toast.LENGTH_SHORT).show();
                     return 0;
                 }
             }
@@ -129,12 +106,14 @@ public class Schema_Metro_Add extends AppCompatActivity {
         goBackBtn = findViewById(R.id.goBackBtn);
         SchemaTitle = findViewById(R.id.SchemaTitle);
         SchemaBlockText = findViewById(R.id.SchemaBlockText);
+        chooseSchema = findViewById(R.id.chooseSchema);
     }
 
     private void setTextSize() {
         SchemaTitle.setTextSize(CURRENT_TEXT_SIZE + 6);
         SchemaBlockText.setTextSize(CURRENT_TEXT_SIZE);
         choose.setTextSize(CURRENT_TEXT_SIZE);
+        chooseSchema.setTextSize(CURRENT_TEXT_SIZE);
         goBackBtn.setTextSize(CURRENT_TEXT_SIZE);
     }
 }

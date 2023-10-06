@@ -1,22 +1,22 @@
 package com.example.seebuses;
 
-import static com.example.seebuses.Consts.CURRENT_BLOCKS_COUNT;
-import static com.example.seebuses.Consts.CURRENT_LANGUAGE;
-import static com.example.seebuses.Consts.CURRENT_TEXT_SIZE;
-import static com.example.seebuses.Consts.DEFAULT_BLOCKS_COUNT;
-import static com.example.seebuses.Consts.ELEMENTS_IN_BLOCK;
-import static com.example.seebuses.Consts.LAST_BLOCKS_COUNT;
-import static com.example.seebuses.Consts.SAVE_FILE_NAME;
+import static com.example.seebuses.ControlVars.CURRENT_BLOCKS_COUNT;
+import static com.example.seebuses.ControlVars.CURRENT_TEXT_SIZE;
+import static com.example.seebuses.ControlVars.DEFAULT_BLOCKS_COUNT;
+import static com.example.seebuses.ControlVars.ELEMENTS_IN_BLOCK;
+import static com.example.seebuses.ControlVars.LAST_BLOCKS_COUNT;
+import static com.example.seebuses.ControlVars.SAVE_FILE_NAME;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.transition.Fade;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private Drawable emptBlkImage;
     static File saveFile;
     private ConstraintLayout instructions;
-    private TextView instructuonsText;
+    private TextView instructionsText;
     private TextView title;
 
     @SuppressLint("UsableSpace")
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         String saveFileName = context.getFilesDir().getAbsolutePath() + SAVE_FILE_NAME;
         saveFile = new File(saveFileName);
-
+        transportBlocks = findViewById(R.id.TransportBlocks);
         loadTransportArray();
         startInit();
         startSetup();
@@ -64,30 +65,12 @@ public class MainActivity extends AppCompatActivity {
         BlockElement tb = transports[pointer];
         if (tb != null) {
             if (!tb.getTranspType().equals("metro")) {
-                switch (tb.getCity()) {
-                    case "Izhevsk":
-                    case "Ижевск":
-                        WebBrowser.URL = tb.getTransportURI_IGIS();
-                        break;
-                    case "Perm":
-                    case "Пермь":
-                        WebBrowser.URL = tb.getTransportURI_BUSTI();
-                        break;
-                }
+                if (!tb.getCity().equals("Ижевск") && !tb.getCity().equals("Izhevsk")) {
+                    WebBrowser.URL = tb.getTransportURI_BUSTI();
+                } else WebBrowser.URL = tb.getTransportURI_IGIS();
             } else WebBrowser.URL = tb.getSchemaURI_YandexMetro();
             goWebBrowser();
         }
-    }
-
-    protected final void onRestoreInstanceState(@NonNull Bundle bundle) {
-        loadTransportArray();
-        super.onRestoreInstanceState(bundle);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
-        saveTransportBlocksData();
-        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     private void goWebBrowser() {
@@ -95,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             Intent goWebBrowser = new Intent(this, WebBrowser.class);
             startActivity(goWebBrowser);
         } else {
-            Toast.makeText(this, "Проверьте ваше соединение с интернетом", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.CheckInternet, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -106,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isInternetAvailable() {
         try {
-            return Runtime.getRuntime().exec("ping -c 1 google.com").waitFor() == 0;
+            return Runtime.getRuntime().exec("ping -c 1 yandex.ru").waitFor() == 0;
         } catch (Exception e) {
             return false;
         }
@@ -116,64 +99,46 @@ public class MainActivity extends AppCompatActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         BlockView_pointer = v;
-        if (CURRENT_LANGUAGE.equals("Russian")) {
-            addMenu_ruLocale(menu, v);
-        } else addMenu_enLocale(menu, v);
+        addMenu(menu, v);
     }
 
-    private void addMenu_ruLocale(ContextMenu menu, View v) {
-        if ((((TextView) (((LinearLayout) (((LinearLayout) v).getChildAt(1)))).getChildAt(1)).getText()) == "Нет данных") {
-            menu.setHeaderTitle("Добавить - ");
-            menu.add("Транспорт");
-            menu.add("Cхему метро");
-            menu.add("Закрыть");
+    private void addMenu(ContextMenu menu, View v) {
+        if (transports[transportBlocks.indexOfChild(v)] == null) {
+            menu.setHeaderTitle(R.string.Add);
+            menu.add(R.string.Transport);
+            menu.add(R.string.MetroMap);
+            menu.add(R.string.Close);
 
         } else {
-            menu.setHeaderTitle("Транспорт - ");
-            menu.add("Удалить");
-            menu.add("Изменить");
-            menu.add("Закрыть");
-        }
-    }
-
-    private void addMenu_enLocale(ContextMenu menu, View v) {
-        if ((((TextView) (((LinearLayout) (((LinearLayout) v).getChildAt(1)))).getChildAt(1)).getText()) == "No data") {
-            menu.setHeaderTitle("Add - ");
-            menu.add("Transport");
-            menu.add("Schema map");
-            menu.add("Close");
-
-        } else {
-            menu.setHeaderTitle("Transport - ");
-            menu.add("Delete");
-            menu.add("Change");
-            menu.add("Close");
+            menu.setHeaderTitle(R.string.Transport2);
+            menu.add(R.string.Delete);
+            menu.add(R.string.Change);
+            menu.add(R.string.Close);
         }
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if (CURRENT_LANGUAGE.equals("Russian")) {
-            chooseItem_ruLocale(item);
-        } else {
-            chooseItem_enLocale(item);
-        }
+        chooseItem(item);
         return super.onContextItemSelected(item);
     }
 
-    private void chooseItem_ruLocale(MenuItem item) {
+    private void chooseItem(MenuItem item) {
         switch ((String) item.getTitle()) {
+            case "Delete":
             case "Удалить":
                 deleteTransport();
                 break;
+            case "Change":
             case "Изменить":
-                Intent changeTransp = new Intent(new Intent(this, Change_Transport.class));
-                startActivity(changeTransp);
+                changeTransport();
                 break;
+            case "Transport":
             case "Транспорт":
                 Intent addTransport = new Intent(new Intent(this, Change_Transport.class));
                 startActivity(addTransport);
                 break;
+            case "Metro map":
             case "Cхему метро":
                 Intent goSchema = new Intent(this, Schema_Metro_Add.class);
                 startActivity(goSchema);
@@ -181,31 +146,68 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void chooseItem_enLocale(MenuItem item) {
-        switch ((String) item.getTitle()) {
-            case "Delete":
-                deleteTransport();
-                break;
-            case "Change":
-                Intent changeTransp = new Intent(new Intent(this, Change_Transport.class));
-                startActivity(changeTransp);
-                break;
-            case "Transport":
-                Intent addTransport = new Intent(new Intent(this, Change_Transport.class));
-                startActivity(addTransport);
-                break;
-            case "Schema map":
-                Intent goSchema = new Intent(this, Schema_Metro_Add.class);
-                startActivity(goSchema);
-                break;
+    private void changeTransport() {
+        if (transports[transportBlocks.indexOfChild(BlockView_pointer)].getTranspType().equals("metro")) {
+            Intent changeTransp = new Intent(new Intent(this, Schema_Metro_Add.class));
+            startActivity(changeTransp);
+        } else {
+            Intent changeTransp = new Intent(new Intent(this, Change_Transport.class));
+            startActivity(changeTransp);
         }
     }
 
     private void deleteTransport() {
-        int pointer = transportBlocks.indexOfChild(BlockView_pointer);
-        transports[pointer] = null;
+        transports[transportBlocks.indexOfChild(BlockView_pointer)] = null;
+        eraseDeletedTB();
         saveTransportBlocksData();
-        recreate();
+    }
+
+    private void eraseDeletedTB() {
+        LinearLayout ll = (LinearLayout) transportBlocks.getChildAt(transportBlocks.indexOfChild(BlockView_pointer));
+        View innerView;
+        TextView type;
+        TextView city;
+        for (int i = 0; i < ELEMENTS_IN_BLOCK; i++) {
+            innerView = ll.getChildAt(i);
+            if (i == 0) {
+                Animation anim_fade;
+                ImageButton view1 = findViewById(innerView.getId());
+                anim_fade = AnimationUtils.loadAnimation(this, R.anim.alpha_fade);
+                view1.startAnimation(anim_fade);
+
+                Animation anim_evince;
+                ImageButton view = findViewById(innerView.getId());
+                anim_evince = AnimationUtils.loadAnimation(this, R.anim.alpha_evince);
+                ((ImageButton) innerView).setImageDrawable(emptBlkImage);
+                view.startAnimation(anim_evince);
+            }
+            if (i == 1) {
+                type = ((TextView) ((LinearLayout) innerView).getChildAt(0));
+                city = ((TextView) ((LinearLayout) innerView).getChildAt(1));
+                fadeTV(type);
+                evinceTV(type);
+
+                fadeTV(city);
+                evinceTV(city);
+            }
+        }
+    }
+
+    private void fadeTV(TextView tv) {
+        TextView view = findViewById(tv.getId());
+        Animation anim = AnimationUtils.loadAnimation(this,
+                R.anim.alpha_fade);
+        view.startAnimation(anim);
+    }
+
+    private void evinceTV(TextView tv) {
+
+        TextView view = findViewById(tv.getId());
+        Animation anim = AnimationUtils.loadAnimation(this,
+                R.anim.alpha_evince);
+        tv.setText(R.string.NoData);
+        tv.setTextSize(CURRENT_TEXT_SIZE);
+        view.startAnimation(anim);
     }
 
     private void initFilledBlock(BlockElement tb, int increment) {
@@ -258,13 +260,8 @@ public class MainActivity extends AppCompatActivity {
                 textblock = ((LinearLayout) innerBlock.getChildAt(innerIncrement));
                 type = ((TextView) (textblock.getChildAt(0)));
                 city = ((TextView) (textblock.getChildAt(1)));
-                if (CURRENT_LANGUAGE.equals("Russian")) {
-                    type.setText("Нет данных");
-                    city.setText("Нет данных");
-                } else {
-                    type.setText("No data");
-                    city.setText("No data");
-                }
+                type.setText(R.string.NoData);
+                city.setText(R.string.NoData);
                 type.setTextSize(CURRENT_TEXT_SIZE);
                 city.setTextSize(CURRENT_TEXT_SIZE);
             }
@@ -284,14 +281,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        saveTransportBlocksData();
         super.onDestroy();
     }
 
     @Override
     protected void onStop() {
-        saveTransportBlocksData();
         super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        saveTransportBlocksData();
+        super.onPause();
     }
 
     static void saveTransportBlocksData() {
@@ -310,7 +311,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     if (!tb.getTranspType().equals("metro")) {
                         saveTransport(writer, tb);
-
                     } else {
                         saveMetroSchema(writer, tb);
                     }
@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
             writer.flush();
             writer.close();
         } catch (IOException e) {
-            Toast.makeText(transportBlocks.getContext(), "Ошибка сохранения в файл", Toast.LENGTH_SHORT).show();
+            Toast.makeText(transportBlocks.getContext(), R.string.ErrSaveFile, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -332,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
             writer.write(String.valueOf(LAST_BLOCKS_COUNT));
             writer.newLine();
         } catch (IOException e) {
-            Toast.makeText(transportBlocks.getContext(), "Ошибка сохранения контрольных переменных в файл", Toast.LENGTH_SHORT).show();
+            Toast.makeText(transportBlocks.getContext(), R.string.ErrSaveContVars, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -350,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
             writer.write(tb.getFakeCity());
             writer.newLine();
         } catch (IOException e) {
-            Toast.makeText(transportBlocks.getContext(), "Ошибка сохранения транспортного блока в файл", Toast.LENGTH_SHORT).show();
+            Toast.makeText(transportBlocks.getContext(), R.string.ErrSaveTB, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -363,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
             writer.write(tb.getFakeCity());
             writer.newLine();
         } catch (IOException e) {
-            Toast.makeText(transportBlocks.getContext(), "Ошибка сохранения схемы метро в файл", Toast.LENGTH_SHORT).show();
+            Toast.makeText(transportBlocks.getContext(), R.string.ErrSaveMetroSchema, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -379,7 +379,7 @@ public class MainActivity extends AppCompatActivity {
                 transports = new BlockElement[CURRENT_BLOCKS_COUNT];
             }
         } catch (IOException e) {
-            Toast.makeText(MainActivity.this, "Ошибка загрузки из файла", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, R.string.ErrLoadFromFile, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -390,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
             CURRENT_BLOCKS_COUNT = Integer.parseInt(params[1]);
             LAST_BLOCKS_COUNT = Integer.parseInt(params[2]);
         } catch (IOException e) {
-            Toast.makeText(MainActivity.this, "Ошибка чтения управляющих переменных из файла", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, R.string.ErrReadCntrlVars, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -413,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
             } while (increment < CURRENT_BLOCKS_COUNT);
             reader.close();
         } catch (IOException e) {
-            Toast.makeText(MainActivity.this, "Ошибка чтения параметров транспорта из файла", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, R.string.ErrReadTBParams, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -446,9 +446,7 @@ public class MainActivity extends AppCompatActivity {
     private void startSetup() {
         if (CURRENT_BLOCKS_COUNT > DEFAULT_BLOCKS_COUNT) {
             instructions.setVisibility(View.GONE);
-        } else if (CURRENT_BLOCKS_COUNT == DEFAULT_BLOCKS_COUNT) {
-            instructions.setVisibility(View.VISIBLE);
-        } else if (CURRENT_BLOCKS_COUNT < DEFAULT_BLOCKS_COUNT) {
+        } else if (CURRENT_BLOCKS_COUNT <= DEFAULT_BLOCKS_COUNT) {
             instructions.setVisibility(View.VISIBLE);
         }
         for (int i = 0; i < CURRENT_BLOCKS_COUNT; i++) {
@@ -459,12 +457,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startInit() {
-        transportBlocks = findViewById(R.id.TransportBlocks);
         instructions = findViewById(R.id.Instructions);
         title = findViewById(R.id.Title);
-        instructuonsText = findViewById(R.id.InstructionText);
+        instructionsText = findViewById(R.id.InstructionText);
 
-        instructuonsText.setTextSize(CURRENT_TEXT_SIZE + 2);
+        instructionsText.setTextSize(CURRENT_TEXT_SIZE + 2);
         title.setTextSize(CURRENT_TEXT_SIZE + 6);
     }
 }
