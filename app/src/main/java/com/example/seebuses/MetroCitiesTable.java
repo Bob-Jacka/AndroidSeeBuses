@@ -9,7 +9,7 @@ abstract class MetroCitiesTable {
 
     static ArrayList<String[]> initTable_ru() {
         cityTable.add(new String[]{"Москва", "moscow"});
-        cityTable.add(new String[]{"Санкт-Петербурга", "spb"});
+        cityTable.add(new String[]{"Санкт-Петербург", "spb"});
         cityTable.add(new String[]{"Самара", "samara"});
         cityTable.add(new String[]{"Екатеринбург", "ekaterinburg"});
         cityTable.add(new String[]{"Новосибирск", "novosibirsk"});

@@ -45,11 +45,11 @@
 
     <string name="TitleText">Your transport</string>
 
-    <string name="GitHubLink">Suggestions and bugs found, please send to the issues section on the website https://github.com/Bob-Jacka/AndroidSeeBuses</string>
+    <string name="GitHubLink">Suggestions and bugs found, please send to the issues section on the website: https://github.com/Bob-Jacka/AndroidSeeBuses/issues</string>
     <string name="NoData">No data</string>
     <string name="CheckInternet">Check your internet connection</string>
     <string name="ChngApplied">Changes applied</string>
-    <string name="FontNotSupp">Font larger than 25 and smaller than 10 is not supported</string>
+    <string name="FontNotSupp">Font larger than 20 and smaller than 10 is not supported</string>
     <string name="BlocksNotSupp">The number of blocks equal to 3 or lower is not supported</string>
     <string name="SuchTransp">Such transport already exists</string>
     <string name="FillAllData">Fill in all the data</string>
@@ -75,5 +75,6 @@
     <string name="Delete">Delete</string>
     <string name="Change">Change</string>
     <string name="Transport2">Transport -></string>
+    <string name="Wait">Please, wait</string>
 
 </resources>

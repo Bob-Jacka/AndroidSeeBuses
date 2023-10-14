@@ -55,7 +55,7 @@
             android:backgroundTintMode="add"
             android:contentDescription="settings"
             android:onClick="goSettings"
-            android:scaleType="fitCenter"
+            android:scaleType="centerInside"
             android:src="@drawable/settings"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -70,12 +70,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TransportBlocks"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@+id/TransportBlocks">
 
         <TextView
             android:id="@+id/InstructionText"
@@ -83,6 +81,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="center"
+            android:paddingHorizontal="5dp"
             android:singleLine="false"
             android:text="@string/instruction"
             android:textSize="16sp"

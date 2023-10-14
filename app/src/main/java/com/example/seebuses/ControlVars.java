@@ -11,7 +11,7 @@ abstract class ControlVars {
     ////////////////////Main_Activity
     static final int DEFAULT_BLOCKS_COUNT = 5;
     static int CURRENT_BLOCKS_COUNT = 5;
-    static int LAST_BLOCKS_COUNT;
+    static int LAST_BLOCKS_COUNT = 5;
     static final int ELEMENTS_IN_BLOCK = 2;
     static final int SUPPORTED_TRANSPORT_CITIES = 10;
     static final int SUPPORTED_METRO_CITIES = 10;

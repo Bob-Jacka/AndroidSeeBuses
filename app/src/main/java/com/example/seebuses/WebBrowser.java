@@ -35,6 +35,11 @@ public class WebBrowser extends AppCompatActivity {
         goWeb(URL);
     }
 
+    @Override
+    public void onBackPressed() {
+        goBack(this.getCurrentFocus());
+    }
+
     public void goBack(View view) {
         Intent goBack = new Intent(this, MainActivity.class);
         startActivity(goBack);

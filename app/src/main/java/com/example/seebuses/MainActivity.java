@@ -5,12 +5,13 @@ import static com.example.seebuses.ControlVars.CURRENT_TEXT_SIZE;
 import static com.example.seebuses.ControlVars.DEFAULT_BLOCKS_COUNT;
 import static com.example.seebuses.ControlVars.ELEMENTS_IN_BLOCK;
 import static com.example.seebuses.ControlVars.LAST_BLOCKS_COUNT;
+import static com.example.seebuses.ControlVars.MAX_BLOCKS;
 import static com.example.seebuses.ControlVars.SAVE_FILE_NAME;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -26,7 +27,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.transition.Fade;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -51,8 +51,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Context context = getApplicationContext();
-        String saveFileName = context.getFilesDir().getAbsolutePath() + SAVE_FILE_NAME;
+        String saveFileName = getApplicationContext().getFilesDir().getAbsolutePath() + SAVE_FILE_NAME;
         saveFile = new File(saveFileName);
         transportBlocks = findViewById(R.id.TransportBlocks);
         loadTransportArray();
@@ -60,11 +59,16 @@ public class MainActivity extends AppCompatActivity {
         startSetup();
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
     public final void seeTransportUltimate(View view) {
         int pointer = transportBlocks.indexOfChild((LinearLayout) (view.getParent()));
         BlockElement tb = transports[pointer];
         if (tb != null) {
-            if (!tb.getTranspType().equals("metro")) {
+            if (!tb.getTypeForSearch().equals("metro")) {
                 if (!tb.getCity().equals("Ижевск") && !tb.getCity().equals("Izhevsk")) {
                     WebBrowser.URL = tb.getTransportURI_BUSTI();
                 } else WebBrowser.URL = tb.getTransportURI_IGIS();
@@ -75,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void goWebBrowser() {
         if (isInternetAvailable()) {
+            Toast.makeText(this, R.string.Wait, Toast.LENGTH_LONG).show();
             Intent goWebBrowser = new Intent(this, WebBrowser.class);
             startActivity(goWebBrowser);
         } else {
@@ -147,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeTransport() {
-        if (transports[transportBlocks.indexOfChild(BlockView_pointer)].getTranspType().equals("metro")) {
+        if (transports[transportBlocks.indexOfChild(BlockView_pointer)].getTypeForSearch().equals("metro")) {
             Intent changeTransp = new Intent(new Intent(this, Schema_Metro_Add.class));
             startActivity(changeTransp);
         } else {
@@ -170,11 +175,6 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < ELEMENTS_IN_BLOCK; i++) {
             innerView = ll.getChildAt(i);
             if (i == 0) {
-                Animation anim_fade;
-                ImageButton view1 = findViewById(innerView.getId());
-                anim_fade = AnimationUtils.loadAnimation(this, R.anim.alpha_fade);
-                view1.startAnimation(anim_fade);
-
                 Animation anim_evince;
                 ImageButton view = findViewById(innerView.getId());
                 anim_evince = AnimationUtils.loadAnimation(this, R.anim.alpha_evince);
@@ -184,24 +184,14 @@ public class MainActivity extends AppCompatActivity {
             if (i == 1) {
                 type = ((TextView) ((LinearLayout) innerView).getChildAt(0));
                 city = ((TextView) ((LinearLayout) innerView).getChildAt(1));
-                fadeTV(type);
+                MediaPlayer.create(this, R.raw.deleting_sound).start();
                 evinceTV(type);
-
-                fadeTV(city);
                 evinceTV(city);
             }
         }
     }
 
-    private void fadeTV(TextView tv) {
-        TextView view = findViewById(tv.getId());
-        Animation anim = AnimationUtils.loadAnimation(this,
-                R.anim.alpha_fade);
-        view.startAnimation(anim);
-    }
-
     private void evinceTV(TextView tv) {
-
         TextView view = findViewById(tv.getId());
         Animation anim = AnimationUtils.loadAnimation(this,
                 R.anim.alpha_evince);
@@ -219,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
         for (int innerIncrement = 0; innerIncrement < ELEMENTS_IN_BLOCK; innerIncrement++) {
             innerView = inner_block.getChildAt(innerIncrement);
             if (innerIncrement == 0) {
-                switch (tb.getTranspType()) {
+                switch (tb.getTypeForSearch()) {
                     case "citybus":
                         ((ImageButton) innerView).setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.bus));
                         break;
@@ -238,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
                 type = ((TextView) ((LinearLayout) innerView).getChildAt(0));
                 city = ((TextView) ((LinearLayout) innerView).getChildAt(1));
 
-                type.setText(tb.getTextViewText());
+                type.setText(tb.getViewText());
                 type.setTextSize(CURRENT_TEXT_SIZE);
                 city.setText(tb.getCity());
                 city.setTextSize(CURRENT_TEXT_SIZE);
@@ -309,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
                     writer.write("0");
                     writer.newLine();
                 } else {
-                    if (!tb.getTranspType().equals("metro")) {
+                    if (!tb.getTypeForSearch().equals("metro")) {
                         saveTransport(writer, tb);
                     } else {
                         saveMetroSchema(writer, tb);
@@ -340,14 +330,14 @@ public class MainActivity extends AppCompatActivity {
         try {
             writer.write(String.valueOf(tb.getTranspNumb()));
             writer.write(' ');
-
-            writer.write(tb.getTranspType());
+            writer.write(tb.getTypeForSearch());
             writer.write(' ');
-
             writer.write(tb.getCity());
             writer.write(' ');
-
             writer.write(tb.getFakeCity());
+            writer.write(' ');
+            writer.write(tb.getViewText());
+
             writer.newLine();
         } catch (IOException e) {
             Toast.makeText(transportBlocks.getContext(), R.string.ErrSaveTB, Toast.LENGTH_SHORT).show();
@@ -358,9 +348,11 @@ public class MainActivity extends AppCompatActivity {
         try {
             writer.write(tb.getCity());
             writer.write(' ');
-            writer.write(tb.getTranspType());
+            writer.write(tb.getTypeForSearch());
             writer.write(' ');
             writer.write(tb.getFakeCity());
+            writer.write(' ');
+            writer.write(tb.getViewText());
             writer.newLine();
         } catch (IOException e) {
             Toast.makeText(transportBlocks.getContext(), R.string.ErrSaveMetroSchema, Toast.LENGTH_SHORT).show();
@@ -372,11 +364,11 @@ public class MainActivity extends AppCompatActivity {
             if (saveFile.length() != 0L && saveFile.exists()) {
                 BufferedReader reader = new BufferedReader(new FileReader(saveFile));
                 read_ControlVars(reader);
-                transports = new BlockElement[CURRENT_BLOCKS_COUNT + 1];
+                transports = new BlockElement[MAX_BLOCKS];
                 changeBlocksCount();
                 read_SaveFile(reader);
             } else {
-                transports = new BlockElement[CURRENT_BLOCKS_COUNT];
+                transports = new BlockElement[DEFAULT_BLOCKS_COUNT];
             }
         } catch (IOException e) {
             Toast.makeText(MainActivity.this, R.string.ErrLoadFromFile, Toast.LENGTH_SHORT).show();
@@ -396,16 +388,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void read_SaveFile(BufferedReader reader) {
         int increment = 0;
-        String transportBlock;
+        String saveLine;
         try {
             do {
-                transportBlock = reader.readLine();
-                if (transportBlock != null && !transportBlock.equals("0")) {
-                    String[] splitted = transportBlock.split(" ");
-                    if (splitted.length == 4) {
-                        transports[increment] = new BlockElement(Integer.parseInt(splitted[0]), splitted[1], splitted[2], splitted[3]);
+                saveLine = reader.readLine();
+                if (saveLine != null && !saveLine.equals("0")) {
+                    String[] splitted = saveLine.split(" ");
+                    if (splitted.length == 5) {
+                        transports[increment] = new BlockElement(Integer.parseInt(splitted[0]), splitted[1], splitted[2], splitted[3], splitted[4]);
                     } else
-                        transports[increment] = new BlockElement(splitted[0], splitted[1], splitted[2]);
+                        transports[increment] = new BlockElement(splitted[0], splitted[1], splitted[2], splitted[3]);
                 } else {
                     transports[increment] = null;
                 }
@@ -437,9 +429,9 @@ public class MainActivity extends AppCompatActivity {
         if (CURRENT_BLOCKS_COUNT < LAST_BLOCKS_COUNT) {
             addBlocks(Math.abs(DEFAULT_BLOCKS_COUNT - CURRENT_BLOCKS_COUNT));
         }
-        for (int i = 0; i < howManyBlocksToRemove; i++) {
-            transports[CURRENT_BLOCKS_COUNT - i] = null;
-            transportBlocks.getChildAt(CURRENT_BLOCKS_COUNT - i).setVisibility(View.GONE);
+        for (int i = 1; i <= howManyBlocksToRemove; i++) {
+            transports[CURRENT_BLOCKS_COUNT + howManyBlocksToRemove - i] = null;
+            transportBlocks.getChildAt(CURRENT_BLOCKS_COUNT + howManyBlocksToRemove - i).setVisibility(View.GONE);
         }
     }
 

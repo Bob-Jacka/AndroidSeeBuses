@@ -2,11 +2,12 @@ package com.example.seebuses;
 
 import static com.example.seebuses.ControlVars.CURRENT_BLOCKS_COUNT;
 import static com.example.seebuses.ControlVars.CURRENT_TEXT_SIZE;
-import static com.example.seebuses.ControlVars.MIN_BLOCKS;
+import static com.example.seebuses.ControlVars.DEFAULT_BLOCKS_COUNT;
 import static com.example.seebuses.ControlVars.IS_RUSSIAN;
+import static com.example.seebuses.ControlVars.LAST_BLOCKS_COUNT;
+import static com.example.seebuses.ControlVars.MIN_BLOCKS;
 import static com.example.seebuses.MainActivity.saveFile;
 import static com.example.seebuses.MainActivity.saveTransportBlocksData;
-import static com.example.seebuses.MainActivity.transports;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +30,6 @@ public class Settings extends AppCompatActivity {
     private Button GoMain;
     private Button AcceptSettings;
     private int fontSize = CURRENT_TEXT_SIZE;
-    private int acceptFlag = 0;
     private String fontText;
 
     @Override
@@ -37,14 +37,17 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         startSetUp();
-
         if (IS_RUSSIAN) {
             fontText = "Размер шрифта: ";
         } else fontText = "Font size: ";
-
         howManyBlocks.setProgress(CURRENT_BLOCKS_COUNT);
         CurrentBlocksCount.setText(String.valueOf(CURRENT_BLOCKS_COUNT));
         changeTextSize();
+    }
+
+    @Override
+    public void onBackPressed() {
+        goMain(this.getCurrentFocus());
     }
 
     public void goMain(View view) {
@@ -55,38 +58,46 @@ public class Settings extends AppCompatActivity {
     public void deleteSave(View view) {
         Toast.makeText(Settings.this, R.string.FileDelete, Toast.LENGTH_SHORT).show();
         saveFile.delete();
-        transports = new BlockElement[CURRENT_BLOCKS_COUNT];
+        CURRENT_BLOCKS_COUNT = DEFAULT_BLOCKS_COUNT;
+        CurrentBlocksCount.setText(String.valueOf(CURRENT_BLOCKS_COUNT));
+        howManyBlocks.setProgress(CURRENT_BLOCKS_COUNT);
     }
 
     public void applySettings(View view) {
-        acceptBlocksCount();
-        acceptFontSize();
-        if (acceptFlag > 0) {
+        if (acceptBlocksCount() == 1 || acceptFontSize() == 1) {
             recreate();
             saveTransportBlocksData();
             Toast.makeText(this, R.string.ChngApplied, Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void acceptFontSize() {
-        if (fontSize != CURRENT_TEXT_SIZE && (fontSize < 25 && fontSize > 10)) {
-            CURRENT_TEXT_SIZE = fontSize;
-            acceptFlag++;
-        } else {
-            Toast.makeText(this, R.string.FontNotSupp, Toast.LENGTH_SHORT).show();
+    private int acceptBlocksCount() {
+        final int progressBlocksCount = howManyBlocks.getProgress();
+        if (progressBlocksCount != CURRENT_BLOCKS_COUNT) {
+            if (progressBlocksCount > MIN_BLOCKS) {
+                LAST_BLOCKS_COUNT = CURRENT_BLOCKS_COUNT;
+                CURRENT_BLOCKS_COUNT = progressBlocksCount;
+                CurrentBlocksCount.setText(String.valueOf(ControlVars.CURRENT_BLOCKS_COUNT));
+                return 1;
+            } else {
+                Toast.makeText(this, R.string.BlocksNotSupp, Toast.LENGTH_SHORT).show();
+                return 0;
+            }
         }
+        return 0;
     }
 
-    private void acceptBlocksCount() {
-        int progressBlocksCount = howManyBlocks.getProgress();
-        if (progressBlocksCount != CURRENT_BLOCKS_COUNT) {
-            ControlVars.LAST_BLOCKS_COUNT = CURRENT_BLOCKS_COUNT;
-            CURRENT_BLOCKS_COUNT = progressBlocksCount;
-            CurrentBlocksCount.setText(String.valueOf(ControlVars.CURRENT_BLOCKS_COUNT));
-            acceptFlag++;
-        } else if (progressBlocksCount <= MIN_BLOCKS) {
-            Toast.makeText(this, R.string.BlocksNotSupp, Toast.LENGTH_SHORT).show();
+    private int acceptFontSize() {
+        if (fontSize != CURRENT_TEXT_SIZE) {
+            if (fontSize < 20 && fontSize > 10) {
+                CURRENT_TEXT_SIZE = fontSize;
+                return 1;
+            } else {
+                Toast.makeText(this, R.string.FontNotSupp, Toast.LENGTH_SHORT).show();
+                return 0;
+            }
         }
+        return 0;
     }
 
     private void startSetUp() {

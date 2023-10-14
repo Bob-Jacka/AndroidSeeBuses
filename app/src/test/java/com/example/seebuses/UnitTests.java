@@ -31,9 +31,9 @@ public class UnitTests {
     public void addDiffTransportToArr() {
         for (int i = 0; i < DEFAULT_BLOCKS_COUNT; i++) {
             if (i % 2 == 0) {
-                transports[i] = new BlockElement(12, "bus", "izhevsk", "izh");
+                transports[i] = new BlockElement(12, "bus", "izhevsk", "izh", "Автобус 12");
             } else {
-                transports[i] = new BlockElement("Moscow", "metro", "moscow");
+                transports[i] = new BlockElement("Moscow", "metro", "moscow", "Moscow 12");
             }
         }
         Assert.assertEquals(transports.length, DEFAULT_BLOCKS_COUNT);

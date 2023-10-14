@@ -25,11 +25,12 @@ import java.util.ArrayList;
 
 public class Change_Transport extends AppCompatActivity {
     private TextInputEditText chooseTransportNum;
-    private final BlockElement transportBlock = new BlockElement();
+    private BlockElement transportBlock = null;
     private String transpNumb;
     private String transpCity;
-    private String transpType;
+    private String typeForSearch;
     private String fakeCity;
+    private String viewText;
     private final ArrayList<String[]> ct = IS_RUSSIAN ? CityTable.initTable_ru() : CityTable.initTable_en();
     private TextView insertTranspTypeText;
     private TextView chooseTranspType;
@@ -88,29 +89,31 @@ public class Change_Transport extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        itemSelected(item);
+        if (IS_RUSSIAN) {
+            itemSelected_ruLocale(item);
+        } else itemSelected_enLocale(item);
         return super.onContextItemSelected(item);
     }
 
-    private void itemSelected(MenuItem item) {
+    private void itemSelected_ruLocale(MenuItem item) {
         switch ((String) item.getTitle()) {
-            case "Bus":
             case "Автобус":
-                transpType = "citybus";
+                typeForSearch = "citybus";
+                viewText = "Автобус";
                 choseBtn.setText(R.string.Bus);
                 choseBtn.setBackgroundColor(Color.GREEN);
                 break;
 
-            case "Trolleybus":
             case "Троллейбус":
-                transpType = "trolleybus";
+                typeForSearch = "trolleybus";
+                viewText = "Троллейбус";
                 choseBtn.setText(R.string.Trolleybus);
                 choseBtn.setBackgroundColor(Color.GREEN);
                 break;
 
-            case "Tram":
             case "Трамвай":
-                transpType = "tram";
+                typeForSearch = "tram";
+                viewText = "Трамвай";
                 choseBtn.setText(R.string.Tram);
                 choseBtn.setBackgroundColor(Color.GREEN);
                 break;
@@ -123,19 +126,60 @@ public class Change_Transport extends AppCompatActivity {
         }
     }
 
+    private void itemSelected_enLocale(MenuItem item) {
+        switch ((String) item.getTitle()) {
+            case "Bus":
+                typeForSearch = "citybus";
+                viewText = "Bus";
+                choseBtn.setText(R.string.Bus);
+                choseBtn.setBackgroundColor(Color.GREEN);
+                break;
+
+            case "Trolleybus":
+                typeForSearch = "trolleybus";
+                viewText = "Trolleybus";
+                choseBtn.setText(R.string.Trolleybus);
+                choseBtn.setBackgroundColor(Color.GREEN);
+                break;
+
+            case "Tram":
+                typeForSearch = "tram";
+                viewText = "Tram";
+                choseBtn.setText(R.string.Tram);
+                choseBtn.setBackgroundColor(Color.GREEN);
+                break;
+
+            default:
+                transpCity = (String) item.getTitle();
+                choseCityBtn.setText(transpCity);
+                choseCityBtn.setBackgroundColor(Color.GREEN);
+                break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        goMain(this.getCurrentFocus());
+    }
+
     public void goMain(View view) {
         Intent goMain = new Intent(this, MainActivity.class);
         startActivity(goMain);
     }
 
+    @Override
+    protected void onStop() {
+        ct.clear();
+        super.onStop();
+    }
+
     public void onAccept(View view) {
-        getCity();
+        checkCity();
         if (acceptNonNull() == 1) {
             if (acceptTransport() == 1) {
                 int viewPointer = MainActivity.transportBlocks.indexOfChild(MainActivity.BlockView_pointer);
                 MainActivity.transports[viewPointer] = transportBlock;
                 MainActivity.saveTransportBlocksData();
-                ct.clear();
                 Intent returnMain = new Intent(this, MainActivity.class);
                 startActivity(returnMain);
             }
@@ -143,11 +187,9 @@ public class Change_Transport extends AppCompatActivity {
     }
 
     private int acceptNonNull() {
-        if (transpNumb != null && transpType != null && transpCity != null) {
-            transportBlock.changeTransportType(transpType);
-            transportBlock.changeTransportNumber(Integer.parseInt(transpNumb));
-            transportBlock.changeCity(transpCity);
-            transportBlock.changeFakeCity(fakeCity);
+        if (transpNumb != null && typeForSearch != null && transpCity != null) {
+            final int transpNumber = Integer.parseInt(transpNumb);
+            transportBlock = new BlockElement(transpNumber, typeForSearch, transpCity, fakeCity, viewText + "_" + transpNumber);
             return 1;
         } else {
             Toast.makeText(Change_Transport.this, R.string.FillAllData, Toast.LENGTH_SHORT).show();
@@ -158,7 +200,7 @@ public class Change_Transport extends AppCompatActivity {
     private int acceptTransport() {
         for (BlockElement tb : MainActivity.transports) {
             if (tb != null) {
-                if ((tb.getTranspNumb() == Integer.parseInt(transpNumb) && tb.getTranspType().equals(transpType) && tb.getCity().equals(transpCity))) {
+                if ((tb.getTranspNumb() == Integer.parseInt(transpNumb) && tb.getTypeForSearch().equals(typeForSearch) && tb.getCity().equals(transpCity))) {
                     Toast.makeText(this, R.string.SuchTransp, Toast.LENGTH_SHORT).show();
                     return 0;
                 }
@@ -167,7 +209,7 @@ public class Change_Transport extends AppCompatActivity {
         return 1;
     }
 
-    private void getCity() {
+    private void checkCity() {
         for (int i = 0; i < ct.size(); i++) {
             String[] scanString = ct.get(i);
             if (scanString[0].equals(transpCity)) {

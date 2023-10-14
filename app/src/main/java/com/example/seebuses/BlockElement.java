@@ -1,88 +1,45 @@
 package com.example.seebuses;
 
-import static com.example.seebuses.ControlVars.IS_RUSSIAN;
-
 class BlockElement {
     private static final String transportURI_IGIS = "https://igis-transport.ru/";
     private static final String transportURI_BUSTI = "https://ru.busti.me/";
     private static final String transportURI_YandexMetro = "https://yandex.ru/metro/";
     private int transpNumb;
-    private String transpType;
+    private String typeForSearch;
     private String city;
     private String fakeCity;
+    private String viewText;
 
-    //transport
-    BlockElement(int transpNumb, String transpType, String city, String fakeCity) {
+    //Transport
+    BlockElement(int transpNumb, String transpType, String city, String fakeCity, String viewText) {
         this.transpNumb = transpNumb;
-        this.transpType = transpType;
+        this.typeForSearch = transpType;
         this.city = city;
         this.fakeCity = fakeCity;
+        this.viewText = viewText;
     }
 
     //Metro
-    BlockElement(String city, String transpType, String schemaFakeCity) {
+    BlockElement(String city, String transpType, String schemaFakeCity, String viewText) {
         this.city = city;
-        this.transpType = transpType;
+        this.typeForSearch = transpType;
         this.fakeCity = schemaFakeCity;
+        this.viewText = viewText;
     }
 
     BlockElement() {
     }
 
-    void changeCity(String newCity) {
-        this.city = newCity;
-    }
-
-    void changeTransportType(String newType) {
-        this.transpType = newType;
-    }
-
-    void changeTransportNumber(int newNumber) {
-        this.transpNumb = newNumber;
-    }
-
-    String getTextViewText() {
-        if (IS_RUSSIAN) {
-            return getTextVievText_ru();
-        } else {
-            return getTextVievText_en();
-        }
-    }
-
-    private String getTextVievText_ru() {
-        switch (transpType) {
-            case "citybus":
-                return "Автобус " + transpNumb;
-            case "trolleybus":
-                return "Троллейбус " + transpNumb;
-            case "tram":
-                return "Трамвай " + transpNumb;
-            case "metro":
-                return "Метро";
-        }
-        return null;
-    }
-
-    private String getTextVievText_en() {
-        switch (transpType) {
-            case "citybus":
-                return "Bus " + transpNumb;
-            case "trolleybus":
-                return "Trolleybus " + transpNumb;
-            case "tram":
-                return "Tram " + transpNumb;
-            case "metro":
-                return "Metro";
-        }
-        return null;
+    String getViewText() {
+        return viewText;
     }
 
     int getTranspNumb() {
         return transpNumb;
     }
 
-    String getTranspType() {
-        return transpType;
+    String getTypeForSearch() {
+        return typeForSearch;
     }
 
     String getCity() {
@@ -90,11 +47,11 @@ class BlockElement {
     }
 
     String getTransportURI_IGIS() {
-        return transportURI_IGIS + fakeCity + "/" + transpType + "/" + transpNumb + "?";
+        return transportURI_IGIS + fakeCity + "/" + typeForSearch + "/" + transpNumb + "?";
     }
 
     String getTransportURI_BUSTI() {
-        return transportURI_BUSTI + fakeCity + "/#" + (transpType.equals("citybus") ? "bus" : transpType.equals("trolleybus") ? "trolleybus" : transpType.equals("tram") ? "tramway" : null) + "-" + transpNumb;
+        return transportURI_BUSTI + fakeCity + "/#" + (typeForSearch.equals("citybus") ? "bus" : typeForSearch.equals("trolleybus") ? "trolleybus" : typeForSearch.equals("tram") ? "tramway" : null) + "-" + transpNumb;
     }
 
     String getSchemaURI_YandexMetro() {
@@ -103,9 +60,5 @@ class BlockElement {
 
     String getFakeCity() {
         return fakeCity;
-    }
-
-    void changeFakeCity(String fakeCity) {
-        this.fakeCity = fakeCity;
     }
 }

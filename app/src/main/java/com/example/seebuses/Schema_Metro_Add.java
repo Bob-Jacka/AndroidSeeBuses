@@ -40,6 +40,11 @@ public class Schema_Metro_Add extends AppCompatActivity {
         registerForContextMenu(choose);
     }
 
+    @Override
+    public void onBackPressed() {
+        goMain(this.getCurrentFocus());
+    }
+
     public void goMain(View view) {
         Intent goMain = new Intent(this, MainActivity.class);
         startActivity(goMain);
@@ -71,13 +76,18 @@ public class Schema_Metro_Add extends AppCompatActivity {
         return super.onContextItemSelected(item);
     }
 
+    @Override
+    protected void onStop() {
+        mc.clear();
+        super.onStop();
+    }
+
     public void onAccept(View view) {
-        schema = new BlockElement(schemaCity, "metro", schemaFakeCity);
+        schema = new BlockElement(schemaCity, "metro", schemaFakeCity, IS_RUSSIAN ? "Метро" : "Metro");
         if (acceptSchema() == 1 && acceptFlag != 0) {
             int viewPointer = MainActivity.transportBlocks.indexOfChild(MainActivity.BlockView_pointer);
             MainActivity.transports[viewPointer] = schema;
             MainActivity.saveTransportBlocksData();
-            mc.clear();
             Intent returnMain = new Intent(this, MainActivity.class);
             startActivity(returnMain);
         }
