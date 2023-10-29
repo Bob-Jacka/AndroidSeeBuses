@@ -1,4 +1,4 @@
-package com.example.seebuses;
+package com.example.seebuses.pages;
 
 import static com.example.seebuses.ControlVars.CURRENT_TEXT_SIZE;
 import static com.example.seebuses.ControlVars.IS_RUSSIAN;
@@ -19,26 +19,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.seebuses.API;
+import com.example.seebuses.BlockElement;
+import com.example.seebuses.R;
+import com.example.seebuses.tables.CityTable;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
-public class Change_Transport extends AppCompatActivity {
+public class Transport_Action extends AppCompatActivity {
     private TextInputEditText chooseTransportNum;
     private BlockElement transportBlock = null;
-    private String transpNumb;
-    private String transpCity;
-    private String typeForSearch;
-    private String fakeCity;
-    private String viewText;
+    private String transpNumb, transpCity, typeForSearch, fakeCity, viewText;
     private final ArrayList<String[]> ct = IS_RUSSIAN ? CityTable.initTable_ru() : CityTable.initTable_en();
-    private TextView insertTranspTypeText;
-    private TextView chooseTranspType;
-    private TextView chooseTranspCity;
-    private Button choseBtn;
-    private Button ApplyBtn;
-    private Button CancelBtn;
-    private Button choseCityBtn;
+    private TextView insertTranspTypeText, chooseTranspType, chooseTranspCity;
+    private Button choseBtn, ApplyBtn, CancelBtn, choseCityBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,9 +174,8 @@ public class Change_Transport extends AppCompatActivity {
             if (acceptTransport() == 1) {
                 int viewPointer = MainActivity.transportBlocks.indexOfChild(MainActivity.BlockView_pointer);
                 MainActivity.transports[viewPointer] = transportBlock;
-                MainActivity.saveTransportBlocksData();
-                Intent returnMain = new Intent(this, MainActivity.class);
-                startActivity(returnMain);
+                API.saveTransportBlocksData();
+                goMain(this.getCurrentFocus());
             }
         }
     }
@@ -192,7 +186,7 @@ public class Change_Transport extends AppCompatActivity {
             transportBlock = new BlockElement(transpNumber, typeForSearch, transpCity, fakeCity, viewText + "_" + transpNumber);
             return 1;
         } else {
-            Toast.makeText(Change_Transport.this, R.string.FillAllData, Toast.LENGTH_SHORT).show();
+            Toast.makeText(Transport_Action.this, R.string.FillAllData, Toast.LENGTH_SHORT).show();
             return 0;
         }
     }
@@ -200,7 +194,7 @@ public class Change_Transport extends AppCompatActivity {
     private int acceptTransport() {
         for (BlockElement tb : MainActivity.transports) {
             if (tb != null) {
-                if ((tb.getTranspNumb() == Integer.parseInt(transpNumb) && tb.getTypeForSearch().equals(typeForSearch) && tb.getCity().equals(transpCity))) {
+                if ((tb.getTranspNumb() == Integer.parseInt(transpNumb) && tb.getType().equals(typeForSearch) && tb.getCity().equals(transpCity))) {
                     Toast.makeText(this, R.string.SuchTransp, Toast.LENGTH_SHORT).show();
                     return 0;
                 }

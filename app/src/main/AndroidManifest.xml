@@ -22,23 +22,23 @@
         android:theme="@style/Theme.SeeBuses"
         tools:ignore="UnusedAttribute">
         <activity
-            android:name=".Schema_Metro_Add"
+            android:name=".pages.Schema_Metro_Add"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Settings"
+            android:name=".pages.Settings"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".WebBrowser"
+            android:name=".pages.WebBrowser"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Change_Transport"
+            android:name=".pages.Transport_Action"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".pages.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

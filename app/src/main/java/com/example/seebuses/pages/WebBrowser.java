@@ -1,4 +1,4 @@
-package com.example.seebuses;
+package com.example.seebuses.pages;
 
 import static com.example.seebuses.ControlVars.CURRENT_TEXT_SIZE;
 
@@ -17,8 +17,11 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.seebuses.BlockElement;
+import com.example.seebuses.R;
+
 public class WebBrowser extends AppCompatActivity {
-    static String URL;
+    private static String URL;
     private WebView webView;
     private WebSettings settings;
     private Button buttonBack;
@@ -82,5 +85,13 @@ public class WebBrowser extends AppCompatActivity {
             }
         });
         webView.loadUrl(TransportURL);
+    }
+
+    static void getURL(BlockElement tb) {
+        if (!tb.getType().equals("metro")) {
+            if (!tb.getCity().equals("Ижевск") && !tb.getCity().equals("Izhevsk")) {
+                URL = tb.getTransportURI_BUSTI();
+            } else URL = tb.getTransportURI_IGIS();
+        } else URL = tb.getSchemaURI_YandexMetro();
     }
 }

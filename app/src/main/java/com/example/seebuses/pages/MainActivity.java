@@ -1,17 +1,19 @@
-package com.example.seebuses;
+package com.example.seebuses.pages;
 
+import static com.example.seebuses.API.loadTransportArray;
+import static com.example.seebuses.API.saveTransportBlocksData;
 import static com.example.seebuses.ControlVars.CURRENT_BLOCKS_COUNT;
 import static com.example.seebuses.ControlVars.CURRENT_TEXT_SIZE;
 import static com.example.seebuses.ControlVars.DEFAULT_BLOCKS_COUNT;
 import static com.example.seebuses.ControlVars.ELEMENTS_IN_BLOCK;
-import static com.example.seebuses.ControlVars.LAST_BLOCKS_COUNT;
-import static com.example.seebuses.ControlVars.MAX_BLOCKS;
 import static com.example.seebuses.ControlVars.SAVE_FILE_NAME;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -28,23 +30,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import com.example.seebuses.BlockElement;
+import com.example.seebuses.R;
+
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
-    static LinearLayout transportBlocks;
-    static BlockElement[] transports = new BlockElement[DEFAULT_BLOCKS_COUNT];
+    public static LinearLayout transportBlocks;
+    public static BlockElement[] transports = new BlockElement[DEFAULT_BLOCKS_COUNT];
     static View BlockView_pointer;
     private Drawable emptBlkImage;
-    static File saveFile;
+    public static File saveFile;
     private ConstraintLayout instructions;
-    private TextView instructionsText;
-    private TextView title;
+    private TextView instructionsText, title;
+    private int exit = 0;
 
     @SuppressLint("UsableSpace")
     @Override
@@ -61,18 +61,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
+        exit++;
+        switch (exit) {
+            case 1:
+                Toast.makeText(this, R.string.toExit, Toast.LENGTH_SHORT).show();
+                break;
+            case 2:
+                finishAffinity();
+                break;
+        }
     }
 
     public final void seeTransportUltimate(View view) {
         int pointer = transportBlocks.indexOfChild((LinearLayout) (view.getParent()));
         BlockElement tb = transports[pointer];
         if (tb != null) {
-            if (!tb.getTypeForSearch().equals("metro")) {
-                if (!tb.getCity().equals("Ижевск") && !tb.getCity().equals("Izhevsk")) {
-                    WebBrowser.URL = tb.getTransportURI_BUSTI();
-                } else WebBrowser.URL = tb.getTransportURI_IGIS();
-            } else WebBrowser.URL = tb.getSchemaURI_YandexMetro();
+            WebBrowser.getURL(tb);
             goWebBrowser();
         }
     }
@@ -93,11 +97,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isInternetAvailable() {
-        try {
-            return Runtime.getRuntime().exec("ping -c 1 yandex.ru").waitFor() == 0;
-        } catch (Exception e) {
-            return false;
-        }
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
     @Override
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "Transport":
             case "Транспорт":
-                Intent addTransport = new Intent(new Intent(this, Change_Transport.class));
+                Intent addTransport = new Intent(new Intent(this, Transport_Action.class));
                 startActivity(addTransport);
                 break;
             case "Metro map":
@@ -152,11 +153,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeTransport() {
-        if (transports[transportBlocks.indexOfChild(BlockView_pointer)].getTypeForSearch().equals("metro")) {
+        if (transports[transportBlocks.indexOfChild(BlockView_pointer)].getType().equals("metro")) {
             Intent changeTransp = new Intent(new Intent(this, Schema_Metro_Add.class));
             startActivity(changeTransp);
         } else {
-            Intent changeTransp = new Intent(new Intent(this, Change_Transport.class));
+            Intent changeTransp = new Intent(new Intent(this, Transport_Action.class));
             startActivity(changeTransp);
         }
     }
@@ -209,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         for (int innerIncrement = 0; innerIncrement < ELEMENTS_IN_BLOCK; innerIncrement++) {
             innerView = inner_block.getChildAt(innerIncrement);
             if (innerIncrement == 0) {
-                switch (tb.getTypeForSearch()) {
+                switch (tb.getType()) {
                     case "citybus":
                         ((ImageButton) innerView).setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.bus));
                         break;
@@ -229,9 +230,9 @@ public class MainActivity extends AppCompatActivity {
                 city = ((TextView) ((LinearLayout) innerView).getChildAt(1));
 
                 type.setText(tb.getViewText());
-                type.setTextSize(CURRENT_TEXT_SIZE);
                 city.setText(tb.getCity());
-                city.setTextSize(CURRENT_TEXT_SIZE);
+                type.setTextSize(CURRENT_TEXT_SIZE - 1);
+                city.setTextSize(CURRENT_TEXT_SIZE - 1);
             }
         }
     }
@@ -270,175 +271,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
     protected void onPause() {
         saveTransportBlocksData();
         super.onPause();
     }
 
-    static void saveTransportBlocksData() {
-        try {
-            if (saveFile.length() != 0) {
-                saveFile.delete();
-                saveTransportBlocksData();
-            }
-            BufferedWriter writer = new BufferedWriter(new FileWriter(MainActivity.saveFile));
-            saveControlVars(writer);
-
-            for (BlockElement tb : transports) {
-                if (tb == null) {
-                    writer.write("0");
-                    writer.newLine();
-                } else {
-                    if (!tb.getTypeForSearch().equals("metro")) {
-                        saveTransport(writer, tb);
-                    } else {
-                        saveMetroSchema(writer, tb);
-                    }
-                }
-            }
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            Toast.makeText(transportBlocks.getContext(), R.string.ErrSaveFile, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private static void saveControlVars(BufferedWriter writer) {
-        try {
-            writer.write(String.valueOf(CURRENT_TEXT_SIZE));
-            writer.write(' ');
-            writer.write(String.valueOf(CURRENT_BLOCKS_COUNT));
-            writer.write(' ');
-            writer.write(String.valueOf(LAST_BLOCKS_COUNT));
-            writer.newLine();
-        } catch (IOException e) {
-            Toast.makeText(transportBlocks.getContext(), R.string.ErrSaveContVars, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private static void saveTransport(BufferedWriter writer, BlockElement tb) {
-        try {
-            writer.write(String.valueOf(tb.getTranspNumb()));
-            writer.write(' ');
-            writer.write(tb.getTypeForSearch());
-            writer.write(' ');
-            writer.write(tb.getCity());
-            writer.write(' ');
-            writer.write(tb.getFakeCity());
-            writer.write(' ');
-            writer.write(tb.getViewText());
-
-            writer.newLine();
-        } catch (IOException e) {
-            Toast.makeText(transportBlocks.getContext(), R.string.ErrSaveTB, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private static void saveMetroSchema(BufferedWriter writer, BlockElement tb) {
-        try {
-            writer.write(tb.getCity());
-            writer.write(' ');
-            writer.write(tb.getTypeForSearch());
-            writer.write(' ');
-            writer.write(tb.getFakeCity());
-            writer.write(' ');
-            writer.write(tb.getViewText());
-            writer.newLine();
-        } catch (IOException e) {
-            Toast.makeText(transportBlocks.getContext(), R.string.ErrSaveMetroSchema, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void loadTransportArray() {
-        try {
-            if (saveFile.length() != 0L && saveFile.exists()) {
-                BufferedReader reader = new BufferedReader(new FileReader(saveFile));
-                read_ControlVars(reader);
-                transports = new BlockElement[MAX_BLOCKS];
-                changeBlocksCount();
-                read_SaveFile(reader);
-            } else {
-                transports = new BlockElement[DEFAULT_BLOCKS_COUNT];
-            }
-        } catch (IOException e) {
-            Toast.makeText(MainActivity.this, R.string.ErrLoadFromFile, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void read_ControlVars(BufferedReader reader) {
-        try {
-            String[] params = reader.readLine().split(" ");
-            CURRENT_TEXT_SIZE = Integer.parseInt(params[0]);
-            CURRENT_BLOCKS_COUNT = Integer.parseInt(params[1]);
-            LAST_BLOCKS_COUNT = Integer.parseInt(params[2]);
-        } catch (IOException e) {
-            Toast.makeText(MainActivity.this, R.string.ErrReadCntrlVars, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void read_SaveFile(BufferedReader reader) {
-        int increment = 0;
-        String saveLine;
-        try {
-            do {
-                saveLine = reader.readLine();
-                if (saveLine != null && !saveLine.equals("0")) {
-                    String[] splitted = saveLine.split(" ");
-                    if (splitted.length == 5) {
-                        transports[increment] = new BlockElement(Integer.parseInt(splitted[0]), splitted[1], splitted[2], splitted[3], splitted[4]);
-                    } else
-                        transports[increment] = new BlockElement(splitted[0], splitted[1], splitted[2], splitted[3]);
-                } else {
-                    transports[increment] = null;
-                }
-                increment++;
-            } while (increment < CURRENT_BLOCKS_COUNT);
-            reader.close();
-        } catch (IOException e) {
-            Toast.makeText(MainActivity.this, R.string.ErrReadTBParams, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void changeBlocksCount() {
-        if (CURRENT_BLOCKS_COUNT > LAST_BLOCKS_COUNT) {
-            addBlocks(Math.abs(DEFAULT_BLOCKS_COUNT - CURRENT_BLOCKS_COUNT));
-        } else if (CURRENT_BLOCKS_COUNT < LAST_BLOCKS_COUNT) {
-            removeBlocks(Math.abs(LAST_BLOCKS_COUNT - CURRENT_BLOCKS_COUNT));
-        }
-        saveTransportBlocksData();
-    }
-
-    private void addBlocks(int howManyBlocksToAdd) {
-        for (int i = 0; i < howManyBlocksToAdd; i++) {
-            transports[CURRENT_BLOCKS_COUNT - howManyBlocksToAdd + i] = null;
-            transportBlocks.getChildAt(CURRENT_BLOCKS_COUNT - howManyBlocksToAdd + i).setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void removeBlocks(int howManyBlocksToRemove) {
-        if (CURRENT_BLOCKS_COUNT < LAST_BLOCKS_COUNT) {
-            addBlocks(Math.abs(DEFAULT_BLOCKS_COUNT - CURRENT_BLOCKS_COUNT));
-        }
-        for (int i = 1; i <= howManyBlocksToRemove; i++) {
-            transports[CURRENT_BLOCKS_COUNT + howManyBlocksToRemove - i] = null;
-            transportBlocks.getChildAt(CURRENT_BLOCKS_COUNT + howManyBlocksToRemove - i).setVisibility(View.GONE);
-        }
-    }
-
     private void startSetup() {
         if (CURRENT_BLOCKS_COUNT > DEFAULT_BLOCKS_COUNT) {
             instructions.setVisibility(View.GONE);
-        } else if (CURRENT_BLOCKS_COUNT <= DEFAULT_BLOCKS_COUNT) {
+        } else {
             instructions.setVisibility(View.VISIBLE);
         }
         for (int i = 0; i < CURRENT_BLOCKS_COUNT; i++) {

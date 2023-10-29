@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".Change_Transport">
+    tools:context=".pages.Transport_Action">
 
 
     <LinearLayout
@@ -158,7 +158,7 @@
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:onClick="goMain"
-            android:text="@string/Cancel"
+            android:text="@string/goBack"
             app:cornerRadius="0dp" />
     </LinearLayout>
 

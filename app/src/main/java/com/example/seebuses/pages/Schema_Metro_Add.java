@@ -1,4 +1,4 @@
-package com.example.seebuses;
+package com.example.seebuses.pages;
 
 import static com.example.seebuses.ControlVars.CURRENT_TEXT_SIZE;
 import static com.example.seebuses.ControlVars.IS_RUSSIAN;
@@ -16,17 +16,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.seebuses.API;
+import com.example.seebuses.BlockElement;
+import com.example.seebuses.R;
+import com.example.seebuses.tables.MetroCitiesTable;
+
 import java.util.ArrayList;
 
 public class Schema_Metro_Add extends AppCompatActivity {
-    private Button goBackBtn;
-    private Button choose;
-    private Button chooseSchema;
-    private String schemaCity;
-    private String schemaFakeCity;
+    private Button goBackBtn, choose, chooseSchema;
+    private String schemaCity, schemaFakeCity;
     private BlockElement schema;
-    private TextView SchemaTitle;
-    private TextView SchemaBlockText;
+    private TextView SchemaTitle, SchemaBlockText;
     private int acceptFlag;
     private final ArrayList<String[]> mc = IS_RUSSIAN ?
             MetroCitiesTable.initTable_ru() : MetroCitiesTable.initTable_en();
@@ -87,7 +88,7 @@ public class Schema_Metro_Add extends AppCompatActivity {
         if (acceptSchema() == 1 && acceptFlag != 0) {
             int viewPointer = MainActivity.transportBlocks.indexOfChild(MainActivity.BlockView_pointer);
             MainActivity.transports[viewPointer] = schema;
-            MainActivity.saveTransportBlocksData();
+            API.saveTransportBlocksData();
             Intent returnMain = new Intent(this, MainActivity.class);
             startActivity(returnMain);
         }

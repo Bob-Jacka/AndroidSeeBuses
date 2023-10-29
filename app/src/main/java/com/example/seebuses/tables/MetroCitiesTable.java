@@ -1,13 +1,13 @@
-package com.example.seebuses;
+package com.example.seebuses.tables;
 
 import static com.example.seebuses.ControlVars.SUPPORTED_METRO_CITIES;
 
 import java.util.ArrayList;
 
-abstract class MetroCitiesTable {
+public abstract class MetroCitiesTable {
     private static final ArrayList<String[]> cityTable = new ArrayList<>(SUPPORTED_METRO_CITIES);
 
-    static ArrayList<String[]> initTable_ru() {
+    public static ArrayList<String[]> initTable_ru() {
         cityTable.add(new String[]{"Москва", "moscow"});
         cityTable.add(new String[]{"Санкт-Петербург", "spb"});
         cityTable.add(new String[]{"Самара", "samara"});
@@ -21,7 +21,7 @@ abstract class MetroCitiesTable {
         return cityTable;
     }
 
-    static ArrayList<String[]> initTable_en() {
+    public static ArrayList<String[]> initTable_en() {
         cityTable.add(new String[]{"Moscow", "moscow"});
         cityTable.add(new String[]{"Saint-petersburg", "spb"});
         cityTable.add(new String[]{"Samara", "samara"});

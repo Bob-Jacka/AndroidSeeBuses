@@ -5,7 +5,7 @@
     android:id="@+id/mainConstraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".pages.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
@@ -69,11 +69,12 @@
         android:id="@+id/Instructions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="500dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TransportBlocks">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <TextView
             android:id="@+id/InstructionText"
@@ -108,16 +109,15 @@
     <LinearLayout
         android:id="@+id/TransportBlocks"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:clickable="true"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-
 
         <LinearLayout
             android:id="@+id/Block1"
@@ -126,7 +126,6 @@
             android:layout_marginBottom="10dp"
             android:background="@color/blockBackground"
             android:clickable="true"
-            android:contextClickable="true"
             android:divider="@android:drawable/dark_header"
             android:fadingEdge="none"
             android:orientation="horizontal"
@@ -150,6 +149,7 @@
                 android:id="@+id/TextBlock1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:orientation="vertical"
                 android:showDividers="middle">
 
@@ -157,9 +157,9 @@
                     android:id="@+id/transportName1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_marginVertical="13dp"
-                    android:gravity="center|center_horizontal|center_vertical"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center|center_horizontal|top|center_vertical"
+                    android:paddingHorizontal="5dp"
                     android:textSize="16sp" />
 
                 <TextView
@@ -201,16 +201,16 @@
                 android:id="@+id/TextBlock2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:showDividers="middle">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/transportName2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_marginVertical="13dp"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center|center_horizontal|top|center_vertical"
+                    android:paddingHorizontal="5dp"
                     android:textSize="16sp" />
 
                 <TextView
@@ -252,16 +252,16 @@
                 android:id="@+id/TextBlock3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:showDividers="middle">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/transportName3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_marginVertical="13dp"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center|center_horizontal|top|center_vertical"
+                    android:paddingHorizontal="5dp"
                     android:textSize="16sp" />
 
                 <TextView
@@ -302,16 +302,16 @@
                 android:id="@+id/TextBlock4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:showDividers="middle">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/transportName4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_marginVertical="13dp"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center|center_horizontal|center_vertical"
+                    android:paddingHorizontal="5dp"
                     android:textSize="16sp" />
 
                 <TextView
@@ -352,16 +352,16 @@
                 android:id="@+id/TextBlock5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:showDividers="middle">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/transportName5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_marginVertical="13dp"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center|center_horizontal|center_vertical"
+                    android:paddingHorizontal="5dp"
                     android:textSize="16sp" />
 
                 <TextView
@@ -404,16 +404,16 @@
                 android:id="@+id/TextBlock6_Additional"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:showDividers="middle">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/transportName6_Additional"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_marginVertical="13dp"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center|center_horizontal|top|center_vertical"
+                    android:paddingHorizontal="5dp"
                     android:textSize="16sp" />
 
                 <TextView
@@ -455,16 +455,16 @@
                 android:id="@+id/TextBlock7_Additional"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:showDividers="middle">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/transportName7_Additional"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_marginVertical="13dp"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center|center_horizontal|center_vertical"
+                    android:paddingHorizontal="5dp"
                     android:textSize="16sp" />
 
                 <TextView
@@ -507,20 +507,124 @@
                 android:id="@+id/TextBlock8_Additional"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:showDividers="middle">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/transportName8_Additional"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_marginVertical="13dp"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center|center_horizontal|center_vertical"
+                    android:paddingHorizontal="5dp"
                     android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/whatCityChoosen8_Additional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|center_horizontal|center_vertical"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Block9_Additional"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@color/blockBackground"
+            android:clickable="true"
+            android:divider="@android:drawable/dark_header"
+            android:orientation="horizontal"
+            android:showDividers="middle"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/ImgBtn9_Additional"
+                android:layout_width="255dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#00FFFFFF"
+                android:backgroundTintMode="add"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:onClick="seeTransportUltimate"
+                android:paddingLeft="5dp"
+                android:scaleType="centerInside"
+                android:text="" />
+
+            <LinearLayout
+                android:id="@+id/TextBlock9_Additional"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/transportName9_Additional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center|center_horizontal|center_vertical"
+                    android:paddingHorizontal="5dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/whatCityChoosen9_Additional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|center_horizontal|center_vertical"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Block10_Additional"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@color/blockBackground"
+            android:clickable="true"
+            android:divider="@android:drawable/dark_header"
+            android:orientation="horizontal"
+            android:showDividers="middle"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/ImgBtn10_Additional"
+                android:layout_width="255dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#00FFFFFF"
+                android:backgroundTintMode="add"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:onClick="seeTransportUltimate"
+                android:paddingLeft="5dp"
+                android:scaleType="centerInside"
+                android:text="" />
+
+            <LinearLayout
+                android:id="@+id/TextBlock10_Additional"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/transportName10_Additional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center|center_horizontal|center_vertical"
+                    android:paddingHorizontal="5dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/whatCityChoosen10_Additional"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center|center_horizontal|center_vertical"

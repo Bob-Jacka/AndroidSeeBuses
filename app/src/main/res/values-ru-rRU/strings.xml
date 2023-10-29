@@ -10,7 +10,6 @@
     <string name="chooseHowManyBlocks">Выберите количество блоков</string>
     <string name="insertCityName">Выберите город</string>
     <string name="Apply">Применить</string>
-    <string name="Cancel">Отмена</string>
     <string name="Delete_save">Удалить сохранение</string>
     <string name="instruction">"Нажмите и удерживайте.  "</string>
     <string name="Choose">Выбрать</string>
@@ -49,4 +48,5 @@
     <string name="Change">Изменить</string>
     <string name="Transport2">Транспорт -></string>
     <string name="Wait">Пожалуйста, подождите</string>
+    <string name="toExit">Чтобы выйти, нажмите \"Назад\" ещё один раз</string>
 </resources>

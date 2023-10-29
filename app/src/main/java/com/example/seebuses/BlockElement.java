@@ -1,28 +1,25 @@
 package com.example.seebuses;
 
-class BlockElement {
+public class BlockElement {
     private static final String transportURI_IGIS = "https://igis-transport.ru/";
     private static final String transportURI_BUSTI = "https://ru.busti.me/";
     private static final String transportURI_YandexMetro = "https://yandex.ru/metro/";
     private int transpNumb;
-    private String typeForSearch;
-    private String city;
-    private String fakeCity;
-    private String viewText;
+    private String type, city, fakeCity, viewText;
 
     //Transport
-    BlockElement(int transpNumb, String transpType, String city, String fakeCity, String viewText) {
+    public BlockElement(int transpNumb, String transpType, String city, String fakeCity, String viewText) {
         this.transpNumb = transpNumb;
-        this.typeForSearch = transpType;
+        this.type = transpType;
         this.city = city;
         this.fakeCity = fakeCity;
         this.viewText = viewText;
     }
 
     //Metro
-    BlockElement(String city, String transpType, String schemaFakeCity, String viewText) {
+    public BlockElement(String city, String transpType, String schemaFakeCity, String viewText) {
         this.city = city;
-        this.typeForSearch = transpType;
+        this.type = transpType;
         this.fakeCity = schemaFakeCity;
         this.viewText = viewText;
     }
@@ -30,35 +27,35 @@ class BlockElement {
     BlockElement() {
     }
 
-    String getViewText() {
+    public String getViewText() {
         return viewText;
     }
 
-    int getTranspNumb() {
+    public int getTranspNumb() {
         return transpNumb;
     }
 
-    String getTypeForSearch() {
-        return typeForSearch;
+    public String getType() {
+        return type;
     }
 
-    String getCity() {
+    public String getCity() {
         return city;
     }
 
-    String getTransportURI_IGIS() {
-        return transportURI_IGIS + fakeCity + "/" + typeForSearch + "/" + transpNumb + "?";
+    public String getTransportURI_IGIS() {
+        return transportURI_IGIS + fakeCity + "/" + type + "/" + transpNumb + "?";
     }
 
-    String getTransportURI_BUSTI() {
-        return transportURI_BUSTI + fakeCity + "/#" + (typeForSearch.equals("citybus") ? "bus" : typeForSearch.equals("trolleybus") ? "trolleybus" : typeForSearch.equals("tram") ? "tramway" : null) + "-" + transpNumb;
+    public String getTransportURI_BUSTI() {
+        return transportURI_BUSTI + fakeCity + "/#" + (type.equals("citybus") ? "bus" : type.equals("trolleybus") ? "trolleybus" : type.equals("tram") ? "tramway" : null) + "-" + transpNumb;
     }
 
-    String getSchemaURI_YandexMetro() {
+    public String getSchemaURI_YandexMetro() {
         return transportURI_YandexMetro + fakeCity + "/";
     }
 
-    String getFakeCity() {
+    public String getFakeCity() {
         return fakeCity;
     }
 }

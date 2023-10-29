@@ -1,14 +1,14 @@
-package com.example.seebuses;
+package com.example.seebuses.tables;
 
 import static com.example.seebuses.ControlVars.SUPPORTED_TRANSPORT_CITIES;
 
 import java.util.ArrayList;
 
-abstract class CityTable {
+public abstract class CityTable {
 
     private static final ArrayList<String[]> cityTable = new ArrayList<>(SUPPORTED_TRANSPORT_CITIES);
 
-    static ArrayList<String[]> initTable_ru() {
+    public static ArrayList<String[]> initTable_ru() {
         cityTable.add(new String[]{"Ижевск", "izh"});
         cityTable.add(new String[]{"Пермь", "perm"});
         cityTable.add(new String[]{"Ростов", "rostov"});
@@ -22,7 +22,7 @@ abstract class CityTable {
         return cityTable;
     }
 
-    static ArrayList<String[]> initTable_en() {
+    public static ArrayList<String[]> initTable_en() {
         cityTable.add(new String[]{"Izhevsk", "izh"});
         cityTable.add(new String[]{"Perm", "perm"});
         cityTable.add(new String[]{"Rostov", "rostov"});
