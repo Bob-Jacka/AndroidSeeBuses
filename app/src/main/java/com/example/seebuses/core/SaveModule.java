@@ -1,16 +1,22 @@
-package com.example.seebuses;
+package com.example.seebuses.core;
 
-import static com.example.seebuses.ControlVars.CURRENT_BLOCKS_COUNT;
-import static com.example.seebuses.ControlVars.CURRENT_TEXT_SIZE;
-import static com.example.seebuses.ControlVars.DEFAULT_BLOCKS_COUNT;
-import static com.example.seebuses.ControlVars.LAST_BLOCKS_COUNT;
-import static com.example.seebuses.ControlVars.MAX_BLOCKS;
+import static com.example.seebuses.core.data.ControlVars.CURRENT_BLOCKS_COUNT;
+import static com.example.seebuses.core.data.ControlVars.CURRENT_TEXT_SIZE;
+import static com.example.seebuses.core.data.ControlVars.DEFAULT_BLOCKS_COUNT;
+import static com.example.seebuses.core.data.ControlVars.LAST_BLOCKS_COUNT;
+import static com.example.seebuses.core.data.ControlVars.MAX_BLOCKS;
+import static com.example.seebuses.core.data.CoreData.INSTANCE;
 import static com.example.seebuses.pages.MainActivity.saveFile;
 import static com.example.seebuses.pages.MainActivity.transportBlocks;
-import static com.example.seebuses.pages.MainActivity.transports;
 
 import android.view.View;
 import android.widget.Toast;
+
+import com.example.seebuses.R;
+import com.example.seebuses.core.entities.BlockElement;
+import com.example.seebuses.core.entities.Metro;
+import com.example.seebuses.core.entities.WheelTransport;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -18,7 +24,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public abstract class API {
+public abstract class SaveModule {
+
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     public static void saveTransportBlocksData() {
         try {
@@ -29,7 +37,7 @@ public abstract class API {
             BufferedWriter writer = new BufferedWriter(new FileWriter(saveFile));
             saveControlVars(writer);
 
-            for (BlockElement tb : transports) {
+            for (BlockElement tb : INSTANCE.getTransports()) {
                 if (tb == null) {
                     writer.write("0");
                     writer.newLine();
@@ -63,16 +71,7 @@ public abstract class API {
 
     private static void saveTransport(BufferedWriter writer, BlockElement tb) {
         try {
-            writer.write(String.valueOf(tb.getTranspNumb()));
-            writer.write(' ');
-            writer.write(tb.getType());
-            writer.write(' ');
-            writer.write(tb.getCity());
-            writer.write(' ');
-            writer.write(tb.getFakeCity());
-            writer.write(' ');
-            writer.write(tb.getViewText());
-
+            writer.write(mapper.writeValueAsString(tb));
             writer.newLine();
         } catch (IOException e) {
             Toast.makeText(transportBlocks.getContext(), R.string.ErrSaveTB, Toast.LENGTH_SHORT).show();
@@ -81,13 +80,7 @@ public abstract class API {
 
     private static void saveMetroSchema(BufferedWriter writer, BlockElement tb) {
         try {
-            writer.write(tb.getCity());
-            writer.write(' ');
-            writer.write(tb.getType());
-            writer.write(' ');
-            writer.write(tb.getFakeCity());
-            writer.write(' ');
-            writer.write(tb.getViewText());
+            writer.write(mapper.writeValueAsString(tb));
             writer.newLine();
         } catch (IOException e) {
             Toast.makeText(transportBlocks.getContext(), R.string.ErrSaveMetroSchema, Toast.LENGTH_SHORT).show();
@@ -100,13 +93,13 @@ public abstract class API {
             if (saveFile.length() != 0L && saveFile.exists()) {
                 BufferedReader reader = new BufferedReader(new FileReader(saveFile));
                 read_ControlVars(reader);
-                transports = new BlockElement[MAX_BLOCKS];
+                INSTANCE.setTransports(new BlockElement[MAX_BLOCKS]);
                 changeBlocksCount();
                 read_SaveFile(reader);
             } else {
                 CURRENT_BLOCKS_COUNT = 5;
                 LAST_BLOCKS_COUNT = 5;
-                transports = new BlockElement[DEFAULT_BLOCKS_COUNT];
+                INSTANCE.setTransports(new BlockElement[DEFAULT_BLOCKS_COUNT]);
             }
         } catch (IOException e) {
             Toast.makeText(transportBlocks.getContext(), R.string.ErrLoadFromFile, Toast.LENGTH_SHORT).show();
@@ -131,13 +124,13 @@ public abstract class API {
             do {
                 saveLine = reader.readLine();
                 if (saveLine != null && !saveLine.equals("0")) {
-                    String[] splitted = saveLine.split(" ");
-                    if (splitted.length == 5) {
-                        transports[increment] = new BlockElement(Integer.parseInt(splitted[0]), splitted[1], splitted[2], splitted[3], splitted[4]);
-                    } else
-                        transports[increment] = new BlockElement(splitted[0], splitted[1], splitted[2], splitted[3]);
+                    if (!saveLine.contains("metro")) {
+                        INSTANCE.getTransports()[increment] = mapper.readValue(saveLine, WheelTransport.class);
+                    } else {
+                        INSTANCE.getTransports()[increment] = mapper.readValue(saveLine, Metro.class);
+                    }
                 } else {
-                    transports[increment] = null;
+                    INSTANCE.getTransports()[increment] = null;
                 }
                 increment++;
             } while (increment < CURRENT_BLOCKS_COUNT);
@@ -158,7 +151,7 @@ public abstract class API {
 
     private static void addBlocks(int howManyBlocksToAdd) {
         for (int i = 0; i < howManyBlocksToAdd; i++) {
-            transports[CURRENT_BLOCKS_COUNT - howManyBlocksToAdd + i] = null;
+            INSTANCE.getTransports()[CURRENT_BLOCKS_COUNT - howManyBlocksToAdd + i] = null;
             transportBlocks.getChildAt(CURRENT_BLOCKS_COUNT - howManyBlocksToAdd + i).setVisibility(View.VISIBLE);
         }
     }
@@ -168,7 +161,7 @@ public abstract class API {
             addBlocks(Math.abs(DEFAULT_BLOCKS_COUNT - CURRENT_BLOCKS_COUNT));
         }
         for (int i = 1; i <= howManyBlocksToRemove; i++) {
-            transports[CURRENT_BLOCKS_COUNT + howManyBlocksToRemove - i] = null;
+            INSTANCE.getTransports()[CURRENT_BLOCKS_COUNT + howManyBlocksToRemove - i] = null;
             transportBlocks.getChildAt(CURRENT_BLOCKS_COUNT + howManyBlocksToRemove - i).setVisibility(View.GONE);
         }
     }

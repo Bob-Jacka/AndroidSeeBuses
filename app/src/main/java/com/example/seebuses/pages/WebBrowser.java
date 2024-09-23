@@ -1,6 +1,10 @@
 package com.example.seebuses.pages;
 
-import static com.example.seebuses.ControlVars.CURRENT_TEXT_SIZE;
+import static com.example.seebuses.core.data.ControlVars.CURRENT_TEXT_SIZE;
+import static com.example.seebuses.core.data.SearchData.getSchemaURI_YandexMetro;
+import static com.example.seebuses.core.data.SearchData.getTransportURI_BUSTI;
+import static com.example.seebuses.core.data.SearchData.getTransportURI_IGIS;
+import static com.example.seebuses.core.data.SearchData.getTransportURI_KUDIKINO;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -17,10 +21,13 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.seebuses.BlockElement;
 import com.example.seebuses.R;
+import com.example.seebuses.core.data.TransportType;
+import com.example.seebuses.core.entities.BlockElement;
+import com.example.seebuses.core.entities.WheelTransport;
 
 public class WebBrowser extends AppCompatActivity {
+
     private static String URL;
     private WebView webView;
     private WebSettings settings;
@@ -88,10 +95,17 @@ public class WebBrowser extends AppCompatActivity {
     }
 
     static void getURL(BlockElement tb) {
-        if (!tb.getType().equals("metro")) {
-            if (!tb.getCity().equals("Ижевск") && !tb.getCity().equals("Izhevsk")) {
-                URL = tb.getTransportURI_BUSTI();
-            } else URL = tb.getTransportURI_IGIS();
-        } else URL = tb.getSchemaURI_YandexMetro();
+        if (!tb.getType().equals(TransportType.metro)) {
+            final String city = tb.getCity();
+            if (!city.equals("Ижевск") && !city.equals("Izhevsk")) {
+                URL = getTransportURI_BUSTI((WheelTransport) tb);
+            } else {
+                if (!tb.getType().equals(TransportType.citybus)) {
+                    URL = getTransportURI_IGIS((WheelTransport) tb);
+                } else {
+                    URL = getTransportURI_KUDIKINO((WheelTransport) tb);
+                }
+            }
+        } else URL = getSchemaURI_YandexMetro(tb);
     }
 }

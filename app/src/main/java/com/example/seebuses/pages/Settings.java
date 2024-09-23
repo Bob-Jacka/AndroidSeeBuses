@@ -1,15 +1,15 @@
 package com.example.seebuses.pages;
 
-import static com.example.seebuses.API.saveTransportBlocksData;
-import static com.example.seebuses.ControlVars.CURRENT_BLOCKS_COUNT;
-import static com.example.seebuses.ControlVars.CURRENT_TEXT_SIZE;
-import static com.example.seebuses.ControlVars.DEFAULT_BLOCKS_COUNT;
-import static com.example.seebuses.ControlVars.IS_RUSSIAN;
-import static com.example.seebuses.ControlVars.LAST_BLOCKS_COUNT;
-import static com.example.seebuses.ControlVars.MAX_BLOCKS;
-import static com.example.seebuses.ControlVars.MAX_FONT_SIZE;
-import static com.example.seebuses.ControlVars.MIN_BLOCKS;
-import static com.example.seebuses.ControlVars.MIN_FONT_SIZE;
+import static com.example.seebuses.core.SaveModule.saveTransportBlocksData;
+import static com.example.seebuses.core.data.ControlVars.CURRENT_BLOCKS_COUNT;
+import static com.example.seebuses.core.data.ControlVars.CURRENT_TEXT_SIZE;
+import static com.example.seebuses.core.data.ControlVars.DEFAULT_BLOCKS_COUNT;
+import static com.example.seebuses.core.data.ControlVars.IS_RUSSIAN;
+import static com.example.seebuses.core.data.ControlVars.LAST_BLOCKS_COUNT;
+import static com.example.seebuses.core.data.ControlVars.MAX_BLOCKS;
+import static com.example.seebuses.core.data.ControlVars.MAX_FONT_SIZE;
+import static com.example.seebuses.core.data.ControlVars.MIN_BLOCKS;
+import static com.example.seebuses.core.data.ControlVars.MIN_FONT_SIZE;
 import static com.example.seebuses.pages.MainActivity.saveFile;
 
 import android.content.Intent;
@@ -22,10 +22,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.seebuses.ControlVars;
 import com.example.seebuses.R;
+import com.example.seebuses.core.data.ControlVars;
 
 public class Settings extends AppCompatActivity {
+
     private SeekBar howManyBlocks;
     private TextView title, gitHubLink, ChooseTextSizeText, ChangeHowManyBlocks, CurrentBlocksCount;
     private Button deleteBtn, GoMain, AcceptSettings;
@@ -65,40 +66,40 @@ public class Settings extends AppCompatActivity {
     }
 
     public void applySettings(View view) {
-        if (acceptBlocksCount() == 1 || acceptFontSize() == 1) {
+        if (acceptBlocksCount() || acceptFontSize()) {
             saveTransportBlocksData();
             goMain(this.getCurrentFocus());
             Toast.makeText(this, R.string.ChngApplied, Toast.LENGTH_SHORT).show();
         }
     }
 
-    private int acceptBlocksCount() {
+    private boolean acceptBlocksCount() {
         final int progressBlocksCount = howManyBlocks.getProgress();
         if (progressBlocksCount != CURRENT_BLOCKS_COUNT) {
             if (progressBlocksCount > MIN_BLOCKS) {
                 LAST_BLOCKS_COUNT = CURRENT_BLOCKS_COUNT;
                 CURRENT_BLOCKS_COUNT = progressBlocksCount;
                 CurrentBlocksCount.setText(String.valueOf(ControlVars.CURRENT_BLOCKS_COUNT));
-                return 1;
+                return true;
             } else {
                 Toast.makeText(this, R.string.BlocksNotSupp, Toast.LENGTH_SHORT).show();
-                return 0;
+                return false;
             }
         }
-        return 0;
+        return false;
     }
 
-    private int acceptFontSize() {
+    private boolean acceptFontSize() {
         if (fontSize != CURRENT_TEXT_SIZE) {
             if (fontSize <= MAX_FONT_SIZE && fontSize >= MIN_FONT_SIZE) {
                 CURRENT_TEXT_SIZE = fontSize;
-                return 1;
+                return true;
             } else {
                 Toast.makeText(this, R.string.FontNotSupp, Toast.LENGTH_SHORT).show();
-                return 0;
+                return false;
             }
         }
-        return 0;
+        return false;
     }
 
     private void startSetUp() {

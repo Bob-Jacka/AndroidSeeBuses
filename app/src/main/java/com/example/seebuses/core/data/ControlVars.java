@@ -1,6 +1,4 @@
-package com.example.seebuses;
-
-import android.content.res.Resources;
+package com.example.seebuses.core.data;
 
 import java.util.Locale;
 
@@ -21,9 +19,7 @@ public abstract class ControlVars {
 
     /////////////////////Settings_Activity
     public static final int MIN_BLOCKS = 3;
-    private static final int extraBlocks = Math.round(((Resources.getSystem().getConfiguration().screenHeightDp) - 60 - (DEFAULT_BLOCKS_COUNT * 82) - (DEFAULT_BLOCKS_COUNT * 10)) / 82);
-    // 60 - высота титульного блока, 82 - высота одного блока
-    public static final int MAX_BLOCKS = DEFAULT_BLOCKS_COUNT + (extraBlocks <= 5 ? extraBlocks : 5);
+    public static final int MAX_BLOCKS = 10;
     public static final int MAX_FONT_SIZE = 20;
     public static final int MIN_FONT_SIZE = 12;
 }

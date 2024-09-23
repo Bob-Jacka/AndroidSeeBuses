@@ -8,12 +8,12 @@
     tools:context=".pages.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/Header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#03A9F4"
+
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/TransportBlocks"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -65,16 +65,556 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Header">
+
+        <LinearLayout
+            android:id="@+id/TransportBlocks"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Header">
+
+            <LinearLayout
+                android:id="@+id/Block1"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/blockBackground"
+                android:clickable="true"
+                android:divider="@android:drawable/dark_header"
+                android:fadingEdge="none"
+                android:orientation="horizontal"
+                android:showDividers="middle">
+
+                <ImageButton
+                    android:id="@+id/ImgBtn1"
+                    android:layout_width="255dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#00FFFFFF"
+                    android:backgroundTintMode="add"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:onClick="seeTransportUltimate"
+                    android:paddingHorizontal="5dp"
+                    android:scaleType="centerInside"
+                    android:text="" />
+
+                <LinearLayout
+                    android:id="@+id/TextBlock1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:showDividers="middle">
+
+                    <TextView
+                        android:id="@+id/transportName1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center|center_horizontal|top|center_vertical"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/whatCityChoosen1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Block2"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/blockBackground"
+                android:clickable="true"
+                android:divider="@android:drawable/dark_header"
+                android:orientation="horizontal"
+                android:showDividers="middle">
+
+                <ImageButton
+                    android:id="@+id/ImgBtn2"
+                    android:layout_width="255dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#00FFFFFF"
+                    android:backgroundTintMode="add"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:onClick="seeTransportUltimate"
+                    android:paddingLeft="5dp"
+                    android:scaleType="centerInside"
+                    android:text="" />
+
+                <LinearLayout
+                    android:id="@+id/TextBlock2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/transportName2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center|center_horizontal|top|center_vertical"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/whatCityChoosen2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Block3"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/blockBackground"
+                android:clickable="true"
+                android:divider="@android:drawable/dark_header"
+                android:orientation="horizontal"
+                android:showDividers="middle">
+
+                <ImageButton
+                    android:id="@+id/ImgBtn3"
+                    android:layout_width="255dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#00FFFFFF"
+                    android:backgroundTintMode="add"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:onClick="seeTransportUltimate"
+                    android:paddingLeft="5dp"
+                    android:scaleType="centerInside"
+                    android:text="" />
+
+                <LinearLayout
+                    android:id="@+id/TextBlock3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/transportName3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center|center_horizontal|top|center_vertical"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/whatCityChoosen3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Block4"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/blockBackground"
+                android:clickable="true"
+                android:divider="@android:drawable/dark_header"
+                android:orientation="horizontal"
+                android:showDividers="middle">
+
+                <ImageButton
+                    android:id="@+id/ImgBtn4"
+                    android:layout_width="255dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#00FFFFFF"
+                    android:backgroundTintMode="add"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:onClick="seeTransportUltimate"
+                    android:paddingLeft="5dp"
+                    android:scaleType="centerInside"
+                    android:text="" />
+
+                <LinearLayout
+                    android:id="@+id/TextBlock4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/transportName4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/whatCityChoosen4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Block5"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:background="@color/blockBackground"
+                android:clickable="true"
+                android:divider="@android:drawable/dark_header"
+                android:orientation="horizontal"
+                android:showDividers="middle">
+
+                <ImageButton
+                    android:id="@+id/ImgBtn5"
+                    android:layout_width="255dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#00FFFFFF"
+                    android:backgroundTintMode="add"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:onClick="seeTransportUltimate"
+                    android:paddingLeft="5dp"
+                    android:scaleType="centerInside"
+                    android:text="" />
+
+                <LinearLayout
+                    android:id="@+id/TextBlock5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/transportName5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/whatCityChoosen5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Block6_Additional"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/blockBackground"
+                android:clickable="true"
+                android:divider="@android:drawable/dark_header"
+                android:orientation="horizontal"
+                android:showDividers="middle"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/ImgBtn6_Additional"
+                    android:layout_width="255dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#00FFFFFF"
+                    android:backgroundTintMode="add"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:onClick="seeTransportUltimate"
+                    android:paddingLeft="5dp"
+                    android:scaleType="centerInside"
+                    android:text="" />
+
+                <LinearLayout
+                    android:id="@+id/TextBlock6_Additional"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/transportName6_Additional"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center|center_horizontal|top|center_vertical"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/whatCityChoosen6_Additional"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Block7_Additional"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/blockBackground"
+                android:clickable="true"
+                android:divider="@android:drawable/dark_header"
+                android:orientation="horizontal"
+                android:showDividers="middle"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/ImgBtn7_Additional"
+                    android:layout_width="255dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#00FFFFFF"
+                    android:backgroundTintMode="add"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:onClick="seeTransportUltimate"
+                    android:paddingLeft="5dp"
+                    android:scaleType="centerInside"
+                    android:text="" />
+
+                <LinearLayout
+                    android:id="@+id/TextBlock7_Additional"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/transportName7_Additional"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/whatCityChoosen7_Additional"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Block8_Additional"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/blockBackground"
+                android:clickable="true"
+                android:divider="@android:drawable/dark_header"
+                android:orientation="horizontal"
+                android:showDividers="middle"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/ImgBtn8_Additional"
+                    android:layout_width="255dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#00FFFFFF"
+                    android:backgroundTintMode="add"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:onClick="seeTransportUltimate"
+                    android:paddingLeft="5dp"
+                    android:scaleType="centerInside"
+                    android:text="" />
+
+                <LinearLayout
+                    android:id="@+id/TextBlock8_Additional"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/transportName8_Additional"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/whatCityChoosen8_Additional"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Block9_Additional"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/blockBackground"
+                android:clickable="true"
+                android:divider="@android:drawable/dark_header"
+                android:orientation="horizontal"
+                android:showDividers="middle"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/ImgBtn9_Additional"
+                    android:layout_width="255dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#00FFFFFF"
+                    android:backgroundTintMode="add"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:onClick="seeTransportUltimate"
+                    android:paddingLeft="5dp"
+                    android:scaleType="centerInside"
+                    android:text="" />
+
+                <LinearLayout
+                    android:id="@+id/TextBlock9_Additional"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/transportName9_Additional"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/whatCityChoosen9_Additional"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/Block10_Additional"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/blockBackground"
+                android:clickable="true"
+                android:divider="@android:drawable/dark_header"
+                android:orientation="horizontal"
+                android:showDividers="middle"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/ImgBtn10_Additional"
+                    android:layout_width="255dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#00FFFFFF"
+                    android:backgroundTintMode="add"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:onClick="seeTransportUltimate"
+                    android:paddingLeft="5dp"
+                    android:scaleType="centerInside"
+                    android:text="" />
+
+                <LinearLayout
+                    android:id="@+id/TextBlock10_Additional"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/transportName10_Additional"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:paddingHorizontal="5dp"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/whatCityChoosen10_Additional"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|center_horizontal|center_vertical"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/Instructions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="500dp"
-        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/Header">
 
         <TextView
             android:id="@+id/InstructionText"
@@ -105,534 +645,4 @@
             app:layout_constraintVertical_bias="0.5"
             app:srcCompat="@drawable/arrow" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:id="@+id/TransportBlocks"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:clickable="true"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-        <LinearLayout
-            android:id="@+id/Block1"
-            android:layout_width="match_parent"
-            android:layout_height="82dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/blockBackground"
-            android:clickable="true"
-            android:divider="@android:drawable/dark_header"
-            android:fadingEdge="none"
-            android:orientation="horizontal"
-            android:showDividers="middle">
-
-            <ImageButton
-                android:id="@+id/ImgBtn1"
-                android:layout_width="255dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="#00FFFFFF"
-                android:backgroundTintMode="add"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:onClick="seeTransportUltimate"
-                android:paddingHorizontal="5dp"
-                android:scaleType="centerInside"
-                android:text="" />
-
-            <LinearLayout
-                android:id="@+id/TextBlock1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:showDividers="middle">
-
-                <TextView
-                    android:id="@+id/transportName1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center|center_horizontal|top|center_vertical"
-                    android:paddingHorizontal="5dp"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/whatCityChoosen1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/Block2"
-            android:layout_width="match_parent"
-            android:layout_height="82dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/blockBackground"
-            android:clickable="true"
-            android:divider="@android:drawable/dark_header"
-            android:orientation="horizontal"
-            android:showDividers="middle">
-
-            <ImageButton
-                android:id="@+id/ImgBtn2"
-                android:layout_width="255dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="#00FFFFFF"
-                android:backgroundTintMode="add"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:onClick="seeTransportUltimate"
-                android:paddingLeft="5dp"
-                android:scaleType="centerInside"
-                android:text="" />
-
-            <LinearLayout
-                android:id="@+id/TextBlock2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/transportName2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center|center_horizontal|top|center_vertical"
-                    android:paddingHorizontal="5dp"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/whatCityChoosen2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/Block3"
-            android:layout_width="match_parent"
-            android:layout_height="82dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/blockBackground"
-            android:clickable="true"
-            android:divider="@android:drawable/dark_header"
-            android:orientation="horizontal"
-            android:showDividers="middle">
-
-            <ImageButton
-                android:id="@+id/ImgBtn3"
-                android:layout_width="255dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="#00FFFFFF"
-                android:backgroundTintMode="add"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:onClick="seeTransportUltimate"
-                android:paddingLeft="5dp"
-                android:scaleType="centerInside"
-                android:text="" />
-
-            <LinearLayout
-                android:id="@+id/TextBlock3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/transportName3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center|center_horizontal|top|center_vertical"
-                    android:paddingHorizontal="5dp"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/whatCityChoosen3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:textSize="16sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/Block4"
-            android:layout_width="match_parent"
-            android:layout_height="82dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/blockBackground"
-            android:clickable="true"
-            android:divider="@android:drawable/dark_header"
-            android:orientation="horizontal"
-            android:showDividers="middle">
-
-            <ImageButton
-                android:id="@+id/ImgBtn4"
-                android:layout_width="255dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="#00FFFFFF"
-                android:backgroundTintMode="add"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:onClick="seeTransportUltimate"
-                android:paddingLeft="5dp"
-                android:scaleType="centerInside"
-                android:text="" />
-
-            <LinearLayout
-                android:id="@+id/TextBlock4"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/transportName4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:paddingHorizontal="5dp"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/whatCityChoosen4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/Block5"
-            android:layout_width="match_parent"
-            android:layout_height="82dp"
-            android:background="@color/blockBackground"
-            android:clickable="true"
-            android:divider="@android:drawable/dark_header"
-            android:orientation="horizontal"
-            android:showDividers="middle">
-
-            <ImageButton
-                android:id="@+id/ImgBtn5"
-                android:layout_width="255dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="#00FFFFFF"
-                android:backgroundTintMode="add"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:onClick="seeTransportUltimate"
-                android:paddingLeft="5dp"
-                android:scaleType="centerInside"
-                android:text="" />
-
-            <LinearLayout
-                android:id="@+id/TextBlock5"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/transportName5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:paddingHorizontal="5dp"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/whatCityChoosen5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/Block6_Additional"
-            android:layout_width="match_parent"
-            android:layout_height="82dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/blockBackground"
-            android:clickable="true"
-            android:divider="@android:drawable/dark_header"
-            android:orientation="horizontal"
-            android:showDividers="middle"
-            android:visibility="gone">
-
-            <ImageButton
-                android:id="@+id/ImgBtn6_Additional"
-                android:layout_width="255dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="#00FFFFFF"
-                android:backgroundTintMode="add"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:onClick="seeTransportUltimate"
-                android:paddingLeft="5dp"
-                android:scaleType="centerInside"
-                android:text="" />
-
-            <LinearLayout
-                android:id="@+id/TextBlock6_Additional"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/transportName6_Additional"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center|center_horizontal|top|center_vertical"
-                    android:paddingHorizontal="5dp"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/whatCityChoosen6_Additional"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:textSize="16sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/Block7_Additional"
-            android:layout_width="match_parent"
-            android:layout_height="82dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/blockBackground"
-            android:clickable="true"
-            android:divider="@android:drawable/dark_header"
-            android:orientation="horizontal"
-            android:showDividers="middle"
-            android:visibility="gone">
-
-            <ImageButton
-                android:id="@+id/ImgBtn7_Additional"
-                android:layout_width="255dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="#00FFFFFF"
-                android:backgroundTintMode="add"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:onClick="seeTransportUltimate"
-                android:paddingLeft="5dp"
-                android:scaleType="centerInside"
-                android:text="" />
-
-            <LinearLayout
-                android:id="@+id/TextBlock7_Additional"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/transportName7_Additional"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:paddingHorizontal="5dp"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/whatCityChoosen7_Additional"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/Block8_Additional"
-            android:layout_width="match_parent"
-            android:layout_height="82dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/blockBackground"
-            android:clickable="true"
-            android:divider="@android:drawable/dark_header"
-            android:orientation="horizontal"
-            android:showDividers="middle"
-            android:visibility="gone">
-
-            <ImageButton
-                android:id="@+id/ImgBtn8_Additional"
-                android:layout_width="255dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="#00FFFFFF"
-                android:backgroundTintMode="add"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:onClick="seeTransportUltimate"
-                android:paddingLeft="5dp"
-                android:scaleType="centerInside"
-                android:text="" />
-
-            <LinearLayout
-                android:id="@+id/TextBlock8_Additional"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/transportName8_Additional"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:paddingHorizontal="5dp"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/whatCityChoosen8_Additional"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/Block9_Additional"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:background="@color/blockBackground"
-            android:clickable="true"
-            android:divider="@android:drawable/dark_header"
-            android:orientation="horizontal"
-            android:showDividers="middle"
-            android:visibility="gone">
-
-            <ImageButton
-                android:id="@+id/ImgBtn9_Additional"
-                android:layout_width="255dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="#00FFFFFF"
-                android:backgroundTintMode="add"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:onClick="seeTransportUltimate"
-                android:paddingLeft="5dp"
-                android:scaleType="centerInside"
-                android:text="" />
-
-            <LinearLayout
-                android:id="@+id/TextBlock9_Additional"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/transportName9_Additional"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:paddingHorizontal="5dp"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/whatCityChoosen9_Additional"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/Block10_Additional"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:background="@color/blockBackground"
-            android:clickable="true"
-            android:divider="@android:drawable/dark_header"
-            android:orientation="horizontal"
-            android:showDividers="middle"
-            android:visibility="gone">
-
-            <ImageButton
-                android:id="@+id/ImgBtn10_Additional"
-                android:layout_width="255dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="#00FFFFFF"
-                android:backgroundTintMode="add"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:onClick="seeTransportUltimate"
-                android:paddingLeft="5dp"
-                android:scaleType="centerInside"
-                android:text="" />
-
-            <LinearLayout
-                android:id="@+id/TextBlock10_Additional"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/transportName10_Additional"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:paddingHorizontal="5dp"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/whatCityChoosen10_Additional"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|center_horizontal|center_vertical"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-    </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
