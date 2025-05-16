@@ -179,7 +179,6 @@ class Transport_Action : AppCompatActivity() {
     }
 
     private fun acceptNonNull(): Boolean {
-        //TODo заменить нижнее подчёркивание
         if (transpNumb != null && typeForSearch != null && transpCity != null) {
             val transpNumber = transpNumb!!.toInt()
             transportBlock = WheelTransport(
